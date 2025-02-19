@@ -56,6 +56,8 @@ Per il versionamento del software si usa la tecnica Semantic Versioning (http://
 # Authors
 La lista delle persone che hanno partecipato alla realizzazione del software sono:
 - ALCIATO Nives
+- BIANCHINI Daniela
+- BIGOZZI Francesco
 - BOURLOT Gaia
 - CALO' Nicolo' Saverio
 - CHIAPPO Maurizio
@@ -69,6 +71,7 @@ La lista delle persone che hanno partecipato alla realizzazione del software son
 - MASTRORILLI Michele
 - MERCURI Nicola
 - TODARO Benedetta Alessia
+- ZAZZA Marco
 
 # Copyrights
 © Copyright Regione Piemonte – 2025
