@@ -3,7 +3,7 @@
 ## Compilazione
 
 ### Libreria pgmeascommons
-La componente **pgmeascommons** può essere compilata con il tool **Maven ** version: 3.8.1 e **JDK Adoptium Temurin 17**.  
+La componente **pgmeascommons** può essere compilata con il tool **Maven** version: 3.8.1 e **JDK Adoptium Temurin 17**.  
 
 Prima di procedere con l'installazione nel repository della libreria, è necessario impostare la versione con il seguente comando:  
 
