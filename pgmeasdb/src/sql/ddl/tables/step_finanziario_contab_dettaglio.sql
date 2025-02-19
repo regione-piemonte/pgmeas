@@ -1,0 +1,22 @@
+CREATE TABLE `step_finanziario_contab_dettaglio` (
+  `id`                              BIGINT unsigned NOT NULL AUTO_INCREMENT,
+  `step_finanziario_contab_id`      BIGINT unsigned NOT NULL                COMMENT 'Identificativo id della tabella step_finanziario_contab',
+  `anno_competenza`                 INT    unsigned NULL                    COMMENT 'Per Determina di Prenotazione e Determina d''Impegno',  
+  `fornitore_ragione_sociale`       VARCHAR(255)    NULL                    COMMENT 'Per Determina di Prenotazione, Determina d''Impegno, Fatture Ricevute, Determina di Liquidazione e Mandato di Pagamento',
+  `fornitore_codice_fiscale`        VARCHAR(16)     NULL                    COMMENT 'Per Determina di Prenotazione, Determina d''Impegno, Fatture Ricevute, Determina di Liquidazione e Mandato di Pagamento',
+  `fornitore_partita_iva`           VARCHAR(11)     NULL                    COMMENT 'Per Determina di Prenotazione, Determina d''Impegno, Fatture Ricevute, Determina di Liquidazione e Mandato di Pagamento',
+  `centro_costo_codice`             VARCHAR(50)     NULL                    COMMENT 'Per Determina di Prenotazione e Determina d''Impegno',
+  `centro_costo_descrizione`        VARCHAR(255)    NULL                    COMMENT 'Per Determina di Prenotazione e Determina d''Impegno',
+  `coperto_da_fondo`                VARCHAR(2)      NULL                    COMMENT 'Per Determina di Prenotazione e Determina d''Impegno',
+  `responsabile_codice_uo`          VARCHAR(100)    NULL                    COMMENT 'Per Determina di Prenotazione e Determina d''Impegno',  
+  `responsabile_denominazione`      VARCHAR(255)    NULL                    COMMENT 'Per Determina di Prenotazione e Determina d''Impegno',
+  `numero`                          VARCHAR(50)     NULL                    COMMENT 'Per Fatture Ricevute, Determina di Liquidazione, Mandato di Pagamento, Quietanziato e Ordinativo di Incasso',
+  `data`                            DATE            NULL                    COMMENT 'Per Fatture Ricevute, Determina di Liquidazione, Mandato di Pagamento, Quietanziato e Ordinativo di Incasso',
+  `tipo`                            VARCHAR(45)     NULL                    COMMENT 'Per Fatture Ricevute, Determina di Liquidazione e Mandato di Pagamento',  
+  `mandato_numero`                  INT    unsigned NULL                    COMMENT 'Per Quietanziato',
+  `mandato_data`                    DATE            NULL                    COMMENT 'Per Quietanziato',
+  `importo`                         DOUBLE          NULL                    COMMENT 'Tutti',
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
+  CONSTRAINT `fk_step_finanziario_contab` FOREIGN KEY (`step_finanziario_contab_id`) REFERENCES `step_finanziario_contab` (`id`)  
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
