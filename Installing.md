@@ -99,8 +99,6 @@ Gli script del **pgmeasDB** devono essere eseguiti su un'utenza **PostgreSQL**.
 | `log.audit.uri` | `http://localhost:9050/pgmeasgdpr/api/audit/add` | URI per il log audit |
 | `logging.level.it.csi.pgmeas.service.gateway.proxy` | `DEBUG` | Livello di logging per il proxy gateway |
 | `management.endpoints.web.exposure.include` | `health,info,prometheus` | Endpoint esposti per la gestione |
-| Configurazione | Valore | Descrizione |
-|---------------|--------|-------------|
 | `routes.query1.regExp` | `api/(progetti.*)` | Regex per il routing delle richieste progetti |
 | `routes.query1.targetHost` | `http://localhost:9080` | Host di destinazione per le richieste progetti |
 | `routes.query1.targetUri` | `/pgmeasproject/api/` | URI di destinazione per le richieste progetti |
