@@ -1,0 +1,31 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+mat-toolbar-row:first-child {
+  background-color: #006cb4;
+  padding: 0 2px 0 0;
+}
+
+.mat-toolbar-row {
+  padding: 0 16px;
+}
+
+.toolbar {
+  max-height: 50px;
+  min-height: 50px;
+}
+
+.account-info {
+  display: flex;
+  align-items: center;
+}
+
+.title-name {
+  font-weight: 600;
+}
+
+.title-bar {
+  font-weight: 400;
+  text-transform: lowercase;
+}

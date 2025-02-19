@@ -1,0 +1,47 @@
+$base-spacing: 205px;
+
+mat-sidenav {
+  width: 300px;
+  padding: 20px 0 20px 20px;
+  box-shadow: 10px 0 10px -5px #ccc;
+}
+
+mat-sidenav-content {
+  min-height: calc(100vh - $base-spacing); // header + footer + padding = 275px
+  padding: 0 40px 20px 40px;
+  overflow: hidden; // TODO: verificare perché necessario
+}
+
+.sticky-menu {
+  position: fixed;
+  top: 20px;
+  width: 260px;
+}
+
+.mcontainer {
+  display: flex;
+  // height: calc(100vh - $base-spacing); // header + footer + padding = 275px
+}
+
+.msidebar {
+  position: sticky;
+  height: calc(100vh - $base-spacing + 20px ) ; // header 128 + footer 127 = 255px
+}
+
+.mcontent-overflow {
+  overflow-y: auto;
+}
+.mcontent {
+  flex-grow: 1;
+  margin-left: 0 !important;
+  height: calc(100vh - $base-spacing); // header + footer + padding = 275px
+  width: calc(100vw - 300px);
+}
+
+.over-footer {
+    z-index: 10;
+    position: absolute;
+    width: 100%;
+}
+
+

@@ -1,0 +1,91 @@
+
+.m-14 {
+  margin: 14px 0 !important;
+}
+
+.d-flex-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.d-flex {
+  display: flex;
+  align-items: center;
+
+  p {
+    margin-bottom: 0 !important;
+  }
+}
+
+.input-field {
+  width: 150px;
+
+/*  mat-label {
+     font-size: 11px; 
+  } */
+
+/*  input {
+     font-size: 11px; 
+  }*/
+}
+
+.input-field-attuatore {
+  width: 338px;
+
+/*  mat-label {
+     font-size: 11px; 
+  } */
+
+/*  input {
+     font-size: 11px; 
+  }*/
+}
+
+::ng-deep mat-accordion {
+  mat-expansion-panel {
+    span.mat-expansion-indicator::after {
+      color: #005CA9;
+    }
+  }
+}
+
+::ng-deep .mdc-text-field--filled {
+  background-color: transparent !important;
+}
+
+.card-header {
+  margin: 0;
+  text-align: left;
+  font: normal normal bold 20px/24px Open Sans;
+  letter-spacing: 0;
+  color: #000000DE;
+}
+
+.small-text {
+  font-size: 14px;
+}
+
+mat-card {
+  background: #FFFFFF 0 0 no-repeat padding-box;
+  box-shadow: 1px 2px 8px #C4C4C4;
+  padding: 0 0 0 29px;
+  margin-bottom: 15px;
+}
+
+.subsection-paragraph {
+  font: normal normal bold 16px/20px Open Sans;
+  letter-spacing: 0;
+  color: #000000;
+  opacity: 1;
+}
+
+
+mat-panel-title {
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 0;
+}
+
+mat-accordion {
+  margin: 10px;
+}

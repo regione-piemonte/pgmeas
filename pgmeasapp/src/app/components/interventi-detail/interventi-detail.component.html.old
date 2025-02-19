@@ -1,0 +1,73 @@
+<h1>Dettaglio intervento</h1>
+<ng-container *ngIf="!loading; else loadingTemplate">
+  <mat-card style="margin-bottom: 40px;">
+    <mat-card-header><h2>Riferimenti temporali dell'intervento</h2></mat-card-header>
+    <mat-card-content style="display: grid; grid-template-columns: 25% 25% 25% 25%;">
+      <p>Anno priorità: <b>?</b></p>
+      <p>Numero priorità: <b>?</b></p>
+      <p>Anno inserimento: <b>{{entity.intAnno}}</b></p>
+      <p>Codice intervento: <b>{{entity.intCod}}</b></p>
+    </mat-card-content>
+  </mat-card>
+  <mat-card style="margin-bottom: 40px;">
+    <mat-card-header><h2>Riferimenti principali dell'intervento</h2></mat-card-header>
+    <mat-card-content>
+      <div style="display: grid; grid-template-columns: 25% 25% 25%;">
+        <p>CUP: <b>{{entity.intCup}}</b></p>
+        <p>Obiettivo: <b>?</b></p>
+        <p>Stato progettuale: <b>?</b></p>
+      </div>
+      <p>Titolo intervento: <b>{{entity.intTitolo}}</b></p>
+      <div style="display: grid; grid-template-columns: 25% 25%;">
+        <p>Durata: <b>{{getDurataLabel()}}</b></p>
+        <p>Percorso realizzativo: <b>?</b></p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card style="margin-bottom: 40px;">
+    <mat-card-header><h2>Ambito e tipologia</h2></mat-card-header>
+    <mat-card-content style="display: grid; grid-template-columns: 25% 25% 25% 25%;">
+      <p>Macro Area: <b>{{entity.intMacroareaId}}</b></p>
+      <p>Qualifica: <b>?</b></p>
+      <p>Tipo: <b>?</b></p>
+      <p>Forma realizzativa: <b>?</b></p>
+    </mat-card-content>
+  </mat-card>
+  <mat-card style="margin-bottom: 40px;">
+    <mat-card-header><h2>Localizzazione</h2></mat-card-header>
+    <mat-card-content>
+      <p>Azienda: <b>{{getAziendaLabel()}}</b></p>
+      <p>Struttura: <b>{{getStrutturaLabel()}}</b></p>
+      <p>Presidio: <b>?</b></p>
+    </mat-card-content>
+  </mat-card>
+  <mat-card style="margin-bottom: 40px;">
+    <mat-card-header><h2>Riferimenti economici e finanziari</h2></mat-card-header>
+    <mat-card-content style="display: grid; grid-template-columns: 50% 50%;">
+      <p>Codice univoco richiesta finanziamento: <b>?</b></p>
+      <div style="display: grid; grid-template-columns: 50% 50%;">
+        <p>Codice associativo: <b>?</b></p>
+        <p>Nulla osta: <b>?</b></p>
+      </div>
+      <p>Importo complessivo: <b>{{entity.intImporto | number:'1.2-2'}}</b></p>
+      <p>Finanziamenti regionali disponibili: <b>{{getFinanziamentiRegionali() | number:'1.2-2'}}</b></p>
+      <p>Finanziamenti statali disponibili: <b>{{getFinanziamentiStatali() | number:'1.2-2'}}</b></p>
+      <p>Altri finanziamenti disponibili: <b>{{getAltriFinanziamenti() | number:'1.2-2'}}</b></p>
+      <p>Richiesta finanzialmento: <b>?</b></p>
+      <p>Previsione avanzamento di spesa per Esercizio Finanziario 2024: <b>?</b></p>
+    </mat-card-content>
+  </mat-card>
+  <mat-card style="margin-bottom: 40px;">
+    <mat-card-header><h2>Responsabili dell'intervento</h2></mat-card-header>
+    <mat-card-content style="display: grid; grid-template-columns: 50% 50%;">
+      <p>Responsabile procedimento: <b>?</b></p>
+      <p>Direttore generale: <b>{{entity.intDirettoreGeneraleNome}} {{entity.intDirettoreGeneraleCognome}}</b></p>
+      <p>Commissario: <b>{{entity.intCommissarioNome}} {{entity.intCommissarioCognome}}</b></p>
+      <p>Referente pratica: <b>{{entity.intReferentePraticaNome}} {{entity.intReferentePraticaCognome}}</b></p>
+    </mat-card-content>
+  </mat-card>
+</ng-container>
+<ng-template #loadingTemplate>
+  <mat-spinner style="margin: 20px auto;"></mat-spinner>
+</ng-template>
+<button mat-button color="primary" [routerLink]="['/', 'consultazione-interventi']">INDIETRO</button>

@@ -1,0 +1,31 @@
+
+<ng-container>
+
+    <div class="titolo text-center mat-pt-4">
+        <div class="text-h1 mat-mt-2 pgmeas-primary-text">
+          {{ user.nome }} {{ user.cognome }}
+        </div>
+        <div class="text-h6 mat-mt-1">
+          {{ user.codiceFiscale }}
+        </div>
+      </div>
+      
+      <mat-card class="mat-elevation-z4">
+        <mat-card-content>
+          <div class="mat-row">
+            <div class="mat-column mat-column-label text-weight-bold">Profilo di accesso:</div>
+            <div class="mat-column mat-column-value">{{ user.profilo }}</div>
+          </div>
+          <div class="mat-row">
+            <div class="mat-column mat-column-label text-weight-bold">Azienda sanitaria:</div>
+            <div class="mat-column mat-column-value">{{ user.descAzienda }}</div>
+          </div>
+          <div class="mat-row">
+            <div class="mat-column mat-column-label text-weight-bold">Collocazione:</div>
+            <div class="mat-column mat-column-value">{{ user.descCollocazione }}</div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      
+
+</ng-container>

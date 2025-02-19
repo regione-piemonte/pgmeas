@@ -1,0 +1,22 @@
+.small-text {
+  font-size: 14px;
+}
+
+.flex-div {
+  display: flex;
+  align-items: center;
+}
+
+.flex-div p {
+  margin-right: 0.5rem;
+}
+
+.date-div {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.conferma-button {
+  background: #005CA9 0 0 no-repeat padding-box !important;
+}

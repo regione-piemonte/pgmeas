@@ -1,0 +1,119 @@
+<ng-container *ngIf="intervento">
+  <form [formGroup]="appaltoForm">
+    <mat-card>
+      <mat-card-header>
+        <p class="card-header">Deliberazioni</p>
+      </mat-card-header>
+      <br>
+      <br>
+      <br>
+          <mat-card-content>
+          <div class="flex-container small-text" *ngFor="let row of allegatoDcrApprovazione; let index = index">
+            <p class="delibere-p small-text">D.C.R. di approvazione</p>
+            <label>numero: </label>
+            <b class="delibere-p">{{ row.intAllegatoNumero}}</b>
+           
+            <label>Data atto:</label>
+            <b class="delibere-p">{{ row.intAllegatoData | date: 'dd/MM/yyyy'}}</b>
+            <label>Allegato:</label>
+           
+            <button mat-stroked-button color="primary" (click)="downloadPdf(row.idAllegato!)">Visualizza</button>
+          </div>
+
+          <div class="flex-container small-text" *ngFor="let row of allegatoDecretoMinisteriale; let index = index">
+            <p class="delibere-p small-text">Decreto Ministeriale<p>
+            <label>numero: </label>
+            <b class="delibere-p">{{ row.intAllegatoNumero }}</b>
+            <label>Data atto:</label>
+            <b class="delibere-p">{{ row.intAllegatoData | date: 'dd/MM/yyyy'}}</b>
+            <label>Allegato:</label>
+            <button mat-stroked-button color="primary" (click)="downloadPdf(row.idAllegato!)">Visualizza</button>
+          </div>
+
+
+          <div class="flex-container small-text" *ngFor="let row of allegatoDgrApprovazione; let index = index">
+            <p class="delibere-p small-text">D.G.R di approvazione</p>
+            <label>numero: </label>
+            <b class="delibere-p">{{ row.intAllegatoNumero }}</b>
+            <label>Data atto:</label>
+            <b class="delibere-p">{{ row.intAllegatoData | date: 'dd/MM/yyyy'}}</b>
+            <label>Allegato:</label>
+            <button mat-stroked-button color="primary" (click)="downloadPdf(row.idAllegato!)">Visualizza</button>
+          </div>
+
+          <div class="flex-container small-text" *ngFor="let row of allegatoDgrPropostaCR; let index = index">
+            <p class="delibere-p small-text">D.G.R proposta C.R.</p>
+            <label>numero: </label>
+            <b class="delibere-p">{{ row.intAllegatoNumero }}</b>
+            <label>Data atto:</label>
+            <b class="delibere-p">{{ row.intAllegatoData | date: 'dd/MM/yyyy'}}</b>
+            <label>Allegato:</label>
+            <button mat-stroked-button color="primary" (click)="downloadPdf(row.idAllegato!)">Visualizza</button>
+          </div>
+
+          <div class="flex-container small-text" *ngFor="let row of allegatoNullaOsta; let index = index">
+            <p class="delibere-p small-text">Allegato nulla osta</p>
+            <label>numero: </label>
+            <b class="delibere-p">{{ row.intAllegatoNumero }}</b>
+            <label>Data atto:</label>
+            <b class="delibere-p">{{ row.intAllegatoData | date: 'dd/MM/yyyy'}}</b>
+            <label>Allegato:</label>
+            <button mat-stroked-button color="primary" (click)="downloadPdf(row.idAllegato!)">Visualizza</button>
+          </div>
+
+          <!-- <div class="flex-container small-text" *ngFor="let row of allegatoProvvedimentoAziendaleApprovazione; let index = index">
+            <p class="delibere-p small-text">Allegato provve.to az.le approvazione</p>
+            <label>numero: </label>
+            <b class="delibere-p">{{ row.idAllegato }}</b>
+            <label>Data atto:</label>
+            <b class="delibere-p">{{ row.intAllegatoData | date: 'dd/MM/yyyy'}}</b>
+            <label>Allegato:</label>
+            <b class="delibere-p">{{ row.intAllegatoNumero}}</b>
+            <button mat-stroked-button color="primary" (click)="downloadPdf(row.idAllegato)">Visualizza</button>
+          </div> -->
+
+          <!-- <div class="flex-container small-text" *ngFor="let row of allegatoRelazioneTecnica; let index = index">
+            <p class="delibere-p small-text">Allegato relazione tecnica</p>
+            <label>numero: </label>
+            <b class="delibere-p">{{ row.idAllegato }}</b>
+            <label>Data atto:</label>
+            <b class="delibere-p">{{ row.intAllegatoData | date: 'dd/MM/yyyy'}}</b>
+            <label>Allegato:</label>
+            <b class="delibere-p">{{ row.intAllegatoNumero}}</b>
+            <button mat-stroked-button color="primary" (click)="downloadPdf(row.idAllegato)">Visualizza</button>
+          </div> -->
+        </mat-card-content>
+
+        <mat-card-content>
+            <ng-container *ngIf="allegatiDeterminazioniDirigenziali">
+              <div class="determinazioni-dirigenziali-div">
+                <p class="small-text"><b>Determinazioni Dirigenziali</b></p>
+              </div>
+              <table class="mat-table determinazioni-dirigenziali-table">
+                <tr class="mat-header-row">
+                  <th class="mat-header-cell">D.D.n.</th>
+                  <th class="mat-header-cell">Data</th>
+                  <th class="mat-header-cell">Allegato</th>
+                  <th class="mat-header-cell">Visualizza</th>
+                </tr>
+                <tr *ngFor="let row of allegatiDeterminazioniDirigenziali; let index = index">
+                  <td class="mat-cell">
+                    {{row.intAllegatoNumero}}
+                   
+                  </td>
+                  <td class="mat-cell">
+                    {{row.intAllegatoData | date: 'dd/MM/yyyy'}}
+                  </td>
+                  <td class="mat-cell">
+                    {{row.fileNameUser}}
+                  </td>
+                  <td class="mat-cell">
+                    <button mat-stroked-button color="primary" (click)="downloadPdf(row.idAllegato!)">Visualizza</button>
+                  </td>
+                </tr>
+              </table>
+            </ng-container>
+        </mat-card-content>
+    </mat-card>
+  </form>
+</ng-container>

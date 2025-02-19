@@ -1,0 +1,52 @@
+<ng-container *ngIf="!loading; else loadingTemplate">
+  <div style="margin-top: 100px; text-align: center;">
+    <mat-icon style="font-size: 200px; width: 200px; height: 200px;">check_circle</mat-icon>
+    <h1>Ben fatto!</h1>
+    <p>{{message}}</p>
+    <div class="search-container">
+      <div class="left-buttons">
+        <button mat-flat-button color="primary" *ngIf="selettore=='SALVATAGGIO' "
+          (click)="tornaAllaRicerca()">Indietro</button>
+        <button mat-flat-button color="primary" *ngIf="selettore=='EDIT-REGIONE' || selettore=='EDIT' "
+          (click)="tornaAllaRicerca()">Indietro</button>
+        <!-- modulo A -->
+        <button mat-flat-button color="primary" *ngIf="selettore=='INS-MOD_A' || selettore=='MOD-MOD_A' "
+          (click)="tornaAllaRicercaModulo()">Indietro</button>
+      </div>
+
+      <div class="right-button">
+        <button mat-flat-button color="primary" *ngIf="selettore=='SALVATAGGIO' || selettore=='EDIT' "
+          (click)="tornaModificaInterventoAsr()">Torna
+          all'intervento</button>
+
+        <button mat-flat-button color="primary" *ngIf="selettore=='EDIT-REGIONE'"
+          (click)="tornaModificaInterventoRegione()">Torna all'intervento</button>
+
+
+
+        <button mat-flat-button color="primary" (click)="stampaIntervento()"
+          *ngIf="selettore=='SALVATAGGIO' || selettore=='EDIT' || selettore=='EDIT-REGIONE'">
+          Scarica pdf
+        </button>
+        <!-- modulo A -->
+
+        <button mat-flat-button color="primary" *ngIf="(selettore=='INS-MOD_A' || selettore=='MOD-MOD_A')&& moduloTipoList "
+          (click)="tornaModificaModuloAAsr()">
+          Torna al modulo
+        </button>
+
+
+        <button mat-flat-button color="primary" (click)="stampaModulo()"
+          *ngIf="selettore=='INS-MOD_A' || selettore=='MOD-MOD_A' ">
+          Scarica pdf
+        </button>
+      </div>
+
+
+    </div>
+
+  </div>
+</ng-container>
+<ng-template #loadingTemplate>
+  <mat-spinner style="margin: 20px auto"></mat-spinner>
+</ng-template>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<springProperty scope="context" name="springAppName" source="spring.application.name"/>
+	<springProperty scope="context" name="springProfile" source="spring.profiles.active"/>
+	
+	<springProfile name="env-dev-int-01 | env-tst-int-01 | env-prod-int-01">
+		<appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+			<layout class="ch.qos.logback.classic.PatternLayout">
+				<Pattern> [${springProfile}] - [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%t] %c{1} - [${springAppName},%X{X-B3-TraceId:-}] %msg%n </Pattern>
+			</layout>
+		</appender>
+		<appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<file>${LOG_PATH}/${springAppName}.log</file>
+			<encoder
+				class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+				<Pattern> [${springProfile}] - [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%t] %c{1}.%M - [${springAppName},%X{X-B3-TraceId:-}] %msg%n </Pattern>
+			</encoder>
+	        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+				<fileNamePattern>${LOG_PATH}/%d{yyyy-MM,aux}/${springAppName}-%d{yyyy-MM-dd}.%i-zone1.log.gz</fileNamePattern>
+				<maxHistory>30</maxHistory>
+	            <maxFileSize>20MB</maxFileSize>
+			</rollingPolicy>
+		</appender>
+		<root level="info">
+			<appender-ref ref="Console" />
+			<appender-ref ref="RollingFile" />
+		</root>
+	</springProfile>
+
+	<springProfile name="env-dev">
+		<appender name="Console"
+			class="ch.qos.logback.core.ConsoleAppender">
+			<layout class="ch.qos.logback.classic.PatternLayout">
+				<Pattern> [${springProfile}] - [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%t] %c{1} - [${springAppName},%X{X-B3-TraceId:-}] %msg%n </Pattern>
+			</layout>
+		</appender>
+		<root level="info">
+			<appender-ref ref="Console" />
+		</root>
+	</springProfile>
+	
+	<springProfile name="env-test | env-stage | env-prod">	
+		<appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<file>${LOG_PATH}/${springAppName}.log</file>
+			<encoder
+				class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+				<Pattern> [${springProfile}] - [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%t] %c{1}.%M - [${springAppName},%X{X-B3-TraceId:-}] %msg%n </Pattern>
+			</encoder>
+	        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+				<fileNamePattern>${LOG_PATH}/%d{yyyy-MM,aux}/${springAppName}-%d{yyyy-MM-dd}.%i-zone1.log.gz</fileNamePattern>
+				<maxHistory>30</maxHistory>
+	            <maxFileSize>20MB</maxFileSize>
+			</rollingPolicy>
+		</appender>
+		<root level="info">
+			<appender-ref ref="RollingFile" />
+		</root>
+	</springProfile>
+
+</configuration>

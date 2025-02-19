@@ -1,0 +1,92 @@
+@use '@angular/material' as mat;
+@use '/src/pgmeas-palettes' as pgmeas;
+
+$pgmeasapp-primary: mat.define-palette(pgmeas.$primary-palette);
+
+.card-header{
+  margin: 0;
+  text-align: left;
+  font: normal normal bold 20px/24px Open Sans;
+  letter-spacing: 0;
+  color: #000000DE;
+}
+
+.small-text{
+  font-size: 14px;
+}
+
+mat-card {
+  background: #FFFFFF 0 0 no-repeat padding-box;
+  box-shadow: 1px 2px 8px #C4C4C4;
+  padding: 0 0 0 29px;
+  margin-bottom: 15px;
+}
+
+mat-accordion{
+  margin: 10px;
+}
+
+.expansion-panel-content-container{
+  width: 100%;
+  input{
+    font-size: 14px;
+  }
+  mat-form-field{
+    width: calc(100% / 3 - 40px);
+    input{
+      font-size: 14px;
+    }
+  }
+}
+
+mat-panel-title{
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 0;
+}
+
+/* Stile per la tabella */
+.mat-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Effetto di elevazione */
+  font-family: 'Arial', sans-serif;
+}
+
+/* Stile per la riga dell'intestazione */
+.mat-header-row {
+  font-weight: bold; /* Testo in grassetto */
+  font-size: 16px; /* Dimensione del font */
+  font: normal normal bold 16px / 20px Open Sans;
+}
+
+/* Stile per le celle dell'intestazione */
+.mat-header-cell {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd; /* Bordo solo sotto la cella */
+}
+
+/* Stile per le righe della tabella */
+.mat-row {
+  background-color: #fff; /* Colore di sfondo per le righe */
+  border-top: 1px solid #ddd; /* Bordo superiore per ogni riga */
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.flex-container label {
+  margin-right: 10px;
+}
+
+.flex-container p {
+  margin: 0;
+}
+
+.delibere-p {
+  margin-right: 2rem !important;
+}

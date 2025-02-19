@@ -1,0 +1,724 @@
+openapi: 3.0.1
+info:
+  title: PGMEAS_
+  description: Componente API PREADESIONIHCV del prodotto PADVAX
+  version: 1.0.0
+servers:
+  - url: /api/v1/
+tags:
+ - name: intervento 
+ - name: autenticato
+ - name: system
+paths:
+ /intervento:
+  post:
+    tags:
+    - intervento 
+    summary: Inserisce Intervento 
+    description: ''
+    parameters:
+      - name: Shib-Iride-IdentitaDigitale
+        in: header
+        required: true
+        schema:
+           type: string
+           example: AAAAAA00B77B000
+      - in: header
+        description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato
+                       dal front-end, viene propagato agli strati successivi e viene restituito
+                       al front-end assieme alla response, permettendo così di tracciare l'intero
+                        ciclo di vita della richiesta
+        name: X-Request-Id
+        required: true
+        schema:
+            type: string
+      - in: header 
+        name: X-Forwarded-For
+        required: true
+        schema:
+          type: string
+          x-example: 216.3.128.12
+      - name: lcceToken 
+        in: query
+        required: true
+        schema:
+          type: string
+          x-example: lcceToken
+    requestBody:
+      required: false
+      content:
+        application/json:
+          schema:
+             $ref: '#/components/schemas/InterventoResultDto'
+    responses:
+      '200':
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: string
+      '400':
+        description: BAD_REQUEST
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Errore'
+      '403':
+        description: FORBIDDEN
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Errore'
+      '500':
+        description: INTERNAL_SERVER_ERROR
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Errore'
+ /intervento/interventi:
+  get:
+    tags:
+      - intervento 
+    summary: Cerca un intervento tramite...
+    description: ''
+    parameters:
+      - name: Shib-Iride-IdentitaDigitale
+        in: header
+        required: true
+        schema:
+           type: string
+           example: AAAAAA00B77B000
+      - in: header
+        description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato
+                       dal front-end, viene propagato agli strati successivi e viene restituito
+                       al front-end assieme alla response, permettendo così di tracciare l'intero
+                        ciclo di vita della richiesta
+        name: X-Request-Id
+        required: true
+        schema:
+            type: string
+      - in: header 
+        name: X-Forwarded-For
+        required: true
+        schema:
+          type: string
+          x-example: 216.3.128.12
+      - name: lcceToken 
+        in: query
+        required: true
+        schema:
+          type: string
+          x-example: lcceToken
+      - name: triennio 
+        in: query
+        required: false
+        schema:
+          type: string
+          x-example: 2024-2026  
+      - name: anno 
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: codiceIntervento 
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: titoloIntervento 
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: cup 
+        in: query
+        required: false
+        schema:
+          type: string
+        
+            
+
+    responses:
+      '200':
+        description: SUCCESS
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InterventoResultDto'
+      '400':
+        description: BAD_REQUEST
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Errore'
+      '401':
+        description: UNAUTHORIZED
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Errore'
+      '403':
+        description: FORBIDDEN
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Errore'
+      '500':
+        description: INTERNAL_SERVER_ERROR
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Errore'
+ /status:
+    get:
+      operationId: statusGet
+      tags:
+        - system 
+      description: ping
+      parameters:
+      - in: header
+        description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato
+                     dal front-end, viene propagato agli strati successivi e viene restituito
+                     al front-end assieme alla response, permettendo così di tracciare l'intero
+                      ciclo di vita della richiesta
+        name: X-Request-Id
+        required: true
+        schema:
+          type: string
+      - in: header
+        description: Contiene una stringa identificativa del servizio chiamante (es.SANSOL)
+        name: X-Codice-Servizio
+        required: true
+        schema:
+          type: string
+      - in: header 
+        name: X-Forwarded-For
+        required: true
+        schema:
+          type: string
+        x-example: 216.3.128.12
+      - name: X-Applicazione-Codice
+        in: header
+        required: false
+        schema:
+           type: string
+        x-example: solpreadesionehcv
+      responses:
+        "200":
+          description: OK
+          content:
+            application/problem+json:
+              schema:
+                type: string
+        '500':
+          description: INTERNAL_SERVER_ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+ /autenticato/cittadiniadesioni:
+   get:
+      tags:
+        - autenticato
+      summary: Visualizza l'adesione effettuata
+      description: ''
+      parameters:
+        - name: Shib-Identita-CodiceFiscale
+          in: header
+          required: true
+          schema:
+            type: string
+            example: AAAAAA00B77B000
+        - in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato
+                     dal front-end, viene propagato agli strati successivi e viene restituito
+                     al front-end assieme alla response, permettendo così di tracciare l'intero
+                      ciclo di vita della richiesta
+          name: X-Request-Id
+          required: true
+          schema:
+            type: string
+        - in: header
+          description: Contiene una stringa identificativa del servizio chiamante (es.SANSOL)
+          name: X-Codice-Servizio
+          required: true
+          schema:
+           type: string  
+        - name: X-Forwarded-For
+          in: header
+          required: true
+          schema:
+            type: string
+            example: 216.3.128.12
+        - name: X-Applicazione-Codice
+          in: header
+          required: true
+          schema:
+             type: string
+          x-example: solpreadesionehcv
+        - name: User-Agent
+          in: header
+          required: false
+          schema:
+            type: string
+            example: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0. 2403.157 Safari/537.36.
+        - name: cfSoggetto
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdesioneList'
+        '400':
+          description: BAD_REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '401':
+          description: UNAUTHORIZED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '403':
+          description: FORBIDDEN
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '500':
+          description: INTERNAL_SERVER_ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+   post:
+      tags:
+        - autenticato 
+      summary: Inserisce preadesione hcv
+      description: ''
+      parameters:
+        - name: Shib-Identita-CodiceFiscale
+          in: header
+          required: true
+          schema:
+            type: string
+            example: AAAAAA00B77B000
+        - in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato
+                      dal front-end, viene propagato agli strati successivi e viene restituito
+                      al front-end assieme alla response, permettendo così di tracciare l'intero
+                        ciclo di vita della richiesta
+          name: X-Request-Id
+          required: true
+          schema:
+            type: string
+        - in: header
+          description: Contiene una stringa identificativa del servizio chiamante (es.SANSOL)
+          name: X-Codice-Servizio
+          required: true
+          schema:
+            type: string
+        - in: header 
+          name: X-Forwarded-For
+          required: true
+          schema:
+            type: string
+          x-example: 216.3.128.12
+        - name: X-Applicazione-Codice
+          in: header
+          required: false
+          schema:
+            type: string
+          x-example: solpreadesionehcv
+        - name: cfSoggetto
+          in: query
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InserisceAdesioneAuth'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: BAD_REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '403':
+          description: FORBIDDEN
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '500':
+          description: INTERNAL_SERVER_ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'  
+ /autenticato/soggetti:
+    get:
+      tags:
+        - autenticato 
+      summary: Cerca soggetto su aura tramite cfSoggetto
+      description: ''
+      parameters:
+        - name: Shib-Identita-CodiceFiscale
+          in: header
+          required: true
+          schema:
+            type: string
+            example: AAAAAA00B77B000
+        - in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato
+                       dal front-end, viene propagato agli strati successivi e viene restituito
+                       al front-end assieme alla response, permettendo così di tracciare l'intero
+                        ciclo di vita della richiesta
+          name: X-Request-Id
+          required: true
+          schema:
+            type: string
+        - in: header
+          description: Contiene una stringa identificativa del servizio chiamante (es.SANSOL)
+          name: X-Codice-Servizio
+          required: true
+          schema:
+            type: string
+        - in: header 
+          name: X-Forwarded-For
+          required: true
+          schema:
+            type: string
+          x-example: 216.3.128.12
+        - name: X-Applicazione-Codice
+          in: header
+          required: false
+          schema:
+             type: string
+          x-example: solpreadesionehcv
+        - name: cfSoggetto
+          in: query
+          required: false
+          schema:
+            type: string
+  
+      responses:
+        '200':
+          description: SUCCESS
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SoggettoAdesioneAuth'
+        '400':
+          description: BAD_REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '401':
+          description: UNAUTHORIZED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '403':
+          description: FORBIDDEN
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+        '500':
+          description: INTERNAL_SERVER_ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errore'
+components:
+  schemas:
+    Dettaglio:
+      type: object
+      properties:
+        chiave:
+          type: string
+        valore:
+          type: string
+    Errore:
+      type: object
+      properties:
+        status:
+          type: integer
+        code:
+          type: string
+        title:
+          type: string
+        detail:
+          type: array
+          items:
+           $ref: '#/components/schemas/Dettaglio'
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        messaggioCittadino:
+          type: string
+        errorMessage:
+          type: string
+        fields:
+          type: string
+          nullable: true
+    InserisceAdesione:
+      allOf:     
+        - $ref: '#/components/schemas/InserisceAdesioneAuth'
+        - type: object
+          required:
+            - rootCause
+      properties:
+        tesseraTeam:
+          type: string
+    Adesione:
+      type: object
+      properties:
+        adesioneCod:
+          type: string
+        cognome:
+          type: string
+        nome:
+          type: string
+        sesso:
+          type: string
+        dataNascita:
+            type: string
+            format: date
+        comuneNascita:
+            type: string
+        indirizzo:
+            type: string
+        provincia:
+          type: string
+        istatComune:
+          type: string  
+        comune:
+            type: string
+        cap:
+            type: string
+        codiceFiscale:
+          type: string
+        tesseraTeam:
+          type: string
+        telefono:
+          type: string
+        email:
+          type: string
+        dataAdesione:
+            type: string
+            format: date
+    AdesioneList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Adesione'
+    SoggettoAdesione:
+      allOf:     
+        - $ref: '#/components/schemas/SoggettoAdesioneAuth'
+        - type: object
+          required:
+            - rootCause
+      type: object
+      properties:
+        tesseraTeam:
+          type: string
+    SoggettoAdesioneAuth:
+        type: object
+        properties:
+          cognome:
+            type: string
+          nome:
+            type: string
+          sesso:
+            type: string
+          dataNascita:
+            type: string
+          comuneNascita:
+              type: string
+          indirizzo:
+              type: string
+          provincia:
+            type: string
+          istatComune:
+            type: string  
+          comune:
+              type: string
+          cap:
+              type: string
+          codiceFiscale:
+            type: string
+          telefono:
+            type: string
+          email:
+            type: string
+    InserisceAdesioneAuth:
+      type: object
+      properties:
+        codiceFiscale:
+          type: string
+        indirizzo:
+            type: string
+        provincia:
+          type: string
+        istatComune:
+          type: string      
+        comune:
+            type: string
+        cap:
+            type: string
+        telefono:
+          type: string
+        email:
+          type: string
+
+    InterventoResultDto:
+      type: object
+      properties:
+        intId:
+          type: integer
+          format: int64
+        intCod:
+          type: string
+        intTitolo:
+          type: string
+        intAnno:
+          type: integer
+          format: int64
+        intCup:
+          type: string
+        intImporto:
+          type: number
+          format: double
+        intCodicNsis:
+          type: string
+        intDgAziendaleApprovazione:
+          type: string
+        intDgAziendaleApprovazioneData:
+          type: string
+          format: date-time
+        intDgRegionaleApprovazione:
+          type: string
+        intDgRegionaleApprovazioneData:
+          type: string
+          format: date-time
+        intDirettoreGeneraleCognome:
+          type: string
+        intDirettoreGeneraleNome:
+          type: string
+        intCommissarioCognome:
+          type: string
+        intCommissarioNome:
+          type: string
+        intReferentePraticaCognome:
+          type: string
+        intReferentePraticaNome:
+          type: string
+        intReferentePraticaTelefono:
+          type: string
+        intReferentePraticaFax:
+          type: string
+        intReferentePraticaEmail:
+          type: string
+        intFormaRealizzativaId:
+          type: integer
+          format: int64
+        intStrTipoId:
+          type: integer
+          format: int64
+        intQuadranteId:
+          type: integer
+          format: int64
+        listaIntFinalitaId:
+          type: array
+          items:
+            type: integer
+            format: int64
+        listaIntObiettivoId:
+          type: array
+          items:
+            type: integer
+            format: int64
+        listaIntCategoriaId:
+          type: array
+          items:
+            type: integer
+            format: int64
+        listaIntStatoId:
+          type: array
+          items:
+            type: integer
+            format: int64
+        listaIntStatoProgettualeId:
+          type: array
+          items:
+            type: integer
+            format: int64
+        listaIntTipoId:
+          type: array
+          items:
+            type: integer
+            format: int64
+        listaIntAppaltoTipoId:
+          type: array
+          items:
+            type: integer
+            format: int64
+        listaIntContrattoId:
+          type: array
+          items:
+            type: integer
+            format: int64
+        listaIntStrutturaId:
+          type: array
+          items:
+            type: integer
+            format: int64
+        listaAllegatoMonitoraggioId:
+          type: array
+          items:
+            type: integer
+            format: int64
+        allegatoRichiestaAmmissioneFinanziamentoId:
+          type: integer
+          format: int64
+        dataCreazione:
+          type: string
+          format: date-time
+        dataModifica:
+          type: string
+          format: date-time
+        dataCancellazione:
+          type: string
+          format: date-time
+        utenteCreazione:
+          type: string
+        utenteModifica:
+          type: string
+        utenteCancellazione:
+          type: string
+        enteId:
+          type: integer
+          format: int64

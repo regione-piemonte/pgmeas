@@ -1,0 +1,259 @@
+@page {
+
+
+	@top-left {
+		content: element(header);
+	}
+
+	@bottom-left {
+		content: element(footer);
+	}
+	@bottom-right {
+		content: element(footerDate);
+	}
+
+	margin-top: 2.5cm;
+	margin-left: 2cm;
+	margin-right: 2cm;
+	margin-bottom: 2.5cm;
+
+	size: A4 portrait; 
+	/* size: A4 landscape; */
+
+}
+
+#header {
+   position: running(header);
+   text-align: left;
+   width: 100%;             
+   border-bottom: 1px solid black;  
+}
+.hp {
+  padding-bottom: 2px;
+  margin-bottom: 1px;
+  margin-top: 1px;
+}
+.htd {
+  width: 130px;
+}
+
+#footer {
+   position: running(footer);
+   text-align: left;
+   border-top: 1px solid black;  
+}
+
+#footerDate {
+   position: running(footerDate);
+   text-align: right;
+   border-top: 1px solid black;
+}
+    
+#pagenumber:before {
+   content: counter(page);
+}
+#pagecount:before {
+   content: counter(pages);
+}
+    
+/* div.prima.pagina {} */
+.successiva {
+	page-break-before: always;
+}
+
+body {
+	font-size: 9.0pt;
+	font-family: "Open Sans", sans-serif;
+	font-style: normal;
+}
+
+h1, h2, h3 {
+    font-family: "Open Sans", sans-serif; 
+    font-weight: bold;                    
+    font-style: normal;                   
+    margin: 0.5em 0;                      
+}
+
+/* Dimensioni specifiche per h1, h2, h3 */
+h1 {
+    font-size: 14pt; 
+}
+h2 {
+    font-size: 12pt; 
+}
+h3 {
+    font-size: 10pt; 
+}
+
+table {
+	-fs-table-paginate: paginate;
+	border-spacing: 0;
+}
+
+table {
+	display: table;
+	border-collapse: collapse;
+	box-sizing: border-box;
+	text-indent: initial;
+	unicode-bidi: isolate;
+	line-height: normal;
+	font-weight: normal;
+	/* font-size: medium; */
+	font-style: normal;
+	color: black;
+	text-align: start;
+	white-space: normal;
+	font-variant: normal;
+	width: 100%;
+}
+
+tbody {
+	display: table-row-group;
+	vertical-align: middle;
+	unicode-bidi: isolate;
+	border-color: inherit;
+}
+
+td {
+	display: table-cell;
+	vertical-align: inherit;
+	unicode-bidi: isolate;
+	white-space-collapse: collapse;
+
+}
+
+
+td.empty {
+	border-top-style: hidden;
+	border-bottom-style: hidden;
+}
+
+td.etichetta {
+	font-weight: bold;
+}
+
+th, td {
+	border: solid gray thin;
+	height: 1.0cm;
+	height: .8cm;
+	padding: 0cm 3.5pt 0cm 3.5pt;
+}
+
+
+table.vlabeled>tbody>tr>td,
+table.labeled>tbody>tr>td {
+	text-wrap: nowrap;
+}
+
+table.vlabeled>tbody>tr>td {
+	height: .6cm;
+}
+
+
+table.vlabeled>tbody>tr>td:first-child,
+table.labeled>thead>tr>td,
+table.labeled>tfoot>tr>td {
+	background: #FFFFD7;
+	text-wrap: pretty;
+	overflow-wrap: break-word;
+	font-weight: bold;
+}
+
+table.vlabeled>tbody>tr>td[rowspan] {
+	background: #CCFFCC;
+}
+
+table.vlabeled>tbody>tr>td[rowspan]+td {
+	background: #FFFFD7;
+	font-weight: bold;
+}
+
+.col1 {
+	width: 20%;
+}
+
+.col2 {
+	width: 20%;
+}
+
+.col3 {
+	width: 20%;
+}
+
+.col4 {
+	width: 20%;
+}
+
+.col5 {
+	width: 20%;
+}
+
+.importo {
+	text-align: right
+}
+
+.colonnaImporto {
+	text-align: right; 
+	white-space: nowrap;
+}
+
+.totale {
+	font-weight: bold;
+}
+
+.livello_1 {
+	margin-left: 20px;
+}
+
+.livello_2 {
+	margin-left: 40px;
+}
+
+.livello_3 {
+	margin-left: 60px;
+}
+
+
+/* Stile per una tabella senza bordi */
+table.noborder {
+    border-collapse: collapse;
+    border: none;
+    width: 100%; /* Optional: per estendere la tabella al 100% del contenitore */
+}
+
+table.noborder th,
+table.noborder td,
+table.noborder tr {
+    border: none;
+    padding: 8px; /* Optional: per aggiungere un po' di spazio dentro le celle */
+}
+
+table.noborder th {
+    background-color: #f5f5f5; /* Optional: leggero sfondo per distinguere le intestazioni */
+}
+
+table.noborder td {
+    background-color: #fff; /* Optional: colore di sfondo per le celle */
+}
+
+
+/****/
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .container div {
+        display: flex;
+        align-items: center;
+        padding: 4px 0; /* Spaziatura verticale tra i campi */
+    }
+	
+    label {
+        min-width: 220px; /* Imposta una larghezza minima per le etichette */
+        font-weight: bold;
+    }
+
+    span {
+        flex: 1; /* Fa sì che il contenuto prenda tutto lo spazio disponibile */
+    }

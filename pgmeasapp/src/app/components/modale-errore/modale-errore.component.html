@@ -1,0 +1,22 @@
+<ng-container>
+<div class="margin-div">
+    <div class="header">
+      <h1>{{data.title}}</h1>
+      <button class="margin-button" (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+    <ng-container>
+      <div class="margin-error">
+        <div class="div-error small-text error-text" [innerHTML] = "data.message">
+        </div>
+      </div>
+    </ng-container>
+
+  <div class="buttons" mat-dialog-actions>
+    <p (click)="onNoClick()" class="annulla-button">Annulla</p>
+    <button [mat-dialog-close]="data" [routerLink]="['/', 'home']" class="aggiungi-button" color="primary"
+      mat-raised-button>Torna alla homepage</button>
+  </div>
+</ng-container>

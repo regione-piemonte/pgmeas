@@ -1,0 +1,15 @@
+<app-header [showMenuButton]="isAuth" (toggleMenu)="toggleMenu()"></app-header>
+
+<mat-sidenav-container class="mcontainer">
+
+  <mat-sidenav class="msidebar" *ngIf="isAuth" #sidenav mode="side" opened>
+    <app-menu [class.sticky-menu]="isStickyMenu"></app-menu>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="mcontent"  [ngClass]="{'mcontent-overflow': isStrollable}">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
+
+<app-footer class="over-footer"></app-footer>

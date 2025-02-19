@@ -1,0 +1,5 @@
+"LANGUAGE","NAME","VERSION","LICENSES","COPYRIGHTS","URL"
+"nodejs","@angular/common","^16.2.0","MIT","Copyright (c) 2010-2025 Google LLC. https://angular.dev/license","https://www.npmjs.com/package/%40angular%2Fcommon"
+"nodejs","@angular/core","^16.2.0","MIT","Copyright (c) 2010-2025 Google LLC. https://angular.dev/license","https://www.npmjs.com/package/%40angular%2Fcore"
+"nodejs","pgmeas-library","file:","","",""
+"nodejs","tslib","2.7.0","0BSD","Copyright (c) Microsoft Corporation.","https://www.npmjs.com/package/tslib"

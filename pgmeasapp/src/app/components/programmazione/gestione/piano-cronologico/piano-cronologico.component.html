@@ -1,0 +1,38 @@
+<form [formGroup]="pianoCronologicoForm">
+  <mat-card>
+    <mat-card-header>
+      <p class="card-header">Piano cronologico di attivazione dell'intervento (In giorni naturali consecutivi)</p>
+    </mat-card-header>
+    <mat-card-content>
+      <div formArrayName="interventi">
+        <ng-container >
+              <p class="small-text">La durata stimata dell'intervento deve essere comprensiva di tutte le procedure
+                    amministrative propedeutiche all'approvazione di ogni singola
+                    fase</p>
+              <div class="flex-container small-text">
+                <mat-card-content>
+                  <label>PROGETTAZIONE: </label>
+                  <b class="delibere-p">{{ intervento.progettazioneGg}}</b>
+                  <label>AFFIDAMENTO LAVORI:</label>
+                  <b class="delibere-p">{{ intervento.affidamentoLavoriGg }}</b>
+                  <label>ESECUZIONE LAVORI:</label>
+                  <b class="delibere-p">{{ intervento.esecuzioneLavoriGg}}</b>
+                  <label>COLLAUDO:</label>
+                  <b class="delibere-p">{{ intervento.collaudoGg}}</b>
+                  <br><br>
+                  <div class="appalto-integrato-div">
+                    <p class="appalto-integrato-p small-text">APPALTO INTEGRATO</p>
+                    <mat-slide-toggle [checked]="intervento.appaltoIntegrato" [disabled]="true"></mat-slide-toggle>
+                  </div>
+                  <br>
+                  <p class="small-text">
+                    Totale durata stimata dell'intervento:
+                    <b>{{ totaleDurataIntervento }}</b>
+                  </p>
+                </mat-card-content>
+              </div>
+        </ng-container>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</form>

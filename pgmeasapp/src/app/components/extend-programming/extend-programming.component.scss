@@ -1,0 +1,92 @@
+.small-text {
+  font-size: 14px;
+}
+
+.flex-div {
+  display: flex;
+  align-items: center;
+}
+
+.flex-div p {
+  margin-right: 0.5rem;
+}
+
+.date-div {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.conferma-button {
+  background: #005CA9 0 0 no-repeat padding-box !important;
+}
+
+table{
+  th{
+    font-size: 12px;
+  }
+}
+
+/* Stile per la tabella */
+.mat-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Effetto di elevazione */
+  font-family: 'Arial', sans-serif;
+}
+
+/* Stile per la riga dell'intestazione */
+.mat-header-row {
+  font-weight: bold; /* Testo in grassetto */
+  font-size: 16px; /* Dimensione del font */
+  font: normal normal bold 16px / 20px Open Sans;
+}
+
+/* Stile per le celle dell'intestazione */
+.mat-header-cell {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd; /* Bordo solo sotto la cella */
+}
+
+/* Stile per le righe della tabella */
+.mat-row {
+  background-color: #fff; /* Colore di sfondo per le righe */
+  border-top: 1px solid #ddd; /* Bordo superiore per ogni riga */
+}
+
+/* Stile per le celle */
+.mat-cell {
+  padding: 12px 15px;
+  color: #333; /* Colore del testo per le celle */
+  font-size: 14px; /* Dimensione del font */
+  border-bottom: 1px solid #ddd; /* Bordo solo sotto la cella */
+}
+
+/* Allineamento a destra per colonne numeriche */
+.mat-cell input[type="number"] {
+  text-align: right; /* Allineamento a destra per numeri */
+}
+
+/* Allineamento a centro per i campi di input */
+.mat-cell input[disabled] {
+  text-align: center; /* Allineamento a centro per il campo "annoPrevisione" */
+}
+
+.truncate-text {
+  white-space: nowrap;         /* Impedisce che il testo vada a capo */
+  overflow: hidden;            /* Nasconde il testo che esce dal contenitore */
+  text-overflow: ellipsis;     /* Aggiunge i puntini di sospensione quando il testo è troncato */
+  max-width: 200px;            /* Imposta una larghezza massima per la cella, personalizzabile */
+}
+
+/* Stile opzionale per il tooltip */
+::ng-deep .mat-tooltip {
+  white-space: pre-line; /* Consente il wrapping del testo nel tooltip */
+}
+
+.paginator {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+}

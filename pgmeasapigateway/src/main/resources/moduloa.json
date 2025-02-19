@@ -1,0 +1,162 @@
+{
+	"intestazioneEnteAtt": {
+		"nomeEnte": "ENTE ATTUATORE UNO",
+		"dipartimento": "Dipartimento Attuatore Uno",
+		"indirizzo": {
+			"via": "Via dell'Attuatore UNO, 11",
+			"citta": "NOVARA",
+			"cap": "28100"
+		}
+	},
+	"documento": {
+		"numProtocollo": "PP-100-2024",
+		"numProtocolloData": "2024-12-15"
+	},
+	"destinatario": {
+		"nomeEnte": "DESTINATARIO AA",
+		"dipartimento": "Dipartimento Destinatario AA",
+		"indirizzo": {
+			"via": "C.so Regina Margherita, 153/bis",
+			"citta": "TORINO",
+			"cap": "10122"
+		}
+	},
+	"inCopia": [
+		{
+			"nomeEnte": "COPIA CONFORME CC",
+			"dipartimento": "Dipartimento Copia Conforme CC",
+			"indirizzo": {
+				"via": "P.zza P. Micca, 800/M",
+				"citta": "TORINO",
+				"cap": "10100"
+			}
+		}
+	],
+	"fontiFin": [
+		"FONTE DI FINANZIAMENTO 1 ex D.Lgs. 45/2",
+		"FONTE DI FINANZIAMENTO 2 ex D.Lgs.Reg. 10234"
+	],
+	"enteAttuatore": "ENTE ATTUATORE COME INDIVIDUATA IN PROVVEDIMENTO REG./STATALE",
+	"titoloIntervento": "TITOLO INTERVENTO COME INDIVIDUATO NEL PROVVEDIMENTO",
+	"intCode": "COD. INTERVENTO 001",
+	"cupCode": "CODICE CUP (se disponibile)",
+	"location": "Comune presso il quale è prevista la realizzazione dell’intervento",
+	"importoComplessivo": 100000000.0,
+	"pianoFinanziario": {
+		"vociPianoFinanziario": [
+			{
+				"tipo": "VOCE DEL PIANO FINANZIARIO AA",
+				"atto": "D.G.R. 10010 del 10/15/2022",
+				"importo": 100000.0
+			},
+			{
+				"tipo": "VOCE DEL PIANO FINANZIARIO AA",
+				"atto": "D.G.R. 10010 del 10/15/2022",
+				"importo": 100000.0
+			},
+			{
+				"tipo": "VOCE DEL PIANO FINANZIARIO AA",
+				"atto": "D.G.R. 10010 del 10/15/2022",
+				"importo": 100000.0
+			}
+		],
+		"altriFinanziamenti": [
+			{
+				"tipo": "VOCE DEL PIANO FINANZIARIO AA",
+				"atto": "D.G.R. 10010 del 10/15/2022",
+				"importo": 100000.0
+			},
+			{
+				"tipo": "VOCE DEL PIANO FINANZIARIO AA",
+				"atto": "D.G.R. 10010 del 10/15/2022",
+				"importo": 100000.0
+			}
+		]
+	},
+	"quadroEconomico": {
+		"voci": [
+			{
+				"tipo": "QUADRO ECONOMICO VOCE 1",
+				"importo": 25000.0
+			},
+			{
+				"tipo": "QUADRO ECONOMICO VOCE 2",
+				"importo": 25000.0
+			},
+			{
+				"tipo": "QUADRO ECONOMICO VOCE 3",
+				"importo": 25000.0
+			}
+		]
+	},
+	"numGiorniProgEsecutivo": 100,
+	"numGiorniLavori": 1000,
+	"approvazione": {
+		"data": "2024-02-12",
+		"atto": "D.G.R. 123456",
+		"stato": [
+			{
+				"voce": "DOCFAP",
+				"flag": "true"
+			},
+			{
+				"voce": "DIP",
+				"flag": "false"
+			},
+			{
+				"voce": "PFTE",
+				"flag": "false"
+			},
+			{
+				"voce": "Progetto esecutivo",
+				"flag": "false"
+			},
+			{
+				"voce": "Capitolato prestazionale forniture",
+				"flag": "true"
+			}
+		]
+	},
+	"dichiarazioneAppaltabilita": [
+		{
+			"voce": "il progetto è completo di tutti gli elaborati tecnici, degli elementi e particolari costruttivi necessari per l’esecuzione dell’opera compresi autorizzazioni, pareri e nulla-osta, ed è immediatamente cantierabile ai sensi della normativa vigente statale e regionale in materia di lavori, servizi e forniture pubbliche;",
+			"flag": "true"
+		},
+		{
+			"voce": "che il progetto è redatto nel rispetto delle normative vigenti in materia: statale e regionale di lavori, servizi e forniture pubbliche, di requisiti strutturali, tecnologici ed organizzativi, di cui al DPR 14/01/1997 recepito dalla Regione Piemonte con D.C.R. n° 616 del 22/02/2000 e s.m.i.;",
+			"flag": "true"
+		},
+		{
+			"voce": "che il progetto è conforme alla scheda di prefattibilità presente nell’applicativo informatico regionale di programmazione, gestione e monitoraggio degli investimenti in sanità;",
+			"flag": "true"
+		},
+		{
+			"voce": "che il costo dell’intervento è congruo ed è dotato della copertura finanziaria come risulta dal provvedimento aziendale di approvazione del progetto;",
+			"flag": "true"
+		},
+		{
+			"voce": " che l’intervento previsto risulta essere funzionale e funzionante e comprende gli eventuali arredi e/o attrezzature sanitarie.",
+			"flag": "false"
+		},
+		{
+			"voce": "In ordine alle acquisizioni di arredi e di attrezzature sanitarie si dichiara che:",
+			"flag": ""
+		},
+		{
+			"voce": "La fornitura avviene sulla base di specifico capitolato/scheda prestazionale corredato di della/e apparecchiature, da un elenco sintetico dei costi presunti, da una descrizione delle eventuali opere edili ed impiantistiche di adeguamento necessarie per l’installazione, così come specificato nelle 'Schede di prefattibilità",
+			"flag": "true"
+		}
+	],
+	"responsabili": {
+		"respProcedimentoNome": "Guido Pancaldi",
+		"respProcedimentoRuolo": "Direttore Sez.5 Dipartimento 9",
+		"gmName": "Gennaro Ulivieri",
+		"gmRole": "Direttore Generale"
+	},
+	"rifPratica": {
+		"rifPraticaNome": "Mario Rossi",
+		"rifPraticaTel": "6549876541",
+		"rifPraticaFax": "6543216547",
+		"rifPraticaEmail": "mario.rossi@domain.com"
+	}
+}

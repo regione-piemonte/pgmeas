@@ -1,0 +1,122 @@
+@page {
+
+    @bottom-left {
+        content: element(footer);
+        vertical-align: top;
+        padding-top: 10px;
+    }
+
+    @top-right {
+        content: element(header);
+        vertical-align: bottom;
+        padding-bottom: 10px;
+    }
+
+    margin-top: 2.5cm;
+    margin-left: 2cm;
+    margin-right: 2cm;
+    margin-bottom: 2.5cm;
+
+    /* size: A4 portrait; */
+    size: A4 landscape;
+    
+}
+
+/* div.prima.pagina {} */
+.successiva { 
+	page-break-before: always; 	
+}
+
+body {
+    font-size: 9.0pt;
+    font-family: "Open Sans", sans-serif;
+    font-style: normal;
+}
+
+table {
+    -fs-table-paginate: paginate;
+    border-spacing: 0;
+}
+
+table {
+    display: table;
+	border-collapse: collapse;
+    box-sizing: border-box;
+    text-indent: initial;
+    unicode-bidi: isolate;
+    line-height: normal;
+    font-weight: normal;
+    /* font-size: medium; */
+    font-style: normal;
+    color: black;
+    text-align: start;
+    white-space: normal;
+    font-variant: normal;
+	width: 100%;
+}
+
+tbody {
+    display: table-row-group;
+    vertical-align: middle;
+    unicode-bidi: isolate;
+    border-color: inherit;
+}
+
+td {
+    display: table-cell;
+    vertical-align: inherit;
+    unicode-bidi: isolate;
+    white-space-collapse: collapse;
+    
+}
+
+
+td.empty {
+   border-top-style: hidden;
+   border-bottom-style: hidden;
+}
+
+td.etichetta {
+  font-weight: bold;
+}
+	
+td {
+    border: solid gray thin;
+	height: 1.0cm;
+	height: .8cm;
+	padding: 0cm 3.5pt 0cm 3.5pt;
+}
+
+
+table.vlabeled > tbody > tr > td,
+table.labeled > tbody > tr > td {
+text-wrap: nowrap;
+}
+
+table.vlabeled > tbody > tr > td {
+	height: .6cm;
+}
+
+
+table.vlabeled > tbody > tr > td:first-child,
+table.labeled > thead > tr > td,
+table.labeled > tfoot > tr > td {
+    background: #FFFFD7;
+	text-wrap: pretty;
+	overflow-wrap: break-word;
+	font-weight: bold;
+}
+
+table.vlabeled > tbody > tr > td[rowspan] {
+    background: #CCFFCC; 
+}
+
+table.vlabeled > tbody > tr > td[rowspan] + td {
+    background: #FFFFD7; 
+	font-weight: bold;
+}
+
+
+.importo {
+	text-align: right
+}

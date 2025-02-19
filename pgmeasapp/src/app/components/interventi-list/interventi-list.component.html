@@ -1,0 +1,441 @@
+<h1 class="pgmeas-primary-text">Consultazione interventi</h1>
+<!--INIZIO FORM DI RICERCA-->
+<mat-accordion *ngIf="!loading; else searchLoadingTemplate">
+  <mat-expansion-panel expanded style="max-width: 800px;">
+    <mat-expansion-panel-header>
+      <h2><mat-icon>search</mat-icon> Criteri di ricerca</h2>
+    </mat-expansion-panel-header>
+    <form [formGroup]="searchForm" (ngSubmit)="submit()">
+      <h4>Riferimenti temporali</h4>
+      <mat-form-field style="width: calc(50% - 10px);">
+        <mat-label>Anno di inserimento intervento</mat-label>
+        <mat-select formControlName="anno">
+          <mat-option *ngFor="let interventoAnno of interventoAnnoList | sort" [value]="interventoAnno"
+            [disabled]="isProgrammazioneInterventi()">
+            {{interventoAnno}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="searchForm.get('anno')!.invalid">Campo obbligatorio</mat-error>
+      </mat-form-field>
+      <h4>Principali riferimenti dell'intervento</h4>
+      <div style="display: grid; grid-template-columns: auto auto; gap: 20px;">
+        <mat-form-field>
+          <mat-label>Titolo Intevento</mat-label>
+          <input matInput formControlName="titolo">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>CUP</mat-label>
+          <input matInput formControlName="cup" [maxLength]="15">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Codice PGMEAS intervento</mat-label>
+          <input matInput formControlName="codicePgmeas">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Obiettivo intervento</mat-label>
+          <mat-select #interventoObiettivo formControlName="interventoObiettivo" multiple
+            (openedChange)="renderSelectAll(interventoObiettivo, $event)">
+            <mat-option value="*" (click)="selectAll(interventoObiettivo)">Seleziona tutto</mat-option>
+            <mat-option *ngFor="let interventoObiettivo of interventoObiettivoList | sort:'intObiettivoDesc'"
+              [value]="interventoObiettivo.intObiettivoId">
+              {{interventoObiettivo.intObiettivoDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Finalità intervento</mat-label>
+          <mat-select #interventoFinalita formControlName="interventoFinalita" multiple
+            (openedChange)="renderSelectAll(interventoFinalita, $event)">
+            <mat-option value="*" (click)="selectAll(interventoFinalita)">Seleziona tutto</mat-option>
+            <mat-option *ngFor="let interventoFinalita of interventoFinalitaList | sort:'intfinalitaDesc'"
+              [value]="interventoFinalita.intFinalitaId">
+              {{interventoFinalita.intfinalitaDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Categoria intervento</mat-label>
+          <mat-select #interventoCategoria formControlName="interventoCategoria" multiple
+            (openedChange)="renderSelectAll(interventoCategoria, $event)">
+            <mat-option value="*" (click)="selectAll(interventoCategoria)">Seleziona tutto</mat-option>
+            <mat-option *ngFor="let interventoCategoria of interventoCategoriaList | sort:'intCategoriaDesc'"
+              [value]="interventoCategoria.intCategoriaId">
+              {{interventoCategoria.intCategoriaDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Stato intervento</mat-label>
+          <mat-select #interventoStato formControlName="interventoStato" multiple
+            (openedChange)="renderSelectAll(interventoStato, $event)">
+            <mat-option value="*" (click)="selectAll(interventoStato)">Seleziona tutto</mat-option>
+            <mat-option *ngFor="let interventoStato of interventoStatoList | sort:'intStatoDesc'"
+              [value]="interventoStato.intStatoId">
+              {{interventoStato.intStatoDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Stato progettuale</mat-label>
+          <mat-select #interventoStatoProgettuale formControlName="interventoStatoProgettuale" multiple
+            (openedChange)="renderSelectAll(interventoStatoProgettuale, $event)">
+            <mat-option value="*" (click)="selectAll(interventoStatoProgettuale)">Seleziona tutto</mat-option>
+            <mat-option
+              *ngFor="let interventoStatoProgettuale of interventoStatoProgettualeList | sort:'intStatoProgDesc'"
+              [value]="interventoStatoProgettuale.intStatoProgId">
+              {{interventoStatoProgettuale.intStatoProgDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <h4>Ambito e tipologia</h4><!-- TODO: solo "Tipologia"? -->
+      <div style="display: grid; grid-template-columns: auto auto; gap: 20px;">
+        <!-- <mat-form-field>
+          <mat-label>Tipologia struttura</mat-label>
+          <mat-select #strutturaTipo formControlName="strutturaTipo" multiple (openedChange)="renderSelectAll(strutturaTipo, $event)">
+            <mat-option value="*" (click)="selectAll(strutturaTipo)">Seleziona tutto</mat-option>
+            <mat-option *ngFor="let strutturaTipo of strutturaTipoList | sort:'strutturaTipoDesc'" [value]="strutturaTipo.strutturaTipoId">
+              {{strutturaTipo.strutturaTipoDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field> -->
+        <mat-form-field>
+          <mat-label>Tipologia intervento</mat-label>
+          <mat-select #interventoTipo formControlName="interventoTipo" multiple
+            (openedChange)="renderSelectAll(interventoTipo, $event)">
+            <mat-option value="*" (click)="selectAll(interventoTipo)">Seleziona tutto</mat-option>
+            <mat-option *ngFor="let interventoTipo of interventoTipoList | sort:'intTipoDesc'"
+              [value]="interventoTipo.intTipoId">
+              {{interventoTipo.intTipoDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Tipologia appalto</mat-label>
+          <mat-select #interventoAppaltoTipo formControlName="interventoAppaltoTipo" multiple
+            (openedChange)="renderSelectAll(interventoAppaltoTipo, $event)">
+            <mat-option value="*" (click)="selectAll(interventoAppaltoTipo)">Seleziona tutto</mat-option>
+            <mat-option *ngFor="let interventoAppaltoTipo of interventoAppaltoTipoList | sort:'intAppaltoTipoDesc'"
+              [value]="interventoAppaltoTipo.intAppaltoTipoId">
+              {{interventoAppaltoTipo.intAppaltoTipoDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Tipologia contrattuale</mat-label>
+          <mat-select #interventoContrattoTipo formControlName="interventoContrattoTipo" multiple
+            (openedChange)="renderSelectAll(interventoContrattoTipo, $event)">
+            <mat-option value="*" (click)="selectAll(interventoContrattoTipo)">Seleziona tutto</mat-option>
+            <mat-option
+              *ngFor="let interventoContrattoTipo of interventoContrattoTipoList | sort:'intContrattoTipoDesc'"
+              [value]="interventoContrattoTipo.intContrattoTipoId">
+              {{interventoContrattoTipo.intContrattoTipoDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <h4>Localizzazione</h4>
+      <mat-form-field style="width: 100%;">
+        <mat-label>Aziende</mat-label>
+        <mat-select #ente formControlName="ente" multiple (openedChange)="renderSelectAll(ente, $event)">
+          <mat-option value="*" (click)="selectAll(ente)">Seleziona tutto</mat-option>
+          <mat-option *ngFor="let ente of enteList | sort:'enteDesc'" [value]="ente.enteId">
+            {{ente.enteDesc}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field style="width: 100%;">
+        <mat-label>Strutture</mat-label>
+        <mat-select #struttura formControlName="struttura" multiple (openedChange)="renderSelectAll(struttura, $event)">
+          <mat-option value="*" (click)="selectAll(struttura)">Seleziona tutto</mat-option>
+          <mat-option *ngFor="let struttura of getStrutturaListByEnte() | sort:'strDenominazione'"
+            [value]="struttura.strId">
+            {{ struttura.strDenominazione }} ({{struttura.strCod}})
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <h4>Riferimenti economici e finanziari</h4>
+      <mat-slide-toggle *ngIf="!isRicercaStoricoInterventi()" formControlName="soloInterventiFinanziati"
+        style="margin-bottom: 20px;">Solo interventi finanziati</mat-slide-toggle>
+      <div style="display: grid; grid-template-columns: auto auto; gap: 20px;">
+        <mat-form-field>
+          <mat-label>Tipologia di finanziamento</mat-label>
+          <mat-select #finanziamentoTipo formControlName="finanziamentoTipo" multiple
+            (openedChange)="renderSelectAll(finanziamentoTipo, $event)">
+            <mat-option value="*" (click)="selectAll(finanziamentoTipo)">Seleziona tutto</mat-option>
+            <mat-option *ngFor="let finanziamentoTipo of finanziamentoTipoList | sort:'finTipoDesc'"
+              [value]="finanziamentoTipo.finTipoId">
+              {{finanziamentoTipo.finTipoDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Dettaglio tipologia di finanziamento</mat-label>
+          <mat-select #finanziamentoTipoDet formControlName="finanziamentoTipoDet" multiple
+            (openedChange)="renderSelectAll(finanziamentoTipoDet, $event)">
+            <mat-option value="*" (click)="selectAll(finanziamentoTipoDet)">Seleziona tutto</mat-option>
+            <mat-option *ngFor="let finanziamentoTipoDet of getFinanziamentoTipoDetListByTipo() | sort:'finTipoDetDesc'"
+              [value]="finanziamentoTipoDet.finTipoDetId">
+              {{finanziamentoTipoDet.finTipoDetDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <button mat-flat-button color="primary" style="margin-right: 10px;">Cerca</button>
+      <button mat-flat-button (click)="reset()" type="button">Pulisci filtri</button>
+    </form>
+  </mat-expansion-panel>
+</mat-accordion>
+<!--FINE FORM DI RICERCA-->
+
+<!--INIZIO VISUALIZZAZIONE LISTA-->
+<!-- <ng-container *ngIf="tableLoading === 'SHOWN'; else tableLoadingTemplate"> -->
+  <div [hidden]="tableLoading !== 'SHOWN'">
+  <h3>Elenco interventi anno {{searchForm.value.anno}}</h3>
+  <mat-chip-set>
+    <mat-chip *ngFor="let filter of searchFilters">
+      {{filter.label}}: <b [matTooltip]="filter.tooltip">{{filter.shownValues}}</b>
+      <button *ngIf="isFilterClearable(filter)" matChipRemove (mouseup)="clearFilter(filter)">
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-chip>
+  </mat-chip-set>
+  <p><b>{{total}}</b> {{total > 1 ? 'risultati trovati' : 'risultato trovato'}}</p>
+  <div class="example-container mat-elevation-z2">
+    <div class="example-table-container">
+      <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+        <!--INIZIO INTESTAZIONI E VALORI-->
+        <ng-container matColumnDef="localizzazione-header">
+          <th mat-header-cell *matHeaderCellDef><b>Localizzazione</b></th>
+        </ng-container>
+        <ng-container matColumnDef="elementi-header">
+          <th mat-header-cell *matHeaderCellDef colspan="4"><b>Principali elementi dell'intervento</b></th>
+        </ng-container>
+        <ng-container matColumnDef="riferimenti-header">
+          <th mat-header-cell *matHeaderCellDef colspan="4"><b>Riferimenti economici e finanziari</b></th>
+        </ng-container>
+        <ng-container matColumnDef="azienda">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Azienda</th>
+          <td mat-cell *matCellDef="let row">{{row.azienda}}</td>
+        </ng-container>
+        <ng-container matColumnDef="intCup">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>CUP</th>
+          <td mat-cell *matCellDef="let row">{{row.intCup}}</td>
+        </ng-container>
+        <ng-container matColumnDef="intCod">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Codice PGMEAS</th>
+          <td mat-cell *matCellDef="let row">{{row.intCod}}</td>
+        </ng-container>
+        <ng-container matColumnDef="intTitolo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Titolo</th>
+          <td mat-cell *matCellDef="let row">{{row.intTitolo}}</td>
+        </ng-container>
+        <ng-container matColumnDef="statoIntervento">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Stato</th>
+          <td mat-cell *matCellDef="let row">{{row.statoIntervento}}</td>
+        </ng-container>
+        <ng-container matColumnDef="intImporto">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Importo complessivo (€)</th>
+          <td mat-cell *matCellDef="let row" style="text-align: right;">{{row.intImporto | number:'1.2-2'}}
+          </td>
+        </ng-container>
+        <!-- <ng-container matColumnDef="finanziamentiRegionali">
+          <th mat-header-cell *matHeaderCellDef>Fin. Regionali disponibili (€)</th>
+          <td mat-cell *matCellDef="let row" style="text-align: right;">{{row.finanziamentiRegionali | number:'1.2-2'}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="finanziamentiStatali">
+          <th mat-header-cell *matHeaderCellDef>Fin. Statali disponibili (€)</th>
+          <td mat-cell *matCellDef="let row" style="text-align: right;">{{row.finanziamentiStatali | number:'1.2-2'}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="altriFinanziamenti">
+          <th mat-header-cell *matHeaderCellDef>Altri fin. disponibili (€)</th>
+          <td mat-cell *matCellDef="let row" style="text-align: right;">{{row.altriFinanziamenti | number:'1.2-2'}}</td>
+        </ng-container> -->
+        <!--FINE INTESTAZIONI E VALORI-->
+        <ng-container matColumnDef="actions" stickyEnd>
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row" [ngSwitch]="path">
+            <!-- INIZIO verde -->
+
+            <!--INIZIO OCCHIO todo-->
+            <ng-container *ngIf="!checkButtonVisualizzaApprovato(row.allegatoRichiestaAmmissioneFinanziamentoStatoId)">
+              <button *ngSwitchCase="'consulta-richiesta-ammissione-finanziamento'" mat-icon-button color="primary"
+                matTooltip="Visualizza ammissione finanziamento"
+                [disabled]="!row.allegatoRichiestaAmmissioneFinanziamentoId"
+                [routerLink]="['/', 'richiesta-ammissione-finanziamento', row.intId, row.allegatoRichiestaAmmissioneFinanziamentoId, 'view']">
+                <mat-icon>visibility</mat-icon>
+              </button>
+            </ng-container>
+            <ng-container *ngIf="checkButtonVisualizzaApprovato(row.allegatoRichiestaAmmissioneFinanziamentoStatoId)">
+              <button *ngSwitchCase="'consulta-richiesta-ammissione-finanziamento'" mat-icon-button color="primary"
+                matTooltip="Visualizza ammissione finanziamento approvato"
+                [disabled]="!row.allegatoRichiestaAmmissioneFinanziamentoId"
+                [routerLink]="['/', 'richiesta-ammissione-finanziamento-approvato', row.intId, row.allegatoRichiestaAmmissioneFinanziamentoId, 'view']">
+                <mat-icon>visibility</mat-icon>
+              </button>
+            </ng-container>
+            <!--FINE OCCHIO-->
+            <div *ngIf="checkMoreBottoniPresenti(menuA)">
+              <button *ngSwitchCase="'consulta-richiesta-ammissione-finanziamento'" mat-icon-button color="primary"
+                matTooltip="Altro" [matMenuTriggerFor]="menuA" >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+            </div>
+            <mat-menu #menuA="matMenu">
+
+              <ng-container *ngIf="checkSuperUser() && checkButtonModificaModuloAReg(row.allegatoRichiestaAmmissioneFinanziamentoStatoId)">
+                <button *ngxPermissionsOnly="'OP-ModModA'"
+                    mat-menu-item
+                    [routerLink]="['/', 'richiesta-ammissione-finanziamento', row.intId, row.allegatoRichiestaAmmissioneFinanziamentoId, 'editRegione']">
+                Modifica richiesta ammissione finanziamento
+                </button>
+              </ng-container>
+              <ng-container *ngIf="!checkSuperUser() && checkButtonModificaModuloAASR(row.allegatoRichiestaAmmissioneFinanziamentoStatoId)">
+                <button *ngxPermissionsOnly="'OP-ModModA'"
+                    mat-menu-item
+                    [disabled]="!row.allegatoRichiestaAmmissioneFinanziamentoId"
+                    [routerLink]="['/', 'richiesta-ammissione-finanziamento', row.intId, row.allegatoRichiestaAmmissioneFinanziamentoId, 'editASR']">
+                Modifica richiesta ammissione finanziamento ASR
+                </button>
+              </ng-container>
+              <ng-container *ngIf="checkSuperUser() && checkButtonRespingiModuloARegione(row.allegatoRichiestaAmmissioneFinanziamentoStatoId)">
+                <button *ngxPermissionsOnly="'OP-RespModA'" mat-menu-item (click)="apriModaleRegioneRespingeModuloA(row.rIntModuloAId, row.intId)">
+                  Respingi richiesta ammissione al finanziamento
+                </button>
+              </ng-container>
+              <ng-container *ngIf="checkSuperUser() && checkButtonApprovaModuloARegione(row.allegatoRichiestaAmmissioneFinanziamentoStatoId)">
+                <button *ngxPermissionsOnly="'OP-ApprModA'" mat-menu-item (click)="apriModaleRegioneApprovaModuloA(row.rIntModuloAId, row.intId)">
+                  Approva richiesta ammissione al finanziamento
+                </button>
+              </ng-container>
+              <ng-container *ngIf="!checkSuperUser() && checkButtonInviaModuloARegione(row.allegatoRichiestaAmmissioneFinanziamentoStatoId)">
+                <button *ngxPermissionsOnly="'OP-InviaModA'" mat-menu-item (click)="apriModaleInviaRegioneModuloA(row.rIntModuloAId, row.intId)">
+                  Invia Modulo A a Regione
+                </button>
+              </ng-container>
+              <ng-container *ngIf="!checkSuperUser()">
+                <button  mat-menu-item
+                  [disabled]="!row.creaModuloA" [routerLink]="['/', 'richiesta-ammissione-finanziamento', row.intId]">
+                  Inserisci richiesta ammissione al finanziamento
+                </button>
+              </ng-container>
+            </mat-menu>
+            <!-- fine verde -->
+
+
+            <button *ngSwitchCase="'modulo-c'" mat-icon-button color="primary"
+              matTooltip="Inserimento dati monitoraggio" [routerLink]="['/', 'modulo-c', row.intId]"
+              [state]="{back: '/modulo-c'}">
+              <mat-icon>note_add</mat-icon>
+            </button>
+            <!-- <button *ngSwitchCase="'consulta-monitoraggio'" mat-icon-button color="primary" matTooltip="Visualizza dati monitoraggio"
+                [disabled]="!row.listaAllegatoMonitoraggioId.length" [routerLink]="['/', 'modulo-c', row.intId, 'view']">
+              <mat-icon>description</mat-icon>
+            </button> -->
+            <!-- <button *ngSwitchCase="'ricerca-storico-interventi'" mat-icon-button color="primary" matTooltip="Visualizza" [routerLink]="['/', 'consultazione-interventi', row.intId]" [state]="{back: '/ricerca-storico-interventi'}">
+              <mat-icon>visibility</mat-icon>
+            </button> -->
+            <ng-container *ngSwitchDefault>
+              <button mat-icon-button color="primary" matTooltip="Visualizza"
+                [routerLink]="['/', 'consultazione-interventi', row.intId]">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <div *ngIf="!isRicercaInterventi()">
+                <!-- <div *ngIf="!(!checkStatoProposto(row.statoIntervento) && checkSuperUser())">
+                  <div *ngIf="!(!checkStatoInserito(row.statoIntervento) && !checkSuperUser())"> -->
+                <div *ngIf="(checkStatoProposto(row.statoIntervento) && checkSuperUser()) || (checkStatoInserito(row.statoIntervento) && !checkSuperUser() && checkProgrammazioneAperta())">
+                    <button
+                      *ngxPermissionsOnly="['OP-InsModA', 'OP-ConsModA', 'OP-InsMonitorag', 'OP-ConsMonitorag', 'OP-ModIntervento', 'OP-ApprIntervento', 'OP-InviaIntervento', 'OP-RespIntervento', 'OP-ElimIntervento']"
+                      mat-icon-button color="primary" matTooltip="Altro" [matMenuTriggerFor]="menu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                      <ng-container *ngIf=" !checkSuperUser() && checkButtonInsModModuloAAsr(row,row.statoIntervento)">
+                        <button *ngxPermissionsOnly="'OP-InsModA'" mat-menu-item
+                          [disabled]="row.allegatoRichiestaAmmissioneFinanziamentoId"
+                          [routerLink]="['/', 'richiesta-ammissione-finanziamento', row.intId]">Richiesta ammissione
+                          finanziamento</button>
+                      </ng-container>
+
+
+                      <ng-container *ngIf="isMonitoraggio()">
+                        <button *ngxPermissionsOnly="'OP-InsMonitorag'" mat-menu-item
+                          [routerLink]="['/', 'modulo-c', row.intId]">Inserimento dati monitoraggio</button>
+                      </ng-container>
+                      <ng-container *ngIf="isMonitoraggio()">
+                        <button *ngxPermissionsOnly="'OP-ConsMonitorag'" mat-menu-item
+                          [disabled]="!row.listaAllegatoMonitoraggioId?.length"
+                          [routerLink]="['/', 'modulo-c', row.intId, 'view']">Visualizza dati monitoraggio</button>
+                      </ng-container>
+                      <ng-container
+                        *ngIf="!checkSuperUser() && checkButtonModificaInterventoAsr(row,row.statoIntervento) && isProgrammazioneInterventi()">
+                        <button *ngxPermissionsOnly="'OP-ModIntervento'" mat-menu-item
+                          [routerLink]="['/', 'modifica', row.intId]">Modifica Intervento</button>
+                      </ng-container>
+                      <ng-container
+                        *ngIf="checkDirigenteRegionale() && checkButtonApprovaInterventoRegione(row,row.statoIntervento) && isProgrammazioneInterventi()">
+                        <button *ngxPermissionsOnly="'OP-ApprIntervento'" mat-menu-item
+                          (click)="apriModaleApprovaIntervento(row.intId)">Approva intervento</button>
+                      </ng-container>
+                      <ng-container
+                        *ngIf="!checkSuperUser() && checkButtonInviaInterventoARegione(row,row.statoIntervento) && isProgrammazioneInterventi()">
+                        <button *ngxPermissionsOnly="'OP-InviaIntervento'" mat-menu-item
+                          (click)="apriModaleConfermaInvioRegione(row.intId)">Invia intervento a Regione</button>
+                      </ng-container>
+                      <ng-container
+                        *ngIf="checkSuperUser() && checkButtonRespingiInterventoRegione(row,row.statoIntervento) && isProgrammazioneInterventi()">
+                        <button *ngxPermissionsOnly="'OP-RespIntervento'" mat-menu-item
+                          (click)="apriModaleRespingiIntervento(row.intId)">Invia all'ASR</button>
+                      </ng-container>
+                      <ng-container
+                        *ngIf="!checkSuperUser() && checkButtonEliminaInterventoAsr(row,row.statoIntervento) && isProgrammazioneInterventi()">
+                        <button *ngxPermissionsOnly="'OP-ElimIntervento'" mat-menu-item
+                          (click)="apriModaleEliminaIntervento(row.intId)">Elimina intervento</button>
+                      </ng-container>
+                      <!-- <ng-container *ngIf="checkButtonModificaInterventoRegione(row)"> -->
+                      <ng-container
+                        *ngIf="checkSuperUser() && checkButtonModificaInterventoRegione(row,row.statoIntervento) && isProgrammazioneInterventi() ">
+                        <button *ngxPermissionsOnly="'OP-ModIntervento'" mat-menu-item
+                          [routerLink]="['/', 'modifica-regione', row.intId]">Modifica intervento</button>
+                      </ng-container>
+                    </mat-menu>
+                  </div>
+                </div>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['localizzazione-header', 'elementi-header', 'riferimenti-header']"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="7">Nessun dato per i criteri di ricerca inseriti</td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; background-color: white;">
+      <mat-paginator [length]="total"
+      [pageIndex]="pageNumber"
+      [pageSize]="rowPerPage"
+      [pageSizeOptions]="[5, 10, 25, 50]"
+        showFirstLastButtons  (page)="handlePageEvent($event)"></mat-paginator>
+      <!-- TODO: ^ La length serve davvero? -->
+      <button mat-button color="primary" [matMenuTriggerFor]="menu2">SCARICA ELENCO</button>
+      <mat-menu #menu2="matMenu">
+        <button mat-menu-item (click)="downloadExcel()">Excel</button>
+        <button mat-menu-item (click)="downloadPdf()">PDF</button>
+      </mat-menu>
+    </div>
+  </div>
+</div>
+<!--FINE VISUALIZZAZIONE LISTA-->
+<ng-template #searchLoadingTemplate>
+  <mat-spinner style="margin: 20px auto;"></mat-spinner>
+</ng-template>
+<div [hidden]="tableLoading === 'SHOWN'">
+  <mat-spinner *ngIf="tableLoading === 'LOADING'" style="margin: 20px auto;"></mat-spinner>
+</div>

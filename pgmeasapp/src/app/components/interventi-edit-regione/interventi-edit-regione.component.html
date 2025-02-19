@@ -1,0 +1,1212 @@
+<h1 class="pgmeas-primary-text">Modifica intervento Regione</h1>
+<ng-container *ngIf="!loading; else loadingTemplate">
+  <ng-container *ngIf="!salvataggioEffettuato; else salvataggioTemplate">
+    <mat-card style="margin-bottom: 40px">
+      <mat-card-header>
+        <a>
+          <h2>Riferimenti temporali dell'intervento</h2>
+        </a>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="date-programmazioni">
+          <p class="small-text">
+            Triennio: <b>{{ user.programmazione.triennio }}</b>
+          </p>
+        </div>
+        <div class="date-programmazioni">
+          <p class="small-text">
+            Anno di inserimento intervento:
+            <b>{{ user.programmazione.annoInserimentIntervento }}</b>
+          </p>
+        </div>
+        <div class="date-programmazioni">
+          <div class="date-margin" class="small-text">
+            Data inizio programmazione:
+            <b>{{ user.programmazione.dataInizioProgrammazione }}</b>
+          </div>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <div class="small-text">
+            Data fine programmazione:
+            <b>{{ user.programmazione.DataFineProgrammazione }}</b>
+          </div>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <div class="small-text" *ngIf="user.programmazione.dataFineProroga">
+            Data fine proroga:
+            <b>{{ user.programmazione.dataFineProroga }}</b>
+          </div>
+        </div>
+        <div class="date-programmazioni">
+          <p class="small-text">
+            Data di inserimento dell'intervento: <b>{{ dataCreazione }}</b>
+          </p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card style="margin-bottom: 40px">
+      <mat-card-header>
+        <h2>Localizzazione dell'intervento</h2>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="date-programmazioni">
+          <p class="small-text">
+            Azienda: <b>{{getDescrizioneAzienda(intervento)}}</b>
+          </p>
+        </div>
+        <div class="date-programmazioni">
+          <p class="small-text">
+            Quadrante: <b>{{getDescrizioneQuadrante(intervento)}}</b>
+          </p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <form [formGroup]="insertionForm" (ngSubmit)="submit()">
+      <mat-card style="margin-bottom: 40px">
+        <mat-card-content>
+
+          <h4>Strutture</h4>
+
+          <div formArrayName="struttureAggiunte">
+            <ng-container *ngFor="
+          let strutturaInsInt of struttureAggiunte.controls;
+          let index = index
+        " [formGroupName]="index">
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <h4 class="pgmeas-primary-text">{{ strutturaInsInt.value.struttura?.strDenominazione }}
+                    <ng-container *ngIf="!checkStruttura(strutturaInsInt.value.struttura.strId)">({{
+                      strutturaInsInt.value.struttura?.strCod }})</ng-container>
+                  </h4>
+                </mat-expansion-panel-header>
+                <!-- informazioni per la struttura non censita -->
+                <div *ngIf="checkStruttura(strutturaInsInt.value.struttura.strId)">
+                  <ng-container *ngIf="strutturaInsInt.value.struttura.strNonCensita; else strutturaNuova">
+                    <p class="small-text">Struttura non censita</p>
+                  </ng-container>
+                  <ng-template #strutturaNuova>
+                    <p class="small-text">Nuova Struttura</p>
+                  </ng-template>
+                  <p class="small-text" *ngIf="strutturaInsInt.value.struttura.strComune">
+                    Comune Struttura: {{ strutturaInsInt.value.struttura.strComune }}
+                  </p>
+                  <p class="small-text" *ngIf="strutturaInsInt.value.struttura.strIndirizzo">
+                    Indirizzo: {{ strutturaInsInt.value.struttura.strIndirizzo }}
+                  </p>
+                  <p class="small-text" *ngIf="strutturaInsInt.value.struttura.strDatiCatastali">
+                    Dati Catastali: {{ strutturaInsInt.value.struttura.strDatiCatastali }}
+                  </p>
+                  <p class="small-text" *ngIf="strutturaInsInt.value.struttura.note">
+                    Note: {{ strutturaInsInt.value.struttura.note }}
+                  </p>
+                </div>
+                <p *ngIf="!checkStruttura(strutturaInsInt.value.struttura.strId)" class="small-text">
+                  Comune Struttura: {{ strutturaInsInt.value.struttura.strComune }}
+                </p>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <h4>Tipo Intervento Edilizio (ex art. 3 D.P.R. 380 del 6 giugno 2001)</h4>
+                  </mat-expansion-panel-header>
+                  <div formArrayName="listaInterventiEdilizi">
+                    <ng-container *ngFor="let intervento of getListaInterventiEdilizi(index).controls, let i = index"
+                      [formGroupName]="i">
+                      <div class="intervento-edilizio-div small-text"
+                        [ngStyle]="{'margin-left.px': getMarginFromSpazi(intervento.value.livello), 'margin-bottom': !intervento.value.selezionabile ? '20px' : '0'}">
+                        <mat-slide-toggle style="margin-bottom: 20px" *ngIf="intervento.value.selezionabile"
+                          formControlName="selezionato" />
+                        <span *ngIf="!intervento.value.selezionabile"
+                          style="display: inline-block; width: 40px;"></span>
+                        {{ intervento.value.descrizione }}
+                      </div>
+                    </ng-container>
+                  </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <h4>Costo complessivo della struttura</h4>
+                  </mat-expansion-panel-header>
+                  <mat-form-field  class="custom-costo-width">
+                    <mat-label>Costo Struttura</mat-label>
+                    <input
+                      matInput
+                      style="text-align: right;"
+                      type="text"
+                      currencyMask
+                      formControlName="costoStruttura"
+                      [options]="{  thousands: '.', decimal: ',', precision:2 ,prefix:'',suffix:'', allowNegative: false,inputMode:natural,nullable :true}"
+                  >
+                  </mat-form-field><a style="padding-left: 10px;">€</a>
+                </mat-expansion-panel>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <h4>
+                      Cronoprogramma della Struttura (in giorni naturali
+                      consecutivi)
+                    </h4>
+                  </mat-expansion-panel-header>
+                  <p class="small-text">
+                    La durata deve essere comprensiva di tutte le procedure
+                    amministrative propedeutiche all'approvazione di ogni singola
+                    fase
+                  </p>
+                  <div class="durata-stimata-div">
+                    <mat-form-field class="durata-stimata-input">
+                      <mat-label>PROGETTAZIONE</mat-label>
+                      <input matInput type="number" formControlName="progettazione" min="0"
+                        (keypress)="allowOnlyNumbers($event)" />
+                    </mat-form-field>
+                    <mat-form-field class="durata-stimata-input">
+                      <mat-label>AFFIDAMENTO LAVORI</mat-label>
+                      <input matInput type="number" formControlName="affidamentoLavori" min="0"
+                        (keypress)="allowOnlyNumbers($event)" />
+                    </mat-form-field>
+                    <mat-form-field class="durata-stimata-input">
+                      <mat-label>ESECUZIONE LAVORI</mat-label>
+                      <input matInput type="number" formControlName="esecuzioneLavori" min="0"
+                        (keypress)="allowOnlyNumbers($event)" />
+                    </mat-form-field>
+                    <mat-form-field>
+                      <mat-label>COLLAUDO</mat-label>
+                      <input matInput type="number" formControlName="collaudo" min="0"
+                        (keypress)="allowOnlyNumbers($event)" />
+                    </mat-form-field>
+                  </div>
+                  <div class="appalto-integrato-div">
+                    <p class="appalto-integrato-p" class="small-text">APPALTO INTEGRATO</p>
+                    <mat-slide-toggle formControlName="appaltoIntegrato"></mat-slide-toggle>
+                  </div>
+                  <p class="small-text">
+                    Totale durata stimata della struttura (in giorni naturali complessivi):
+                    <b>{{ strutturaInsInt.value.totaleDurataStimataIntervento }}</b>
+                  </p>
+                </mat-expansion-panel>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <h4>Quadro economico</h4>
+                  </mat-expansion-panel-header>
+                  <!-- <div formArrayName="listaQuadroEconomico">
+                    <ng-container *ngFor="let quadro of getListaQuadroEconomico(index).controls, let i = index"
+                      [formGroupName]="i">
+                      <div
+                        [ngStyle]="{'margin-left.px': getMarginFromSpazi(quadro.value.livello), 'margin-bottom': !quadro.value.selezionabile ? '20px' : '0'}"
+                        class="small-text">
+                        {{ quadro.value.descrizione }}
+                        <div *ngIf="quadro.value.selezionabile">
+                          <mat-form-field>
+                            <input matInput type="text" formControlName="valoreNumerico" min="0"
+                              style="text-align: right;" (keypress)="allowOnlyNumbers($event)" />
+                          </mat-form-field><a *ngIf="quadro.value.selezionabile" style="padding-left: 10px;">€</a>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div> -->
+                  <app-quadro-economico-centralized
+                  [form]="getStrutturaForm(index)"
+                  [appaltoIntegrato]="strutturaInsInt.value.appaltoIntegrato"
+                  [isVisualizzazione]="true"
+                  [isRequired]="false"
+                  [idIntervento]="intCopiatoId">
+                  </app-quadro-economico-centralized>
+                </mat-expansion-panel>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <h4>Responsabili</h4>
+                  </mat-expansion-panel-header>
+                  <div class="form-row">
+                    <div>
+                      <label class="small-text">Responsabile della Struttura Complessa o facente funzione: </label>
+                      <div class="responsabile-div">
+                        <mat-form-field class="inputResponsabile">
+                          <mat-label>Nome</mat-label>
+                          <input matInput type="text" formControlName="intstrRespStrComplesNome" />
+                        </mat-form-field>
+                        <mat-form-field class="inputResponsabile">
+                          <mat-label>Cognome</mat-label>
+                          <input matInput type="text" formControlName="intstrRespStrComplesCognome" />
+                        </mat-form-field>
+                        <mat-form-field class="inputResponsabile">
+                          <mat-label>Codice Fiscale</mat-label>
+                          <input matInput type="text" formControlName="intstrRespStrComplesCf" appUppercase/>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div>
+                      <label class="small-text">Responsabile della Struttura Semplice o facente funzione: </label>
+                      <div class="responsabile-div">
+                        <mat-form-field class="inputResponsabile">
+                          <mat-label>Nome</mat-label>
+                          <input matInput type="text" formControlName="intstrRespStrSemplNome" />
+                        </mat-form-field>
+                        <mat-form-field class="inputResponsabile">
+                          <mat-label>Cognome</mat-label>
+                          <input matInput type="text" formControlName="intstrRespStrSemplCognome" />
+                        </mat-form-field>
+                        <mat-form-field class="inputResponsabile">
+                          <mat-label>Codice Fiscale</mat-label>
+                          <input matInput type="text" formControlName="intstrRespStrSemplCf" appUppercase />
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+                <div class="parere-div">
+                  <mat-checkbox color="primary" formControlName="parerePPP" (change)="checkParerePPPEnabled(index)" class="small-text">
+                    Parere Regione su PPP
+                  </mat-checkbox>
+
+                  <mat-form-field class="inputResponsabile">
+                    <mat-label>Numero</mat-label>
+                    <input matInput type="text" formControlName="numeroPPP"/>
+                  </mat-form-field>
+
+                  <div class="parere-date-div">
+                    <label>Data: </label>
+                    <mat-form-field appearance="fill" class="custom-width">
+                      <input matInput [matDatepicker]="pickerPPP" [max]="maxDate" readonly  (click)="pickerPPP.open()" placeholder="gg/mm/aaaa" formControlName="dataPPP" (keydown)="onInputDate($event)"  >
+                      <mat-datepicker-toggle matSuffix [for]="pickerPPP"></mat-datepicker-toggle>
+                      <mat-datepicker #pickerPPP></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="allega-div">
+                  <p class="small-text">Allegato PPP</p>
+                  <p mat-raised-button (click)="fileInputPPP.click()" class="allega-button upload-button">Allega</p>
+                  <input #fileInputPPP type="file" accept=".pdf" (change)="onFileSelectedPPP($event, index)" style="display: none" />
+                </div>
+
+                <!-- Mostra il file se è stato caricato -->
+                <div *ngIf="checkFilePPP(index)" class="allega-div">
+                  <!-- Nome del file e link per la visualizzazione -->
+                  <a [href]="getFileUrlPPP(index)" [download]="getFileNamePPP(index)" target="_blank">{{
+                    getFileNamePPP(index) }}</a>
+
+                  <!-- Icona del cestino per rimuovere il file -->
+                  <button type="button" mat-icon-button (click)="removeFilePPP(index)" style="color: red;">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+
+
+                <div class="parere-div">
+                  <mat-checkbox color="primary" formControlName="parereHTA" (change)="checkParereHtaEnabled(index)" class="small-text">
+                    Parere HTA
+                  </mat-checkbox>
+
+                  <mat-form-field class="inputResponsabile">
+                    <mat-label>Numero</mat-label>
+                    <input matInput type="text" formControlName="numeroHTA"/>
+                  </mat-form-field>
+
+                  <div class="parere-date-div">
+                    <label>Data: </label>
+                    <mat-form-field appearance="fill" class="custom-width">
+                      <input matInput [matDatepicker]="pickerHTA" [max]="maxDate" readonly  (click)="pickerHTA.open()" placeholder="gg/mm/aaaa" formControlName="dataHTA" (keydown)="onInputDate($event)">
+                      <mat-datepicker-toggle matSuffix [for]="pickerHTA"></mat-datepicker-toggle>
+                      <mat-datepicker #pickerHTA></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="allega-div">
+                  <p class="small-text">Allegato HTA</p>
+                  <p mat-raised-button (click)="fileInputHTA.click()" class="allega-button upload-button">Allega</p>
+                  <input #fileInputHTA type="file" accept=".pdf" (change)="onFileSelectedHTA($event, index)" style="display: none" />
+                </div>
+
+                <!-- Mostra il file se è stato caricato -->
+                <div *ngIf="checkFileHTA(index)" class="allega-div">
+                  <!-- Nome del file e link per la visualizzazione -->
+                  <a [href]="getFileUrlHTA(index)" [download]="getFileNameHTA(index)" target="_blank">{{
+                    getFileNameHTA(index) }}</a>
+
+                  <!-- Icona del cestino per rimuovere il file -->
+                  <button type="button" mat-icon-button (click)="removeFileHTA(index)" style="color: red;">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+
+              </mat-expansion-panel>
+            </ng-container>
+          </div>
+        </mat-card-content>
+
+      </mat-card>
+
+
+      <mat-card style="margin-bottom: 40px">
+        <mat-card-content>
+          <h4>Principali indicatori dell’intervento</h4>
+          <div class="form-row">
+            <mat-form-field class="custom-width">
+              <mat-label>Cup</mat-label>
+              <input matInput type="text" formControlName="cup" />
+            </mat-form-field>
+          </div>
+          <div class="form-row">
+            <mat-form-field class="custom-width">
+              <mat-label>Codice PGMEAS intervento</mat-label>
+              <input matInput type="text" formControlName="codInterventoPGMEAS" />
+            </mat-form-field>
+          </div>
+          <div class="form-row">
+            <mat-form-field class="custom-width">
+              <mat-label>Codice PGMEAS intervento origine</mat-label>
+              <input matInput type="text" formControlName="codInterventoOriginePGMEAS" />
+            </mat-form-field>
+          </div>
+          <div class="form-row">
+            <mat-form-field class="custom-width">
+              <mat-label>Anno inserimento intervento origine</mat-label>
+              <input matInput type="text" formControlName="annoInserimentoInterventoOrigine" min="0"
+                (keypress)="allowOnlyNumbers($event)" />
+            </mat-form-field>
+          </div>
+          <div class="form-row">
+            <mat-form-field class="custom-width">
+              <mat-label>Codice NSIS intervento</mat-label>
+              <input matInput type="text" formControlName="codNSISIntervento" />
+            </mat-form-field>
+          </div>
+          <div class="form-row">
+            <mat-form-field class="titolo-textarea-field">
+              <mat-label>Titolo Intervento</mat-label>
+              <textarea formControlName="titoloIntervento" matInput  [maxLength]="255" ></textarea>
+             </mat-form-field>
+          </div>
+          <div class="form-row">
+            <mat-form-field class="custom-select long-select">
+              <mat-label>Obiettivo dell'intervento</mat-label>
+              <mat-select formControlName="obiettivo" multiple class="disableSelect">
+                <mat-option *ngFor="let obiettivo of obiettivoList" [value]="obiettivo.intObiettivoId" disabled>
+                  {{ obiettivo.intObiettivoDesc }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="form-row">
+            <mat-form-field class="custom-select long-select">
+              <mat-label>Finalita' dell'intervento: </mat-label>
+              <mat-select formControlName="finalita" multiple class="disableSelect">
+                <mat-option *ngFor="let finalita of finalitaList" [value]="finalita.intFinalitaId" disabled>
+                  {{ finalita.intfinalitaDesc }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="form-row">
+            <mat-form-field class="custom-select long-select">
+              <mat-label>Tipologia intervento</mat-label>
+              <mat-select formControlName="tipologia" multiple class="disableSelect">
+                <mat-option *ngFor="let tipo of interventoTipoList" [value]="tipo.intTipoId" disabled>
+                  {{ tipo.intTipoDesc }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="form-row">
+            <mat-form-field class="custom-select long-select">
+              <mat-label>Descrizione attrezzatura</mat-label>
+              <mat-select formControlName="attrezzatura" multiple class="disableSelect">
+                <mat-option *ngFor="let attrezzatura of attrezzaturaList" [value]="attrezzatura.intTipoDetId" disabled>
+                  {{ attrezzatura.intTipoDetDesc }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="form-row">
+            <mat-form-field class="custom-select long-select">
+              <mat-label>Categoria intervento</mat-label>
+              <mat-select formControlName="categoria" multiple class="disableSelect">
+                <mat-option *ngFor="let categoria of categoriaList" [value]="categoria.intCategoriaId" disabled>
+                  {{ categoria.intCategoriaDesc }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="form-row">
+            <mat-form-field class="custom-width">
+              <mat-label>Anno priorita'</mat-label>
+              <input matInput type="text" formControlName="annoPriorita" min="0"
+                (keypress)="allowOnlyNumbers($event)" (blur)="checkAnnoPriorita($event)" />
+            </mat-form-field>
+          </div>
+          <div class="form-row">
+            <mat-form-field class="custom-width">
+              <mat-label>Priorita'</mat-label>
+              <input matInput type="text" formControlName="priorita" />
+            </mat-form-field>
+          </div>
+          <div class="form-row">
+            <mat-form-field class="custom-width">
+              <mat-label>Sotto-priorita'</mat-label>
+              <input matInput type="text" maxlength="1" formControlName="sottoPriorita" (keypress)="allowOnlyChar($event)" />
+            </mat-form-field>
+          </div>
+          <div class="form-row">
+            <mat-form-field class="custom-select long-select">
+              <mat-label>Tipologia contrattuale</mat-label>
+              <mat-select formControlName="contrattoTipo" multiple class="disableSelect">
+                <mat-option *ngFor="let contratto of contrattoTipoList" [value]="contratto.intContrattoTipoId" disabled>
+                  {{ contratto.intContrattoTipoDesc }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="form-row">
+            <mat-form-field class="custom-select long-select">
+              <mat-label>Tipologia appalto</mat-label>
+              <mat-select formControlName="appaltoTipo" multiple class="disableSelect">
+                <mat-option *ngFor="let appalto of appaltoTipoList" [value]="appalto.intAppaltoTipoId" disabled>
+                  {{ appalto.intAppaltoTipoDesc }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="form-row">
+            <mat-form-field class="custom-select long-select">
+              <mat-label>Stato progettuale</mat-label>
+              <mat-select formControlName="statoProg" multiple class="disableSelect">
+                <mat-option *ngFor="let statoProg of statoProgList" [value]="statoProg.intStatoProgId" disabled>
+                  {{ statoProg.intStatoProgDesc }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card style="margin-bottom: 40px">
+        <mat-card-content>
+          <h4>Costo complessivo dell'intervento
+          </h4>
+          <mat-form-field  class="custom-costo-width">
+            <mat-label>Costo Intervento</mat-label>
+            <!-- <input matInput style="text-align: right;" type="number" formControlName="costoIntervento"
+              (keypress)="allowOnlyNumbers($event)" appForceTwoDecimals/> -->
+              <input
+              matInput
+              style="text-align: right;"
+              type="text"
+              currencyMask
+              formControlName="costoIntervento"
+              [options]="{  thousands: '.', decimal: ',', precision:2 ,prefix:'',suffix:'', allowNegative: false,inputMode:natural,nullable :true}"
+          >
+          </mat-form-field><a style="padding-left: 10px;">€</a>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card style="margin-bottom: 40px">
+        <mat-card-content>
+          <h4>Durata stimata dell'intervento (in giorni naturali
+            consecutivi)
+          </h4>
+          <p class="small-text">
+            La durata deve essere comprensiva di tutte le procedure
+            amministrative propedeutiche all'approvazione di ogni singola
+            fase
+          </p>
+          <div class="durata-stimata-div">
+            <mat-form-field class="durata-stimata-input">
+              <mat-label>PROGETTAZIONE</mat-label>
+              <input matInput type="number" formControlName="progettazione" min="0"
+                (keypress)="allowOnlyNumbers($event)" />
+            </mat-form-field>
+            <mat-form-field class="durata-stimata-input">
+              <mat-label>AFFIDAMENTO LAVORI</mat-label>
+              <input matInput type="number" formControlName="affidamentoLavori" min="0"
+                (keypress)="allowOnlyNumbers($event)" />
+            </mat-form-field>
+            <mat-form-field class="durata-stimata-input">
+              <mat-label>ESECUZIONE LAVORI</mat-label>
+              <input matInput type="number" formControlName="esecuzioneLavori" min="0"
+                (keypress)="allowOnlyNumbers($event)" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>COLLAUDO</mat-label>
+              <input matInput type="number" formControlName="collaudo" min="0" (keypress)="allowOnlyNumbers($event)" />
+            </mat-form-field>
+          </div>
+          <div class="appalto-integrato-div">
+            <p class="appalto-integrato-p small-text">APPALTO INTEGRATO</p>
+            <mat-slide-toggle formControlName="appaltoIntegrato"></mat-slide-toggle>
+          </div>
+          <p class="small-text">
+            Totale durata stimata dell'intervento:
+            <b>{{ insertionForm.value.totaleDurataIntervento }}</b>
+          </p>
+        </mat-card-content>
+      </mat-card>
+      <mat-card style="margin-bottom: 40px">
+        <mat-card-content>
+          <h4>Responsabili dell'intervento
+          </h4>
+          <div class="form-row">
+            <div>
+              <label class="small-text">Direttore Generale: </label>
+              <div class="responsabile-div">
+                <mat-form-field class="inputResponsabile">
+                  <mat-label>Nome</mat-label>
+                  <input matInput type="text" formControlName="direttoreNome" />
+                </mat-form-field>
+                <mat-form-field class="inputResponsabile">
+                  <mat-label>Cognome</mat-label>
+                  <input matInput type="text" formControlName="direttoreCognome" />
+                </mat-form-field>
+                <mat-form-field class="inputResponsabile">
+                  <mat-label>Codice fiscale</mat-label>
+                  <input matInput type="text" formControlName="direttoreCF" appUppercase/>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <label class="small-text">Commissario: </label>
+              <div class="responsabile-div">
+                <mat-form-field class="inputResponsabile">
+                  <mat-label>Nome</mat-label>
+                  <input matInput type="text" formControlName="commissarioNome" />
+                </mat-form-field>
+                <mat-form-field class="inputResponsabile">
+                  <mat-label>Cognome</mat-label>
+                  <input matInput type="text" formControlName="commissarioCognome" />
+                </mat-form-field>
+                <mat-form-field class="inputResponsabile">
+                  <mat-label>Codice fiscale</mat-label>
+                  <input matInput type="text" formControlName="commissarioCF" appUppercase/>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <label class="small-text">RUP: </label>
+              <div class="responsabile-div">
+                <mat-form-field class="inputResponsabile">
+                  <mat-label>Nome</mat-label>
+                  <input matInput type="text" formControlName="rupNome" />
+                </mat-form-field>
+                <mat-form-field class="inputResponsabile">
+                  <mat-label>Cognome</mat-label>
+                  <input matInput type="text" formControlName="rupCognome" />
+                </mat-form-field>
+                <mat-form-field class="inputResponsabile">
+                  <mat-label>Codice fiscale</mat-label>
+                  <input matInput type="text" formControlName="rupCF" appUppercase/>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <label class="small-text">Referente Pratica: </label>
+              <div class="responsabile-div">
+                <mat-form-field class="inputResponsabile">
+                  <mat-label>Nome</mat-label>
+                  <input matInput type="text" formControlName="referenteNome" />
+                </mat-form-field>
+                <mat-form-field class="inputResponsabile">
+                  <mat-label>Cognome</mat-label>
+                  <input matInput type="text" formControlName="referenteCognome" />
+                </mat-form-field>
+                <mat-form-field class="inputResponsabile">
+                  <mat-label>Codice fiscale</mat-label>
+                  <input matInput type="text" formControlName="referenteCF" appUppercase/>
+                </mat-form-field>
+                <mat-form-field class="inputResponsabile">
+                  <mat-label>Telefono</mat-label>
+                  <input matInput type="text" formControlName="referenteTelefono" />
+                </mat-form-field>
+                <mat-form-field class="inputResponsabile">
+                  <mat-label>E-mail</mat-label>
+                  <input matInput type="text" formControlName="referenteEmail" />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+      <mat-card style="margin-bottom: 40px">
+        <mat-card-content>
+          <h4>Delibere aziendali dell'intervento
+          </h4>
+          <div class="form-row">
+            <mat-form-field class="custom-width">
+              <mat-label>Delibera aziendale di approvazione num</mat-label>
+              <input matInput type="text" formControlName="delibera" />
+            </mat-form-field>
+          </div>
+          <div class="form-row">
+            <label>Data della delibera aziendale di approvazione: </label>
+            <mat-form-field appearance="fill">
+              <input matInput [matDatepicker]="picker" [max]="maxDate" readonly  (click)="picker.open()" placeholder="gg/mm/aaaa" formControlName="dataDelibera" >
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <h4>Allegato
+          </h4>
+          <div>
+            <label style="margin-right: 10px;">Atto di approvazione aziendale</label>
+
+            <input #fileInput type="file" accept=".pdf" (change)="onFileSelected($event)" style="display: none" />
+            <!-- Mostra il file se è stato caricato -->
+            <div *ngIf="fileName" class="allegato-div">
+              <!-- Nome del file e link per la visualizzazione -->
+              <a [href]="fileUrl" [download]="fileName" target="_blank" class="upload-button">{{ fileName }}</a>
+
+              <!-- Icona del cestino per rimuovere il file -->
+              <button mat-icon-button (click)="removeFile()" style="color: red;" disabled>
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+          <h4>Note
+          </h4>
+          <div>
+            <mat-form-field class="note-textarea-field">
+              <mat-label>Note</mat-label>
+              <textarea formControlName="note" matInput  [maxLength]="255" ></textarea>
+             </mat-form-field>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card style="margin-bottom: 40px">
+        <mat-card-content>
+          <mat-checkbox color="primary" formControlName="finanziabile" class="small-text">
+            Finanziabile (ai sensi del D. Lgs. 118 del 23 Giugno 2011)
+          </mat-checkbox>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card style="margin-bottom: 40px">
+        <mat-card-content>
+          <h4>Previsione di spesa</h4>
+          <form [formGroup]="formPrevisione">
+            <div class="allega-div">
+              <div class="previsione-control-div">
+                <mat-form-field>
+                  <mat-label>Aggiungi anno</mat-label>
+                  <input matInput type="number" formControlName="previsioneAnnoControl" min="0" (input)="onYearChange($event)">
+                  <mat-error *ngIf="formPrevisione.get('previsioneAnnoControl')?.hasError('invalidYear')" class="custom-width-error">
+                    L'anno deve essere maggiore o uguale all'anno corrente.
+                  </mat-error>
+                  <mat-error
+                    *ngIf="formPrevisione.get('previsioneAnnoControl')?.hasError('existingYear') && formPrevisione.get('previsioneAnnoControl')?.touched"
+                    class="custom-width-error">
+                    Anno già presente.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <mat-error class="custom-width-error" *ngIf="isPrevSpesaTotInvalid">
+                Il totale degli importi deve essere uguale al costo complessivo dell'intervento.
+              </mat-error>
+              <p style="margin-right: 10px" class="upload-button"
+                (click)="addPrevisione()">
+                Aggiungi
+              </p>
+            </div>
+          </form>
+          <div formArrayName="previsioniDiSpesa" *ngIf="previsioniDiSpesa.controls.length">
+            <!-- <div class="form-row">
+            <div class="table-previsione-div">
+              <mat-form-field>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="annoPrevisione"
+                />
+                <mat-error>
+                  Il campo è obbligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="importoPrevisione"
+                />
+                <mat-error>
+                  Il campo è obbligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <button mat-icon-button (click)="removeRow(index)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div> -->
+            <table class="mat-table">
+              <tr class="mat-header-row">
+                <th class="mat-header-cell">Anno</th>
+                <th class="mat-header-cell">Importo (€)</th>
+                <th class="mat-header-cell"></th>
+              </tr>
+              <tr class="mat-row" *ngFor="let previsione of previsioniDiSpesa.controls;let index = index"
+                [formGroupName]="index">
+                <td class="mat-cell">
+                  <!-- <mat-form-field>
+                  <input
+                  matInput
+                  type="number"
+                  formControlName="annoPrevisione"/>
+                  <mat-error>
+                    Il campo è obbligatorio.
+                  </mat-error>
+                </mat-form-field> -->
+                <p>{{previsione.get('annoPrevisione')?.value}}</p>
+                  <!-- <mat-form-field>
+                    <input matInput type="number" [value]="previsione.get('annoPrevisione')?.value" disabled>
+                  </mat-form-field> -->
+                </td>
+                <td class="mat-cell">
+                  <mat-form-field>
+                    <!-- <input matInput type="number" formControlName="importoPrevisione" appForceTwoDecimals /> -->
+                    <input
+                    matInput
+                    style="text-align: right;"
+                    type="text"
+                    currencyMask
+                    formControlName="importoPrevisione"
+                    [options]="{  thousands: '.', decimal: ',', precision:2 ,prefix:'',suffix:'', allowNegative: false,inputMode:natural,nullable :true}"
+                >
+                  </mat-form-field> €
+                </td>
+                <td class="mat-cell">
+                  <button mat-icon-button (click)="removeRow(index)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </tr>
+              <tr class="mat-header-row">
+                <td class="mat-cell"><b>Totale</b></td>
+                <td class="mat-cell col-importo-prev-spesa"><b>{{calcolaTotalePrevisioneSpesa() | currency}}</b></td>
+              </tr>
+            </table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card style="margin-bottom: 40px">
+        <mat-card-content>
+          <h4>Piano finanziario</h4>
+          <div class="form-row">
+            <mat-form-field class="custom-select long-select">
+              <mat-label>Tipologia di finanziamento</mat-label>
+              <mat-select [(value)]="selectedFinanziamentoId" (selectionChange)="onSelectionChangeTipologia($event)">
+                <mat-option *ngFor="let finanziamento of finanziamentoTipologiche" [value]="finanziamento.finTipoId">
+                  {{ finanziamento.finTipoDesc }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="form-row">
+            <mat-form-field class="custom-select long-select">
+              <mat-label>Tipologia finanziamento dettaglio</mat-label>
+              <mat-select [(value)]="selectedDettaglioId" (selectionChange)="onSelectionChangeDettaglio($event)">
+                <mat-option *ngFor="let dettaglio of finanziamentoTipologicheDettagli" [value]="dettaglio.finTipoDetId">
+                  {{ dettaglio.finTipoDetDesc }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <mat-checkbox color="primary" class="principale-checkbox small-text" [checked]="isPrincipale"
+            (change)="isPrincipale = !isPrincipale">
+            Principale
+          </mat-checkbox>
+          <mat-error *ngIf="isPianiFinanziariInvalid">Per poter salvare i dati è necessario che sia presente almeno un piano finanziario principale</mat-error>
+          <ng-container *ngIf="isDettaglioSelezionato">
+            <div class="form-row" *ngIf="isPercentualiRegioneEStato">
+              <mat-form-field>
+                <mat-label>Importo totale</mat-label>
+                <!-- <input matInput type="number" (input)="onInputChange($event)" [value]="importoTotale" appForceTwoDecimals> -->
+                <input
+              matInput
+              style="text-align: right;"
+              type="text"
+              currencyMask
+              [(ngModel)]="importoTotale"
+              [ngModelOptions]="{ standalone: true }"
+              [options]="{  thousands: '.', decimal: ',', precision:2 ,prefix:'',suffix:'', allowNegative: false,inputMode:natural,nullable :true}"
+          >
+              </mat-form-field> €
+            </div>
+            <ng-container *ngIf="!isPercentualiRegioneEStato">
+              <div class="form-row">
+                <mat-form-field>
+                  <mat-label>Importo Regione</mat-label>
+                  <!-- <input matInput type="number" (input)="onInputRegioneChange($event)" [value]="importoRegione" appForceTwoDecimals> -->
+                  <input
+                  matInput
+                  style="text-align: right;"
+                  type="text"
+                  currencyMask
+                  [(ngModel)]="importoRegione"
+                  [ngModelOptions]="{ standalone: true }"
+                  [options]="{  thousands: '.', decimal: ',', precision:2 ,prefix:'',suffix:'', allowNegative: false,inputMode:natural,nullable :true}"
+              >
+                </mat-form-field> €
+              </div>
+              <div class="form-row" *ngIf="!isPercentualiRegioneEStato">
+                <mat-form-field>
+                  <mat-label>Importo Stato</mat-label>
+                  <!-- <input matInput type="number" (input)="onInputStatoChange($event)" [value]="importoStato" appForceTwoDecimals> -->
+                  <input
+                  matInput
+                  style="text-align: right;"
+                  type="text"
+                  currencyMask
+                  [(ngModel)]="importoStato"
+                  [ngModelOptions]="{ standalone: true }"
+                  [options]="{  thousands: '.', decimal: ',', precision:2 ,prefix:'',suffix:'', allowNegative: false,inputMode:natural,nullable :true}"
+              >
+                </mat-form-field> €
+              </div>
+            </ng-container>
+          </ng-container>
+          <div class="form-row">
+            <p style="margin-right: 10px" class="small-button upload-button"
+              (click)="inserisciPianoFinanziario()">
+              Inserisci
+            </p>
+          </div>
+
+          <ng-container *ngIf="pianiFinanziariPrincipaliTabellaRows.length" class="piani-finanziari-container">
+            <h4>Finanziamenti Principali</h4>
+            <table class="mat-table piani-finanziari-table">
+              <tr class="mat-header-row">
+                <th class="mat-header-cell col-tipo">Tipo</th>
+                <th class="mat-header-cell col-dettaglio">Dettaglio</th>
+                <th class="mat-header-cell col-importo">Importo</th>
+                <th class="mat-header-cell col-quota-regione">Di cui quota Regione</th>
+                <th class="mat-header-cell col-quota-stato">Di cui quota Stato</th>
+                <th class="mat-header-cell col-azione"></th>
+              </tr>
+              <tr *ngFor="let row of pianiFinanziariPrincipaliTabellaRows; let index = index">
+                <td class="mat-cell col-tipo">
+                  {{row.finTipoDesc}}
+                </td>
+                <td class="mat-cell col-dettaglio">
+                  {{row.finTipoDetDesc}}
+                </td>
+                <td class="mat-cell col-importo">
+                  {{row.finImporto | currency: 'EUR'}}
+                </td>
+                <td class="mat-cell col-quota-regione">
+                  {{row.finPercRegione | currency: 'EUR'}}
+                </td>
+                <td class="mat-cell col-quota-stato">
+                  {{row.finPercStato | currency: 'EUR'}}
+                </td>
+                <td class="mat-cell col-azione">
+                  <button mat-icon-button (click)="rimuoviPianoFinanziarioPrincipale(index)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="mat-cell col-tipo">
+                  <b>Totale</b>
+                </td>
+                <td class="mat-cell col-dettaglio">
+                </td>
+                <td class="mat-cell col-importo">
+                  <b>{{totImportoPrincipali | currency: 'EUR'}}</b>
+                </td>
+                <td class="mat-cell col-quota-regione">
+                  <b>{{totImportoRegionePrincipali  | currency: 'EUR'}}</b>
+                </td>
+                <td class="mat-cell col-quota-stato">
+                  <b> {{totImportoStatoPrincipali | currency: 'EUR'}}</b>
+                </td>
+                <td class="mat-cell col-azione">
+                </td>
+              </tr>
+            </table>
+          </ng-container>
+
+          <ng-container *ngIf="pianiFinanziariNonPrincipaliTabellaRows.length" class="piani-finanziari-container">
+            <h4>Altri Finanziamenti</h4>
+            <table class="mat-table piani-finanziari-table">
+              <tr class="mat-header-row">
+                <th class="mat-header-cell col-tipo">Tipo</th>
+                <th class="mat-header-cell col-dettaglio">Dettaglio</th>
+                <th class="mat-header-cell col-importo">Importo</th>
+                <th class="mat-header-cell col-quota-regione">Di cui quota Regione</th>
+                <th class="mat-header-cell col-quota-stato">Di cui quota Stato</th>
+                <th class="mat-header-cell col-azione"></th>
+              </tr>
+              <tr *ngFor="let row of pianiFinanziariNonPrincipaliTabellaRows; let index = index">
+                <td class="mat-cell col-tipo">
+                  {{row.finTipoDesc}}
+                </td>
+                <td class="mat-cell col-dettaglio">
+                  {{row.finTipoDetDesc}}
+                </td>
+                <td class="mat-cell col-importo">
+                  {{row.finImporto | currency: 'EUR'}}
+                </td>
+                <td class="mat-cell col-quota-regione">
+                  {{row.finPercRegione  | currency: 'EUR'}}
+                </td>
+                <td class="mat-cell col-quota-stato">
+                  {{row.finPercStato | currency: 'EUR'}}
+                </td>
+                <td class="mat-cell">
+                  <button mat-icon-button (click)="rimuoviPianoFinanziarioNonPrincipale(index)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="mat-cell col-tipo">
+                  <b>Totale</b>
+                </td>
+                <td class="mat-cell col-dettaglio">
+                </td>
+                <td class="mat-cell col-importo">
+                  <b>{{totImportoAltri | currency: 'EUR'}}</b>
+                </td>
+                <td class="mat-cell col-quota-regione">
+                  <b>{{totImportoRegioneAltri  | currency: 'EUR'}}</b>
+                </td>
+                <td class="mat-cell col-quota-stato">
+                  <b> {{totImportoStatoAltri | currency: 'EUR'}}</b>
+                </td>
+                <td class="mat-cell col-azione">
+                </td>
+              </tr>
+            </table>
+          </ng-container>
+
+          <ng-container *ngIf="pianiFinanziariNonPrincipaliTabellaRows.length || pianiFinanziariPrincipaliTabellaRows.length" 
+            class="piani-finanziari-container">
+            <h4>Totale Finanziamenti</h4>
+            <table class="mat-table piani-finanziari-table">
+              <tr class="mat-header-row">
+                <th class="mat-header-cell col-nome"></th>
+                <th class="mat-header-cell col-importo">Importo</th>
+                <th class="mat-header-cell col-quota-regione">Di cui quota Regione</th>
+                <th class="mat-header-cell col-quota-stato">Di cui quota Stato</th>
+                <th class="mat-header-cell col-azione"></th>
+              </tr>
+              <tr>
+                <td class="mat-cell col-nome">
+                  Totale finanziamenti principali
+                </td>
+                <td class="mat-cell col-importo">
+                  {{totImportoPrincipali | currency: 'EUR'}}
+                </td>
+                <td class="mat-cell col-quota-regione">
+                  {{totImportoRegionePrincipali  | currency: 'EUR'}}
+                </td>
+                <td class="mat-cell col-quota-stato">
+                  {{totImportoStatoPrincipali | currency: 'EUR'}}
+                </td>
+                <td class="mat-cell col-azione">
+                </td>
+              </tr>
+              <tr>
+                <td class="mat-cell col-nome">
+                  Totale altri finanziamenti
+                </td>
+                <td class="mat-cell col-importo">
+                  {{totImportoAltri | currency: 'EUR'}}
+                </td>
+                <td class="mat-cell col-quota-regione">
+                  {{totImportoRegioneAltri  | currency: 'EUR'}}
+                </td>
+                <td class="mat-cell col-quota-stato">
+                  {{totImportoStatoAltri | currency: 'EUR'}}
+                </td>
+                <td class="mat-cell col-azione">
+                </td>
+              </tr>
+              <tr>
+                <td class="mat-cell col-nome">
+                  <b>Totale finanziamenti</b>
+                </td>
+                <td class="mat-cell col-importo">
+                  <b>{{totImporto | currency: 'EUR'}}</b>
+                </td>
+                <td class="mat-cell col-quota-regione">
+                  <b>{{totImportoRegione  | currency: 'EUR'}}</b>
+                </td>
+                <td class="mat-cell col-quota-stato">
+                  <b>{{totImportoStato | currency: 'EUR'}}</b>
+                </td>
+                <td class="mat-cell col-azione">
+                </td>
+              </tr>
+            </table>
+          </ng-container>
+
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card style="margin-bottom: 40px">
+        <mat-card-content>
+          <h4>Delibere dell'intervento</h4>
+          <div class="delibere-div">
+            <p class="delibere-p small-text">D.G.R. di approvazione</p>
+            <mat-form-field class="durata-stimata-input">
+              <mat-label>Numero</mat-label>
+              <form>
+                <input matInput type="text" [(ngModel)]="DGRApprovazione.intAllegatoNumero" name="DGRApprovazioneNumero"/>
+              </form>
+            </mat-form-field>
+            <mat-form-field class="durata-stimata-input">
+              <mat-label>Data atto</mat-label>
+              <form>
+                <input matInput [matDatepicker]="DGRApprpicker" [max]="maxDate" readonly  (click)="DGRApprpicker.open()" placeholder="gg/mm/aaaa"
+                  [(ngModel)]="DGRApprovazione.intAllegatoData" name="DGRApprovazioneData" (keydown)="onInputDate($event)">
+              </form>
+              <mat-datepicker-toggle matSuffix [for]="DGRApprpicker"></mat-datepicker-toggle>
+              <mat-datepicker #DGRApprpicker></mat-datepicker>
+            </mat-form-field>
+            <p (click)="fileInputDGRApprovazione.click()" class="upload-button">Allega</p>
+            <input #fileInputDGRApprovazione type="file" accept=".pdf" (change)="onFileDGRApprovazioneSelected($event)"
+              style="display: none" />
+            <div *ngIf="DGRApprovazione.fileNameUser" class="delibere-download-div">
+              <a [href]="fileUrlDGRApprovazione" [download]="DGRApprovazione.fileNameUser" target="_blank">{{
+                DGRApprovazione.fileNameUser }}</a>
+              <button mat-icon-button (click)="removeFileDGRApprovazione()" style="color: red;">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="delibere-div">
+            <p class="delibere-p small-text">D.G.R. di proposta al Consiglio Regionale</p>
+            <mat-form-field class="durata-stimata-input">
+              <mat-label>Numero</mat-label>
+              <form>
+                <input matInput type="text" [(ngModel)]="DGRPropostaConsiglioRegionale.intAllegatoNumero"
+                  name="DGRApprovazioneConsRegionaleNumero"/>
+              </form>
+            </mat-form-field>
+            <mat-form-field class="durata-stimata-input">
+              <mat-label>Data atto</mat-label>
+              <form>
+                <input matInput [matDatepicker]="DGRPropCRPicker" [max]="maxDate" placeholder="gg/mm/aaaa" readonly  (click)="DGRPropCRPicker.open()"
+                  [(ngModel)]="DGRPropostaConsiglioRegionale.intAllegatoData" name="DGRApprovazioneConsRegionaleData" (keydown)="onInputDate($event)">
+              </form>
+              <mat-datepicker-toggle matSuffix [for]="DGRPropCRPicker"></mat-datepicker-toggle>
+              <mat-datepicker #DGRPropCRPicker></mat-datepicker>
+            </mat-form-field>
+            <p class="upload-button" (click)="fileInputDGRPropostaConsRegionale.click()">Allega</p>
+            <input #fileInputDGRPropostaConsRegionale type="file" accept=".pdf"
+              (change)="onFileDGRPropostaConsRegionaleSelected($event)" style="display: none" />
+            <div *ngIf="DGRPropostaConsiglioRegionale.fileNameUser" class="delibere-download-div">
+              <a [href]="fileUrlDGRPropostaConsRegionale" [download]="DGRPropostaConsiglioRegionale.fileNameUser"
+                target="_blank">{{ DGRPropostaConsiglioRegionale.fileNameUser }}</a>
+              <button mat-icon-button (click)="removeFileDGRPropostaConsiglioRegionale()" style="color: red;">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="delibere-div">
+            <p class="delibere-p small-text">D.C.R. di approvazione</p>
+            <mat-form-field class="durata-stimata-input">
+              <mat-label>Numero</mat-label>
+              <form>
+                <input matInput type="text" [(ngModel)]="DCRApprovazione.intAllegatoNumero" name="DCRApprovazioneNumero" />
+              </form>
+            </mat-form-field>
+            <mat-form-field class="durata-stimata-input">
+              <mat-label>Data atto</mat-label>
+              <form>
+                <input matInput [matDatepicker]="DCRApprPicker" [max]="maxDate"  readonly  (click)="DCRApprPicker.open()" placeholder="gg/mm/aaaa"
+                  [(ngModel)]="DCRApprovazione.intAllegatoData" name="DCRApprovazioneData" (keydown)="onInputDate($event)">
+              </form>
+              <mat-datepicker-toggle matSuffix [for]="DCRApprPicker"></mat-datepicker-toggle>
+              <mat-datepicker #DCRApprPicker></mat-datepicker>
+            </mat-form-field>
+            <p class="upload-button" (click)="fileInputDCRApprovazione.click()">Allega</p>
+            <input #fileInputDCRApprovazione type="file"  accept=".pdf" (change)="onFileDCRApprovazioneSelected($event)"
+              style="display: none" />
+            <div *ngIf="DCRApprovazione.fileNameUser" class="delibere-download-div">
+              <a [href]="fileUrlDCRApprovazione" [download]="DCRApprovazione.fileNameUser" target="_blank">{{
+                DCRApprovazione.fileNameUser }}</a>
+              <button mat-icon-button (click)="removeFileDCRApprovazione()" style="color: red;">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="determinazioni-dirigenziali-div">
+            <p class="small-text">Determinazioni Dirigenziali</p>
+            <p class="determinazioni-dirigenziali-button upload-button" (click)="fileInputDeterminazioniDirigenziali.click()">Aggiungi</p>
+            <input #fileInputDeterminazioniDirigenziali type="file" accept=".pdf"
+              (change)="onFileDeterminazioniDirigenzialiSelected($event)" style="display: none" />
+          </div>
+          <mat-error *ngIf="isAllegatiInvalid">
+            Per poter salvare i dati è necessario che sia presente:
+            <br> - Una DGR di Approvazione con almeno una Determinazione Dirigenziale.
+            <br> - Oppure una DGR di Proposta al Consiglio Regionale, una DCR di Approvazione e almeno una Determinazione Dirigenziale.
+          </mat-error>
+          <table class="mat-table piani-finanziari-table" *ngIf="DeterminazioniDirigenziali.length">
+            <tr class="mat-header-row">
+              <th class="mat-header-cell">D.D.n.</th>
+              <th class="mat-header-cell">Data</th>
+              <th class="mat-header-cell">Allegato</th>
+              <th class="mat-header-cell"></th>
+            </tr>
+            <tr *ngFor="let row of DeterminazioniDirigenziali; let index = index">
+              <td class="mat-cell">
+                <mat-form-field class="durata-stimata-input">
+                  <mat-label>Numero</mat-label>
+                  <form>
+                    <input matInput type="text" [(ngModel)]="DeterminazioniDirigenziali[index].intAllegatoNumero" name="DCRApprovazioneNumero" />
+                  </form>
+                </mat-form-field>
+              </td>
+              <td class="mat-cell">
+                <mat-form-field class="durata-stimata-input">
+                  <mat-label>Data atto</mat-label>
+                  <form>
+                    <input matInput [matDatepicker]="DetDirPicker" [max]="maxDate" placeholder="gg/mm/aaaa" readonly  (click)="DetDirPicker.open()"
+                      [(ngModel)]="DeterminazioniDirigenziali[index].intAllegatoData" [name]="'DeterminazioneDirigenzialeData_' + index" (keydown)="onInputDate($event)">
+                  </form>
+                  <mat-datepicker-toggle matSuffix [for]="DetDirPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #DetDirPicker></mat-datepicker>
+                </mat-form-field>
+              </td>
+              <td class="mat-cell">
+                <a [href]="fileUrlDeterminazioniDirigenziali![index]" [download]="DeterminazioniDirigenziali[index].fileNameUser" target="_blank">{{
+                DeterminazioniDirigenziali[index].fileNameUser }}</a>
+              </td>
+              <td class="mat-cell">
+                <button mat-icon-button (click)="removeFileDeterminazioneDirigenziale(index)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+
+      <div class="search-container">
+        <div class="buttons" mat-dialog-actions>
+          <button mat-button color="primary" (click)="back()">INDIETRO</button>
+          <button mat-flat-button color="primary" style="margin-right: 10px; margin-top: 10px; margin-left: 20px"  type="button" (click)="approva()" *ngIf="salvataggioEffettuato">Approva</button>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px; margin-right: 10px; margin-top: 10px;">
+          <button mat-flat-button color="primary">
+            Salva
+          </button>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+</ng-container>
+<ng-template #salvataggioTemplate>
+  <app-success [selettore]="'EDIT-REGIONE'" [intId]="intId"
+    [message]="'Aggiornamento dell\'intervento completato con successo.'"></app-success>
+</ng-template>
+<ng-template #loadingTemplate>
+  <mat-spinner style="margin: 20px auto"></mat-spinner>
+</ng-template>

@@ -1,0 +1,263 @@
+openapi: 3.0.0
+info:
+  title: Programmazione Service API
+  version: 1.0.0
+  description: API per gestire la programmazione e le proroghe degli enti.
+
+paths:
+  /api/v2/programmazione/info/{enteCod}:
+    get:
+      summary: Ottiene le informazioni di programmazione per un ente specifico. Controlla che l'ente esista e restituisce le informazioni di programmazione. Se l'ente non viene trovato, restituisce un errore 404.
+      tags:
+        - CDU 02
+      parameters:
+        - name: enteCod
+          in: path
+          required: true
+          description: Codice dell'ente.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Informazioni di programmazione per l'ente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfoProgrammazione'
+        '404':
+          description: Ente non trovato.
+
+  /api/v2/programmazione/{anno}:
+    get:
+      summary: Ottiene la programmazione per un anno specifico, restituendo dati strutturati da interfaccia, con inizio e fine programmazione letti da distinct sulle colonne per tutte le aziende nel triennio. Include anche un elenco delle aziende con eventuali date di proroga. Verifica che le date siano valide per l'anno fornito.
+      tags:
+        - CDU 04
+      parameters:
+        - name: anno
+          in: path
+          required: true
+          description: Anno per il quale ottenere la programmazione.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Programmazione per l'anno specificato.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgrammazioneDto'
+        '404':
+          description: Programmazione non trovata.
+
+    put:
+      summary: Modifica la programmazione per un anno specifico, chiudendo i record esistenti e inserendo nuovi record. Se il front-end non passa le date delle proroghe, non si toccano le proroghe; altrimenti, vengono aggiornate per tutte le aziende. Controlla che l'anno e le date siano validi.
+      tags:
+        - CDU 04
+      parameters:
+        - name: anno
+          in: path
+          required: true
+          description: Anno per il quale inserire la proroga.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProgrammazioneProrogaDto'
+      responses:
+        '200':
+          description: Proroga inserita con successo.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgrammazioneDto'
+        '500':
+          description: Errore interno del server.
+
+  /api/v2/programmazione/{anno}/{enteCod}:
+    get:
+      summary: Ottiene la proroga per un ente specifico in un anno. Verifica che l'ente e la proroga esistano e restituisce le informazioni relative. Se non trovata, restituisce un errore 404.
+      tags:
+        - CDU 04
+      parameters:
+        - name: anno
+          in: path
+          required: true
+          description: Anno per il quale ottenere la proroga.
+          schema:
+            type: string
+        - name: enteCod
+          in: path
+          required: true
+          description: Codice dell'ente.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Proroga per l'ente nell'anno specificato.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnteProrogaDto'
+        '404':
+          description: Proroga non trovata.
+
+    put:
+      summary: Inserisce o modifica la proroga per un ente specifico in un anno, eseguendo la chiusura del vecchio record e l'inserimento di un nuovo record per tutte le aziende. Verifica che le date siano valide.
+      tags:
+        - CDU 04
+      parameters:
+        - name: anno
+          in: path
+          required: true
+          description: Anno per il quale inserire o modificare la proroga.
+          schema:
+            type: string
+        - name: enteCod
+          in: path
+          required: true
+          description: Codice dell'ente.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnteProrogaDto'
+      responses:
+        '200':
+          description: Proroga inserita o modificata con successo.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnteProrogaDto'
+        '404':
+          description: Proroga non trovata.
+        '500':
+          description: Errore interno del server.
+
+  /api/v2/programmazione/:
+    post:
+      summary: Inserisce una nuova programmazione. Solo per funzionari regionali. L'utente inserisce le date e il sistema carica automaticamente la tabella con tutti gli enti e le relative date. Controlla che le date siano valide prima dell'inserimento.
+      tags:
+        - CDU 02
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProgrammazioneDto'
+      responses:
+        '200':
+          description: Programmazione inserita con successo.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgrammazioneDto'
+        '500':
+          description: Errore interno del server.
+
+    get:
+      summary: Ottiene l'elenco delle programmazioni. Se non ci sono programmazioni, restituisce un errore 500.
+      tags:
+        - CDU 02
+      responses:
+        '200':
+          description: Elenco delle programmazioni.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProgrammazioneBaseDto'
+        '500':
+          description: Errore interno del server.
+
+components:
+  schemas:
+    ProgrammazioneDto:
+      type: object
+      properties:
+        # Definire qui le proprietà di ProgrammazioneDto
+        anno:
+          type: integer
+        faseInizio:
+          type: string
+          format: date
+        faseFine:
+          type: string
+          format: date
+        enti:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnteProrogaDto'
+    
+    ProgrammazioneBaseDto:
+      type: object
+      properties:
+        # Definire qui le proprietà di ProgrammazioneBaseDto
+        anno:
+          type: integer
+        faseInizio:
+          type: string
+          format: date
+        faseFine:
+          type: string
+          format: date
+    
+    EnteProrogaDto:
+      type: object
+      properties:
+        # Definire qui le proprietà di EnteProrogaDto
+        enteId:
+          type: integer
+        enteCodEsteso:
+          type: string
+        enteDesc:
+          type: string
+        faseProrogaInizio:
+          type: string
+          format: date
+        faseProrogaFine:
+          type: string
+          format: date
+
+    ProgrammazioneProrogaDto:
+      type: object
+      properties:
+        faseProrogaInizio:
+          type: string
+          format: date
+          example: "2024-01-01"
+        faseProrogaFine:
+          type: string
+          format: date
+          example: "2024-12-31"
+        # Includi qui le proprietà ereditate da ProgrammazioneBaseDto
+        anno:
+          type: integer
+        faseInizio:
+          type: string
+          format: date
+        faseFine:
+          type: string
+          format: date
+
+    InfoProgrammazione:
+      type: object
+      properties:
+        programmazioneAperta:
+          type: boolean
+        triennio:
+          type: string
+        annoInserimentIntervento:
+          type: string
+        dataInizioProgrammazione:
+          type: string
+          format: date
+        DataFineProgrammazione:
+          type: string
+          format: date

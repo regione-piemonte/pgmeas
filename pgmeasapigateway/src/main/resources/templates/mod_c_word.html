@@ -1,0 +1,454 @@
+<?xml version="1.0"?>
+<!DOCTYPE scheda_c [ <!ENTITY nbsp "&#160;">
+<!ENTITY euro "&#8364;">
+<!ENTITY deg "&#176;">
+]><html xmlns:th="http://www.thymeleaf.org">
+<head>
+   <meta charset="UTF-8" />
+   <link href="classpath:/templates/style_sca.css" rel="stylesheet" type="text/css" media="all" />
+   <link href="style_sca.css" rel="stylesheet" type="text/css" media="all" />
+</head>
+<body>
+   <div class="prima pagina">
+      <h1>REGIONE PIEMONTE MONITORAGGIO FINANZIAMENTI SCHEDA C</h1>
+	  <h2>INTERVENTI EDILIZIA ED ATTREZZATURE SANITARIE</h2>
+
+      <table class="vlabeled">
+         <tbody>
+            <tr th:each="fondo, stato : ${data.fonteFinanziamento.fondi}">
+               <td th:if="${stato.first}" th:attr="rowspan=${stato.size}">
+                  FONTE DEL FINANZIAMENTO: 
+               </td>
+               <td>
+                  <span th:text="${fondo}"></span>
+               </td>
+			   <td class="empty">&nbsp;</td>
+               <td th:if="${stato.first}" th:attr="rowspan=${stato.size}">
+                  AGGIORNAMENTO DATI AL <span th:text="${data.fonteFinanziamento.aggiornamento}"></span></td>
+            </tr>
+         </tbody>
+      </table>
+
+      <h3>DATI INTERVENTO:</h3>
+
+      <table class="vlabeled">
+         <tbody>
+            <tr>
+               <td>azienda di riferimento:
+               </td>
+               <td>
+                  Codice Azienda</td>
+               <td><span th:text="${data.datiIntervento.codiceAzienda}"></span></td>
+               <td>
+                  Nome Azienda</td>
+               <td><span th:text="${data.datiIntervento.nomeAzienda}"></span></td>
+            </tr>
+            <tr>
+               <td>
+                  Intervento:
+               </td>
+               <td>
+                  Titolo
+               </td>
+               <td>	<span th:text="${data.datiIntervento.interventoTitolo}"></span></td>
+               <td>
+                  &nbsp;
+               </td>
+               <td>&nbsp;</td>
+            </tr>
+            <tr>
+               <td>
+                  RUP:
+               </td>
+               <td>
+                  Nome 
+               </td>
+               <td>
+			   <span th:text="${data.datiIntervento.rupNome}"></span></td>
+               <td>
+                  Cognome
+               </td>
+               <td>
+			   <span th:text="${data.datiIntervento.rupCognome}"></span></td>
+            </tr>
+         </tbody>
+      </table>
+	  <p>&nbsp;</p>
+      <table class="vlabeled">
+         <tbody>
+			<tr>
+			   <td>ID intervento (procedura regionale):</td>
+			   <td><span th:text="${data.datiIntervento.idInterventoProceduraRegionale}"></span></td>
+			</tr>
+			<tr>
+			   <td>Codice NSIS:</td>
+			   <td><span th:text="${data.datiIntervento.codiceNSIS}"></span></td>
+			</tr>
+			<tr>
+			   <td>Codice CUP:</td>
+			   <td><span th:text="${data.datiIntervento.codiceCUP}"></span></td>
+			</tr>
+			<tr>
+			   <td>Codice CIG:</td>
+			   <td><span th:text="${data.datiIntervento.codiceCIG}"></span></td>
+			</tr>
+			<tr>
+			   <td>Provvedimenti di Assegnazione:</td>
+			   <td><span th:text="${data.datiIntervento.provvedimentiAssegnazione}"></span></td>
+			</tr>
+			<tr>
+			   <td>Data Decreto Ministero Salute:</td>
+			   <td><span th:text="${data.datiIntervento.dataDecretoMinisteroSalute}"></span></td>
+			</tr>
+			<tr>
+			   <td>Data di aggiudicazione:</td>
+			   <td><span th:text="${data.datiIntervento.dataAggiudicazione}"></span></td>
+			</tr>
+			<tr>
+			   <td>Stato dei lavori:</td>
+			   <td><span th:text="${data.datiIntervento.statoLavori}"></span></td>
+			</tr>
+			<tr>
+			   <td>Importo complessivo &euro;:</td>
+			   <td  class="importo"><span th:text="${data.datiIntervento.importoComplessivo}"></span></td>
+			</tr>
+         </tbody>
+      </table>
+
+	  <p>&nbsp;</p>
+
+	  </div>
+	<div class="pagnina successiva presidio">
+	
+		<table class="labeled">
+			<thead>
+				<tr>
+					<td>
+						Codice Presidio
+					</td>
+					<td>
+						Nome Presidio
+					</td>
+					<td>Data apertura cantiere: (Prevista P / Effettiva E)</td>
+					<td>Data di Collaudo: (Prevista P / Effettiva E)</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="i : ${data.datiIntervento.presidi}">
+					<td>
+						<span th:text="${i.codicePresidio}"></span>
+					</td>
+					<td><span th:text="${i.nomePresidio}"></span></td>
+					<td>P <span th:text="${i.dataAperturaCantierePrevista}"></span> - E <span
+							th:text="${i.dataAperturaCantiereEffettiva}"></span></td>
+					<td>P <span th:text="${i.dataCollaudoPrevista}"></span> - E <span
+							th:text="${i.dataCollaudoEffettiva}"></span></td>
+				</tr>
+			</tbody>
+		</table>
+	
+		<p>&nbsp;</p>
+	
+	
+	</div>
+   <div class="pagnina successiva">
+
+	  <h3>PIANO FINANZIARIO</h3>
+	  
+      <table class="labeled">
+         <thead>
+            <tr>
+               <td>
+                  FONTE DEL FINANZIAMENTO
+               </td>
+               <td>
+                  Estremi Atto di Assegnazione
+               </td>
+               <td>
+                  Importo del finanziamento
+               </td>
+            </tr>
+         </thead>
+         <tbody>
+            <tr th:each="i : ${data.pianoFinanziario.voci}">
+				<td><span th:text="${i.fonteFinanziamento}"></span></td>
+				<td><span th:text="${i.estremiAttoAssegnazione}"></span></td>
+				<td  class="importo"><span th:text="${i.importoFinanziamento}"></span></td>
+            </tr>
+         </tbody>
+         <tfoot>
+            <tr>
+               <td>
+                  TOTALE
+               </td>
+               <td>
+                  &nbsp;
+               </td>
+               <td class="importo"><span th:text="${data.pianoFinanziario.totale}"></span></td>
+            </tr>
+         </tfoot>
+      </table>
+	  
+	</div>
+	<div class="pagnina successiva">
+
+      <h3>PREVISIONE AVANZAMENTO DI SPESA</h3>
+	  
+      <table class="labeled">
+         <thead>
+            <tr>
+               <td>
+                  FONTE DEL FINANZIAMENTO
+               </td>
+               <td th:each="a : ${data.previsioneAvanzamentoSpesa.anni}">
+                  Esercizio finanziario [[${a}]]
+               </td>
+               <td>
+                  Totale <br /> [&euro;]
+               </td>
+            </tr>
+         </thead>
+         <tbody>
+            <tr th:each="i : ${data.previsioneAvanzamentoSpesa.voci}">
+				<td><span th:text="${i.fonteFinanziamento}"></span></td>
+				<td class="importo" th:each="anno : ${data.previsioneAvanzamentoSpesa.anni}" >
+					<span th:text="${i.esercizioFinanziario[anno]}"></span>
+				</td>
+				<td class="importo"><span th:text="${i.totale}"></span></td>
+
+            </tr>
+         </tbody>
+         <tfoot>
+            <tr>
+               <td>
+                  TOTALE
+               </td>
+			   <td class="importo" th:each="a : ${data.previsioneAvanzamentoSpesa.anni}">
+			      <span th:text="${data.previsioneAvanzamentoSpesa.totaleAnni[a]}"></span>
+			   </td>
+               <td class="importo"><span th:text="${data.previsioneAvanzamentoSpesa.totale}"></span></td>
+            </tr>
+         </tfoot>
+      </table>
+      
+   </div>
+   <div class="pagnina successiva">
+
+	  <h2>ELENCO DELLE LIQUIDAZIONI</h2>
+	  <h3>RICHIESTA FINANZIAMENTO PRINCIPALE ([[${data.richiestaFinanziamentoPrincipale.fonteFinanziamento}]])</h3>
+	  
+      <table class="labeled">
+         <thead>
+            <tr>
+               <td>
+                  N&deg; richiesta/ data/ riferimento
+               </td>
+               <td>
+                  Riferimento della Richiesta</td>
+               <td>
+                  Importo della Richiesta</td>
+               <td>
+                  Importo liquidato
+               </td>
+               <td>
+                  Importo Da liquidare
+               </td>
+               <td>
+                  Importo erogato
+               </td>
+               <td>
+                  Importo Incassato
+               </td>
+            </tr>
+         </thead>
+         <tbody>
+            <tr th:each="i : ${data.richiestaFinanziamentoPrincipale.voci}">
+				<td><span th:text="${i.noRichiesta}"></span> - 
+				    <span th:text="${i.dataRichiesta}"></span> -
+				 <span th:text="${i.riferimentoRichiesta}"></span></td>
+				<td><span th:text="${i.riferimentoRichiesta}"></span></td>
+				<td  class="importo"><span th:text="${i.importoRichiesta}"></span></td>
+				<td  class="importo"><span th:text="${i.importoLiquidato}"></span></td>
+				<td  class="importo"><span th:text="${i.importoLiquidare}"></span></td>
+				<td class="importo"><span th:text="${i.importoErogato}"></span></td>
+				<td class="importo"><span th:text="${i.importoIncassato}"></span></td>
+            </tr>
+         </tbody>
+         <tfoot>
+            <tr>
+               <td>
+                  TOTALE
+               </td>
+               <td>&nbsp;</td>
+			   <td class="importo"><span th:text="${data.richiestaFinanziamentoPrincipale.totali.importoRichiesta}"></span></td>
+			   <td class="importo"><span th:text="${data.richiestaFinanziamentoPrincipale.totali.importoLiquidato}"></span></td>
+			   <td class="importo"><span th:text="${data.richiestaFinanziamentoPrincipale.totali.importoLiquidare}"></span></td>
+			   <td class="importo"><span th:text="${data.richiestaFinanziamentoPrincipale.totali.importoErogato}"></span></td>
+			   <td class="importo"><span th:text="${data.richiestaFinanziamentoPrincipale.totali.importoIncassato}"></span></td>
+            </tr>
+         </tfoot>
+      </table>
+      
+	</div>
+	
+	<div class="pagnina successiva" th:each="rf : ${data.richiestaFinanziamento}">
+
+	  <h3>RICHIESTA FINANZIAMENTO STATALE ([[${rf.fonteFinanziamento}]])</h3>
+      
+	  
+      <table class="labeled">
+         <thead>
+            <tr>
+               <td>
+                  N&deg; richiesta/ data/ riferimento
+               </td>
+               <td>
+                  Riferimento della Richiesta</td>
+               <td>
+                  Importo della Richiesta</td>
+               <td>
+                  Importo liquidato
+               </td>
+               <td>
+                  Importo Da liquidare
+               </td>
+               <td>
+                  Importo erogato
+               </td>
+               <td>
+                  Importo Incassato
+               </td>
+            </tr>
+         </thead>
+         <tbody>
+			<tr th:each="i : ${rf.voci}">
+				<td><span th:text="${i.noRichiesta}"></span> - 
+				    <span th:text="${i.dataRichiesta}"></span> -
+				 <span th:text="${i.riferimentoRichiesta}"></span></td>
+				<td><span th:text="${i.riferimentoRichiesta}"></span></td>
+				<td class="importo"><span th:text="${i.importoRichiesta}"></span></td>
+				<td class="importo"><span th:text="${i.importoLiquidato}"></span></td>
+				<td class="importo"><span th:text="${i.importoLiquidare}"></span></td>
+				<td class="importo"><span th:text="${i.importoErogato}"></span></td>
+				<td class="importo"><span th:text="${i.importoIncassato}"></span></td>
+            </tr>
+         </tbody>
+         <tfoot>
+            <tr>
+               <td>
+                  TOTALE
+               </td>
+               <td>
+                  &nbsp;
+               </td>
+			   <td class="importo"><span th:text="${rf.totali.importoRichiesta}"></span></td>
+			   <td class="importo"><span th:text="${rf.totali.importoLiquidato}"></span></td>
+			   <td class="importo"><span th:text="${rf.totali.importoLiquidare}"></span></td>
+			   <td class="importo"><span th:text="${rf.totali.importoErogato}"></span></td>
+			   <td class="importo"><span th:text="${rf.totali.importoIncassato}"></span></td>
+            </tr>
+         </tfoot>
+      </table>
+
+	</div>
+	<div class="pagnina successiva">
+
+	  <h3>IMPORTO TOTALE LIQUIDATO</h3>
+      <table class="labeled">
+         <thead>
+            <tr>
+               <td>
+                  FONTE DEL FINANZIAMENTO
+               </td>
+               <td>
+                  Importo Totale delle Richieste
+               </td>
+               <td>
+                  Importo Totale liquidato
+               </td>
+               <td>
+                  Importo Totale Da liquidare
+               </td>
+               <td>
+                  Importo Totale erogato
+               </td>
+               <td>
+                  Importo Totale Incassato
+               </td>
+            </tr>
+         </thead>
+         <tbody>
+            <tr th:each="i : ${data.totaleLiquidato.voci}">
+				<td><span th:text="${i.fonteFinanziamento}"></span></td>
+				<td class="importo"><span th:text="${i.totaleRichieste}"></span></td>
+				<td class="importo"><span th:text="${i.totaleLiquidato}"></span></td>
+				<td class="importo"><span th:text="${i.totaleLiquidare}"></span></td>
+				<td class="importo"><span th:text="${i.totaleErogato}"></span></td>
+				<td class="importo"><span th:text="${i.totaleIncassato}"></span></td>
+            </tr>
+         </tbody>
+         <tfoot>
+            <tr>
+               <td>
+                  TOTALE
+               </td>
+			   <td class="importo"><span th:text="${data.totaleLiquidato.totali.totaleRichieste}"></span></td>
+			   <td class="importo"><span th:text="${data.totaleLiquidato.totali.totaleLiquidato}"></span></td>
+			   <td class="importo"><span th:text="${data.totaleLiquidato.totali.totaleLiquidare}"></span></td>
+			   <td class="importo"><span th:text="${data.totaleLiquidato.totali.totaleErogato}"></span></td>
+			   <td class="importo"><span th:text="${data.totaleLiquidato.totali.totaleIncassato}"></span></td>
+            </tr>
+         </tfoot>
+      </table>
+
+	</div>
+	<div class="pagnina successiva">
+
+	  <h3>IMPORTO DELLA SPESA NON SPESO ECONOMIE</h3>
+      <table class="labeled">
+         <thead>
+            <tr>
+               <td>
+                  FONTE DEL FINANZIAMENTO
+               </td>
+               <td>
+                  Importi Piano Finanziario
+               </td>
+               <td>
+                  Importi Totali Spesi dall'Azienda</td>
+               <td>
+                  % <br /> avanzamento spesa</td>
+               <td>
+                  %<br /> Economia</td>
+               <td>
+                  Importo Economia <br /> Finale
+               </td>
+            </tr>
+         </thead>
+         <tbody>
+            <tr th:each="i : ${data.importiSnse.voci}">
+				<td><span th:text="${i.fonteFinanziamento}"></span></td>
+				<td class="importo"><span th:text="${i.importiPianoFinanziario}"></span></td>
+				<td class="importo"><span th:text="${i.importiTotaliSpesi }"></span></td>
+				<td class="importo"><span th:text="${i.percAvanzamentoSpesa}"></span></td>
+				<td class="importo"><span th:text="${i.percEconomia }"></span></td>
+				<td class="importo"><span th:text="${i.importoEconomiaFinale}"></span></td>
+            </tr>
+         </tbody>
+         <tfoot>
+            <tr>
+               <td>
+                  TOTALE
+               </td>
+			   <td class="importo"><span th:text="${data.importiSnse.totali.importiPianoFinanziario}"></span></td>
+			   <td class="importo"><span th:text="${data.importiSnse.totali.importiTotaliSpesi }"></span></td>
+			   <td class="importo"><span th:text="${data.importiSnse.totali.percAvanzamentoSpesa}"></span></td>
+			   <td class="importo"><span th:text="${data.importiSnse.totali.percEconomia }"></span></td>
+			   <td class="importo"><span th:text="${data.importiSnse.totali.importoEconomiaFinale}"></span></td>
+            </tr>
+         </tfoot>
+      </table>
+   </div>
+</body>
+
+</html>

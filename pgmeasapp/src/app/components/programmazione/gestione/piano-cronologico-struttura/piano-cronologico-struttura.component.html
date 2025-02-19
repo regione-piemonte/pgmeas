@@ -1,0 +1,53 @@
+<form [formGroup]="pianoCronologicoForm">
+  <mat-card>
+    <mat-card-header>
+      <p class="card-header">Cronoprogramma della struttura (In giorni naturali consecutivi)</p>
+    </mat-card-header>
+    <mat-card-content>
+      <div formArrayName="interventi">
+        <ng-container *ngFor="let intervento of interventi.controls; let i = index" [formGroupName]="i">
+          <mat-accordion>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h3  class="pgmeas-primary-text" *ngIf="denominazioneStruttura[i]">
+                    {{ denominazioneStruttura[i].strDenominazione }}
+                  </h3>                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <p class="small-text">Cronoprogramma della struttura (In giorni naturali consecutivi)</p>
+              <div class="d-flex-between m-14">
+                <mat-form-field class="input-field">
+                  <mat-label>Progettazione</mat-label>
+                  <input type="number" formControlName="progettazioneGg" matInput readonly="{{disableRegionali()}}">
+                </mat-form-field>
+                <mat-form-field class="input-field">
+                  <mat-label>Affidamento Lavori</mat-label>
+                  <input type="number" formControlName="affidamentoLavoriGg" matInput readonly="{{disableRegionali()}}">
+                </mat-form-field>
+                <mat-form-field class="input-field">
+                  <mat-label>Esecuzione Lavori</mat-label>
+                  <input type="number" formControlName="esecuzioneLavoriGg" matInput readonly="{{disableRegionali()}}">
+                </mat-form-field>
+                <mat-form-field class="input-field">
+                  <mat-label>Collaudo</mat-label>
+                  <input type="number" formControlName="collaudoGg" matInput readonly="{{disableRegionali()}}">
+                </mat-form-field>
+              </div>
+              <br><br>
+                  <div class="appalto-integrato-div">
+                    <p class="appalto-integrato-p small-text">APPALTO INTEGRATO</p>
+                    <mat-slide-toggle formControlName="appaltoIntegrato" (change)="onToggleChange($event, intervento.get('idStruttura')?.value)"></mat-slide-toggle>
+                  </div>
+                  <br>
+                  <p class="small-text">
+                    Totale durata stimata dell'intervento:
+                    <b>{{calcolaTotaleInterventoStruttura(i)}}</b>
+                    <!-- <b>{{ totaleDurataIntervento }}</b> -->
+                  </p>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </ng-container>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</form>

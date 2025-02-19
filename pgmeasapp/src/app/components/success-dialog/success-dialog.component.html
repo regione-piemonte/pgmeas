@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+  <div class="green-box">
+    <mat-icon>check_circle</mat-icon>
+    {{data.message}}
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Chiudi</button>
+  <div class="spacer"></div>
+  <button *ngIf="data.button" mat-stroked-button color="primary" (click)="data.button.onClick()">{{data.button.label}}</button>
+  <button mat-flat-button color="primary" mat-dialog-close [routerLink]="['/', 'home']">Torna alla home page</button>
+</div>

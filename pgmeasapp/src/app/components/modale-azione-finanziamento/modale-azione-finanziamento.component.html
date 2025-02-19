@@ -1,0 +1,82 @@
+<ng-container *ngIf="!isRespingimento; else respingimento">
+  <div class="d-flex" mat-dialog-content>
+    <div class="header">
+      <h1>{{data.titolo}}</h1>
+      <button (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <ng-container *ngIf="!isSalvataggio && !isBroken">
+      <div>
+        {{data.messaggio}}
+      </div>
+    </ng-container>
+    <ng-container *ngIf="isSalvataggio">
+      <div class="div-success">
+        {{data.risultato}}
+      </div>
+    </ng-container>
+    <ng-container *ngIf="isBroken">
+      <div class="div-error">
+        {{messaggioErroreApprova}}
+      </div>
+    </ng-container>
+    <div class="buttons" mat-dialog-actions>
+      <p *ngIf="!isSalvataggio && !isBroken;" (click)="!isSubmitting && onNoClick()" [ngClass]="{'disabled': isSubmitting}" class="annulla-button">Annulla</p>
+      <ng-container *ngIf="!isSalvataggio && !isBroken; ">
+        <button (click)="onSave()" class="aggiungi-button" color="primary" mat-raised-button [disabled]="isSubmitting">Conferma</button>
+      </ng-container>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #respingimento>
+  <div class="d-flex" mat-dialog-content>
+    <div class="header">
+      <h1>{{data.titolo}}</h1>
+      <button (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <ng-container *ngIf="!isSalvataggio && !isBroken && !isCompilazioneNota">
+      <div>
+        <mat-form-field class="custom-width">
+          <mat-label>Nota</mat-label>
+          <input matInput type="text" [(ngModel)]="nota" />
+        </mat-form-field>
+        <mat-error *ngIf="notaError">
+          Il campo è obbligatorio.
+        </mat-error>
+      </div>
+      <div class="buttons" mat-dialog-actions>
+        <p (click)="!isSubmitting && onNoClick()" class="annulla-button">Indietro</p>
+        <button (click)="compilaNota()" class="aggiungi-button" color="primary" mat-raised-button>Respingi modulo A</button>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="isCompilazioneNota">
+      <ng-container *ngIf="!isSalvataggio && !isBroken">
+        <div>
+          {{data.messaggio}}
+        </div>
+      </ng-container>
+      <ng-container *ngIf="isSalvataggio">
+        <div class="div-success">
+          {{data.risultato}}
+        </div>
+      </ng-container>
+      <ng-container *ngIf="isBroken">
+        <div class="div-error">
+          {{messaggioErroreRespingi}}
+        </div>
+      </ng-container>
+      <div class="buttons" mat-dialog-actions>
+        <p *ngIf="!isSalvataggio && !isBroken;" (click)="!isSubmitting && onNoClick()" [ngClass]="{'disabled': isSubmitting}" class="annulla-button">Annulla</p>
+        <ng-container *ngIf="!isSalvataggio && !isBroken;">
+          <button (click)="onSave()" class="aggiungi-button" color="primary" [disabled]="isSubmitting" mat-raised-button>Conferma</button>
+        </ng-container>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>

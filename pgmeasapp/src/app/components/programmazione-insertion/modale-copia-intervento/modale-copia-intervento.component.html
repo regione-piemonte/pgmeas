@@ -1,0 +1,114 @@
+
+  <div class="d-flex" mat-dialog-content>
+
+    <div class="header">
+      <h1>{{data.titolo}}</h1>
+      <button (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <form [formGroup]="copiaForm" (ngSubmit)="cerca()">
+    <div class="date-programmazioni">
+      <p>
+        Triennio: <b>{{ data.triennio }}</b>
+      </p>
+    </div>
+    <div class="date-programmazioni">
+        <label> Anno di inserimento intervento: </label>
+        <mat-form-field>
+          <mat-select formControlName="anno">
+            <mat-option
+              [value]=""
+            >
+            </mat-option>
+            <mat-option
+              *ngFor="let anno of data.anniSelezionabili | sort"
+              [value]="anno"
+            >
+              {{ anno }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="form-row">
+      <label>Codice PGMEAS intervento: </label>
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          formControlName="codInterventoPGMEAS"
+        />
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <label>Titolo Intervento: </label>
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          formControlName="titoloIntervento"
+        />
+      </mat-form-field>
+    </div>
+    <div  class="form-row">
+      <label>Cup: </label>
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          formControlName="cup"
+          [maxLength]="15"
+        />
+      </mat-form-field>
+    </div>
+    <div class="search-container">
+      <button class="aggiungi-button" color="primary" mat-raised-button>Cerca</button>
+    </div>
+  </form>
+  <div>
+      <ng-container *ngIf="!loading; else loadingTemplate">
+      <table mat-table [dataSource]="interventiList" matSort>
+
+        <!-- Colonna ID -->
+        <ng-container matColumnDef="intCod">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Codice PGMEAS intervento</th>
+          <td mat-cell *matCellDef="let element">{{element.intCod}}</td>
+        </ng-container>
+
+        <!-- Colonna Nome -->
+        <ng-container matColumnDef="intTitolo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Titolo intervento</th>
+          <td mat-cell *matCellDef="let element">{{element.intTitolo}}</td>
+        </ng-container>
+
+        <!-- Colonna Età -->
+        <ng-container matColumnDef="intImporto">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Importo</th>
+          <td mat-cell *matCellDef="let element">{{element.intImporto  |currency: 'EUR'}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="copia">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element"><button class="aggiungi-button" color="link" mat-raised-button (click)="copia(element)">Recupera Intervento</button></td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      </table>
+      <div *ngIf="!interventiList.length">
+          <span>Nessun dato per i criteri di ricerca inseriti</span>
+      </div>
+      <!-- Paginazione -->
+      <mat-paginator *ngIf="interventiList.length" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </ng-container>
+    <ng-template #loadingTemplate>
+      <mat-spinner style="margin: 20px auto;"></mat-spinner>
+    </ng-template>
+  </div>
+    <div class="buttons" mat-dialog-actions>
+      <p (click)="onNoClick()" class="annulla-button">Annulla</p>
+    </div>
+  </div>
+
+

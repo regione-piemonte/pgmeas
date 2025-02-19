@@ -1,0 +1,98 @@
+<form [formGroup]="allegatiForm">
+  <mat-card>
+    <mat-card-header>
+      <p class="card-header">Allegati a cura di Regione Piemonte</p>
+    </mat-card-header>
+    <mat-card-content style="width: 85%">
+      <div class="d-flex-between m-14" >
+          <p class="small-text">Nulla osta di ammissione</p>&nbsp;
+          <mat-form-field class="input-field">
+            <mat-label>Num</mat-label>
+            <input type="string" formControlName="intAllegatoNumeroNO" matInput placeholder="Num" readonly="{{disableRegionali()}}">
+          </mat-form-field>
+          <div class="form-row">
+            <label>Data: </label>
+            <mat-form-field appearance="fill">
+              <input matInput [matDatepicker]="picker" placeholder="gg/mm/aaaa" formControlName="intAllegatoDataNO" [max]="maxDate" readonly  (click)="picker.open()">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker disabled="{{disableRegionali()}}"></mat-datepicker>
+            </mat-form-field>
+          </div>
+          &nbsp;&nbsp;&nbsp;
+        
+
+          <div *ngIf="!disableRegionali()">
+           <div *ngIf="nullaOsta">
+            <p (click)="fileInput1.click()" class="upload-button" *ngIf="canEdit">Allega</p>
+          </div>
+            <input #fileInput1 type="file" accept=".pdf" (change)="onFileSelectedNullaOsta($event)" style="display: none" />
+            <!-- Mostra il file se è stato caricato -->
+            <div *ngIf="fileNameNullaOsta" class="allegato-div">
+              <!-- Nome del file e link per la visualizzazione -->
+              <a [href]="fileUrlNullaOsta" [download]="fileNameNullaOsta" target="_blank" class="upload-button">{{ fileNameNullaOsta }}</a>
+
+              <!-- Icona del cestino per rimuovere il file -->
+              <button mat-icon-button (click)="removeFileNullaOsta()" style="color: red;">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <div *ngIf="disableRegionali()">     
+            <input #fileInput1 type="file" accept=".pdf" (change)="onFileSelectedNullaOsta($event)" style="display: none" />
+            <!-- Mostra il file se è stato caricato -->
+            <div *ngIf="fileNameNullaOsta" class="allegato-div">
+              <!-- Nome del file e link per la visualizzazione -->
+              <a [href]="fileUrlNullaOsta" [download]="fileNameNullaOsta" target="_blank" class="upload-button">{{ fileNameNullaOsta }}</a>
+            </div>
+          </div>
+
+      </div>
+
+      <div class="d-flex-between m-14" >
+        <p class="small-text">Decreto ministeriale di ammissione al finanziamento</p>
+        <mat-form-field class="input-field">
+          <mat-label>Num</mat-label>
+          <input type="string" formControlName="intAllegatoNumeroDM" matInput placeholder="Num" readonly="{{disableRegionali()}}">
+        </mat-form-field>
+        <div class="form-row">
+          <label>Data: </label>
+          <mat-form-field appearance="fill">
+            <input matInput [matDatepicker]="pickerDM" placeholder="gg/mm/aaaa" formControlName="intAllegatoDataDM" [max]="maxDate" readonly  (click)="pickerDM.open()">
+            <mat-datepicker-toggle matSuffix [for]="pickerDM"></mat-datepicker-toggle>
+            <mat-datepicker #pickerDM disabled="{{disableRegionali()}}"></mat-datepicker>
+          </mat-form-field>
+        </div>
+        &nbsp;&nbsp;&nbsp;
+        
+        <div *ngIf="!disableRegionali()">
+          <div *ngIf="decretoMin">
+          <p (click)="fileInput2.click()" class="upload-button" *ngIf="canEdit">Allega</p>
+          </div>
+          <input #fileInput2 type="file" accept=".pdf" (change)="onFileSelectedDecretoMinisteriale($event)" style="display: none" />
+          <!-- Mostra il file se è stato caricato -->
+          <div *ngIf="fileNameDecretoMinisteriale" class="allegato-div">
+            <!-- Nome del file e link per la visualizzazione -->
+            <a [href]="fileUrlDecretoMinisteriale" [download]="fileNameDecretoMinisteriale" target="_blank" class="upload-button">{{ fileNameDecretoMinisteriale}}</a>
+
+            <!-- Icona del cestino per rimuovere il file -->
+            <button mat-icon-button (click)="removeFileDecretoMinisteriale()" style="color: red;">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="disableRegionali()">     
+          <input #fileInput2 type="file" accept=".pdf" (change)="onFileSelectedDecretoMinisteriale($event)" style="display: none" />
+          <!-- Mostra il file se è stato caricato -->
+          <div *ngIf="fileNameDecretoMinisteriale" class="allegato-div">
+            <!-- Nome del file e link per la visualizzazione -->
+            <a [href]="fileUrlDecretoMinisteriale" [download]="fileNameDecretoMinisteriale" target="_blank" class="upload-button">{{ fileNameDecretoMinisteriale }}</a>
+          </div>
+        </div>
+      </div>
+
+     
+    </mat-card-content>
+  </mat-card>
+</form>

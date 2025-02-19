@@ -1,0 +1,48 @@
+.small-text {
+  font-size: 14px;
+}
+
+.flex-div {
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  display: flex;
+  padding-top: 1.2rem;
+}
+
+.divider {
+  border-bottom: 1px solid #ccc;
+}
+
+.total-row {
+  background-color: #f0f0f0;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.align-div {
+  display: flex;
+  justify-content: end;
+}
+
+.costo-div {
+  align-items: center;
+  font-size: 14px;
+}
+
+.flex-div {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.simbolo-p {
+  margin-left: 0.5rem;
+}
+
+.small-div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+

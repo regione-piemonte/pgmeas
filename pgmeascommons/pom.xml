@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>it.csi.pgmeas</groupId>
+	<artifactId>pgmeascommons</artifactId>
+	<version>1.0.0alfa</version>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.2.12</version>
+		<relativePath />
+		<!-- lookup parent from repository -->
+	</parent>
+	<properties>
+		<java.version>17</java.version>
+		<swagger-codegen-maven-plugin-version>3.0.34</swagger-codegen-maven-plugin-version>
+		<modelmapper.version>2.3.8</modelmapper.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+            <version>${modelmapper.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.11.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-yaml</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<!-- jwt -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- jwt -->
+		<!--<Dependency da Linee Guida-->
+		<dependency>
+			<!-- solo per diangostica di migrazione da springboot 2.7 a 3 -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-properties-migrator</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>it.csi.iridev2</groupId>
+			<artifactId>iridev2-pep-intf</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>it.csi.csi</groupId>
+			<artifactId>csi-stadapter</artifactId>
+			<version>1.4.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>3.11.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.retry</groupId>
+			<artifactId>spring-retry</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.xml.ws</groupId>
+			<artifactId>jakarta.xml.ws-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.ws.rs</groupId>
+			<artifactId>jakarta.ws.rs-api</artifactId>
+		</dependency>
+		<!--<Dependency da Linee Guida-->
+	</dependencies>
+
+	<!--	<distributionManagement> -P deploy-repart 
+		<repository>
+			<id>repart</id>
+			<name>repart-nivola-releases</name>
+			<url>http://repart.csi.it/artifactory/maven2</url>
+		</repository>
+		<snapshotRepository>
+			<id>repart-snapshots</id>
+			<name>repart-nivola-snapshots</name>
+			<url>http://repart.csi.it/artifactory/maven2</url>
+		</snapshotRepository>
+	</distributionManagement>
+	
+	<profiles>
+		<profile>
+			<id>deploy-repart</id>
+			<build>
+				<plugins>
+				<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-clean-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>first-clean</id>
+								<phase>clean</phase>
+								<goals>
+									<goal>clean</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>after-delombok-clean</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>clean</goal>
+								</goals>
+								<configuration>
+									<filesets>
+										<fileset>
+											<directory>${project.build.directory}/generated-sources/delombok</directory>
+										</fileset>
+									</filesets>
+									<excludeDefaultDirectories>true</excludeDefaultDirectories>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.projectlombok</groupId>
+						<artifactId>lombok-maven-plugin</artifactId>
+						<version>1.18.20.0</version>
+						<executions>
+							<execution>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>delombok</goal>
+								</goals>
+								<configuration>
+									<sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+								<configuration>
+									<sourcepath>${project.build.directory}/generated-sources/delombok</sourcepath>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-install-plugin</artifactId>
+						<configuration>
+							<createChecksum>true</createChecksum>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>-->
+
+
+	<build>
+		<plugins>
+			<!--					  <plugin>-->
+			<!--					    <groupId>io.swagger.codegen.v3</groupId>-->
+			<!--					    <artifactId>swagger-codegen-maven-plugin</artifactId>-->
+			<!--					    <version>${swagger-codegen-maven-plugin-version}</version>-->
+			<!--					    <executions>-->
+			<!--						   Generazione interfacce API e DTO per componenti be PGMEAS	-->
+			<!--					      <execution>-->
+			<!--					        <id>jaxrs_exposed_api</id>-->
+			<!--					        <goals>-->
+			<!--					          <goal>generate</goal>-->
+			<!--					        </goals>-->
+			<!--					        <configuration>-->
+			<!--
+			<inputSpec>${project.basedir}/src/main/yaml/pgmeas.yaml/</inputSpec>-->
+			<!--					          <language>csi-jaxrs-resteasy</language>-->
+			<!--					          <output>${project.basedir}</output>-->
+			<!--					          <apiPackage>${default.package}.handler</apiPackage>-->
+			<!--					          <modelPackage>${default.package}.model</modelPackage>-->
+			<!--					          <invokerPackage>${default.package}.handler</invokerPackage>-->
+			<!--					          <configOptions>-->
+			<!--					            <java8>false</java8>-->
+			<!--					            <useBeanValidation>true</useBeanValidation>-->
+			<!--					            <hideGenerationTimestamp>true</hideGenerationTimestamp>-->
+			<!--					            <apiPackage>it.csi.pgmeas.commons.be</apiPackage>-->
+			<!--					            <modelPackage>it.csi.pgmeas.commons.dto</modelPackage>-->
+			<!--					            <invokerPackage>it.csi.pgmeas.commons.be</invokerPackage>-->
+			<!--					            <implFolder>implfolder</implFolder>-->
+			<!--					            <sourceFolder>src/main/java</sourceFolder>-->
+			<!--
+			<generateJbossDeploymentDescriptor>false</generateJbossDeploymentDescriptor>-->
+			<!--					            <generateImplArtifacts>false</generateImplArtifacts>-->
+			<!--					            <generateSwaggerMetadata>false</generateSwaggerMetadata>-->
+			<!--
+			<attributeSerializationStrategy>explicit-as-modeled</attributeSerializationStrategy>-->
+			<!--					            <accessHttpHeaders>true</accessHttpHeaders>-->
+			<!--					            <accessHttpRequest>true</accessHttpRequest>-->
+			<!--					            <jeeLibrary>jakarta</jeeLibrary>-->
+			<!--					             non implementato -->
+			<!--										<jsonLibrary>fasterxml-jackson</jsonLibrary>-->
+			<!--					            <useSwaggerFeature>false</useSwaggerFeature>-->
+			<!--					          </configOptions>-->
+			<!--					        </configuration>-->
+			<!--					      </execution>-->
+			<!--					       Generazione stub per aggancio configuratore-->
+			<!--					      <execution>-->
+			<!--					        <id>configuratore</id>-->
+			<!--					        <goals>-->
+			<!--					          <goal>generate</goal>-->
+			<!--					        </goals>-->
+			<!--					        <configuration>-->
+			<!--
+			<inputSpec>${project.basedir}/src/main/yaml/configuratore.yaml/</inputSpec>-->
+			<!--					          <language>csi-jaxrs-resteasy</language>-->
+			<!--					          <output>${project.basedir}/target/generated-sources</output>-->
+			<!--					          <apiPackage>${default.package}.handler</apiPackage>-->
+			<!--					          <modelPackage>${default.package}.model</modelPackage>-->
+			<!--					          <invokerPackage>${default.package}.handler</invokerPackage>-->
+			<!--					          <configOptions>-->
+			<!--					            <java8>false</java8>-->
+			<!--					            <useBeanValidation>true</useBeanValidation>-->
+			<!--					            <hideGenerationTimestamp>true</hideGenerationTimestamp>-->
+			<!--
+			<apiPackage>it.csi.pgmeas.commons.integration.configuratore.api</apiPackage>-->
+			<!--
+			<modelPackage>it.csi.pgmeas.commons.integration.configuratore.tmp.dto</modelPackage>-->
+			<!--
+			<invokerPackage>it.csi.pgmeas.commons.integration.configuratore.api</invokerPackage>-->
+			<!--					            <implFolder>implfolder</implFolder>-->
+			<!--					            <sourceFolder>src/main/java</sourceFolder>-->
+			<!--
+			<generateJbossDeploymentDescriptor>false</generateJbossDeploymentDescriptor>-->
+			<!--					            <generateImplArtifacts>false</generateImplArtifacts>-->
+			<!--					            <generateSwaggerMetadata>false</generateSwaggerMetadata>-->
+			<!--
+			<attributeSerializationStrategy>implicit-camel-case</attributeSerializationStrategy>-->
+			<!--					            <accessHttpHeaders>true</accessHttpHeaders>-->
+			<!--					            <accessHttpRequest>true</accessHttpRequest>-->
+			<!--					            <jeeLibrary>jakarta</jeeLibrary>-->
+			<!--					            <useSwaggerFeature>false</useSwaggerFeature>-->
+			<!--					          </configOptions>-->
+			<!--					        </configuration>-->
+			<!--					      </execution>					      -->
+			<!--					      -->
+
+			<!--					    </executions>-->
+			<!--					    <dependencies>-->
+			<!--					      <dependency>-->
+			<!--					        <groupId>it.csi.apitools</groupId>-->
+			<!--					        <artifactId>csi-java-swagger3-codegen</artifactId>-->
+			<!--					        <version>1.1.0.002</version>-->
+			<!--					      </dependency>-->
+			<!--					    </dependencies>-->
+			<!--					  </plugin>	-->
+
+
+			<!-- swagger di infoProgrammazione
+  <plugin>
+    <groupId>io.swagger.codegen.v3</groupId>
+    <artifactId>swagger-codegen-maven-plugin</artifactId>
+    <version>${swagger-codegen-maven-plugin-version}</version>
+    <executions>
+      <execution>
+        <id>jaxrs_exposed_api</id>
+        <goals>
+          <goal>generate</goal>
+        </goals>
+        <configuration>
+          <inputSpec>${project.basedir}/src/main/yaml/infoProgrammazione.yaml</inputSpec>
+          <language>csi-jaxrs-resteasy</language>
+          <output>${project.basedir}</output>
+          <apiPackage>${default.package}.genv02.handler</apiPackage>
+          <modelPackage>${default.package}.genv02.model</modelPackage>
+          <invokerPackage>${default.package}.genv02.handler</invokerPackage>
+          <configOptions>
+            <java8>false</java8>
+            <useBeanValidation>true</useBeanValidation>
+            <hideGenerationTimestamp>true</hideGenerationTimestamp>
+            <apiPackage>it.csi.pgmeas.commons.genv02.be</apiPackage>
+            <modelPackage>it.csi.pgmeas.commons.genv02.dto</modelPackage>
+            <invokerPackage>it.csi.pgmeas.commons.genv02.be</invokerPackage>
+            <implFolder>implfolder</implFolder>
+            <sourceFolder>src/main/java</sourceFolder>
+            <generateJbossDeploymentDescriptor>false</generateJbossDeploymentDescriptor>
+            <generateImplArtifacts>false</generateImplArtifacts>
+            <generateSwaggerMetadata>false</generateSwaggerMetadata>
+			<attributeSerializationStrategy>explicit-as-modeled</attributeSerializationStrategy>
+            <accessHttpHeaders>true</accessHttpHeaders>
+            <accessHttpRequest>true</accessHttpRequest>
+            <jeeLibrary>jakarta</jeeLibrary>
+					<jsonLibrary>fasterxml-jackson</jsonLibrary>
+            <useSwaggerFeature>false</useSwaggerFeature>
+          </configOptions>
+        </configuration>
+      </execution>
+    </executions>
+    <dependencies>
+      <dependency>
+        <groupId>it.csi.apitools</groupId>
+        <artifactId>csi-java-swagger3-codegen</artifactId>
+        <version>1.1.0.002</version>
+      </dependency>
+    </dependencies>
+  </plugin>	
+ -->
+
+		</plugins>
+	</build>
+</project>

@@ -1,0 +1,16 @@
+application:
+  title: pgmeas/pgmeasnotifier
+  version: 1.0.0
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - prometheus
+          - info
+          - health
+          - metrics
+      base-path: /actuator
+  server:
+    port: 9000

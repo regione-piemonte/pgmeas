@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>Visualizza dati monitoraggio</h1>
+<div mat-dialog-content>
+  <ng-container *ngIf="!loading; else loadingTemplate">
+    <p>Seleziona un allegato di tipo monitoraggio</p>
+    <mat-form-field style="width: 100%;">
+      <mat-label>Allegato</mat-label>
+      <mat-select [formControl]="interventoAllegato">
+        <mat-option *ngFor="let interventoAllegato of getInterventoAllegatoListByMonitoraggio()" [value]="interventoAllegato.allegatoId">
+          {{getInterventoAllegatoLabel(interventoAllegato)}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ng-container>
+  <ng-template #loadingTemplate>
+    <mat-spinner style="margin: 20px auto;"></mat-spinner>
+  </ng-template>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="ko()">Chiudi</button>
+  <div class="spacer"></div>
+  <button *ngIf="!loading" mat-flat-button color="primary" [mat-dialog-close]="interventoAllegato.value" [disabled]="interventoAllegato.invalid">Visualizza</button>
+</div>

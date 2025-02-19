@@ -1,0 +1,75 @@
+spring:
+  application:
+    name: registry-service
+
+---
+
+spring:
+  profiles: env-dev
+  cloud:
+    config:
+      name: registry-service
+      uri: http://localhost:8989
+logging:
+  file:
+    path: "C:/PrjConfig/CSI/GMF/logs"
+
+---
+
+spring:
+  profiles: env-test
+  cloud:
+    config:
+      name: registry-service
+      uri: http://localhost:8989
+logging:
+  file:
+    path: "/gmf/logs"
+
+---
+
+spring:
+  profiles: env-stage
+  cloud:
+    config:
+      name: registry-service
+      uri: http://localhost:8989
+logging:
+  file:
+    path: "/gmf/logs"
+      
+---
+
+spring:
+  profiles: env-dev-int-01
+  cloud:
+    config:
+      name: registry-service
+      uri: http://localhost:8989
+logging:
+  file:
+    path: "/appserv/springboot/gmfopen-registry/logs"
+
+---
+
+spring:
+  profiles: env-tst-int-01
+  cloud:
+    config:
+      name: registry-service
+      uri: http://localhost:8989
+logging:
+  file:
+    path: "/appserv/springboot/gmfopen-registry/logs"
+
+---
+
+spring:
+  profiles: env-prod-int-01
+  cloud:
+    config:
+      name: registry-service
+      uri: http://localhost:8989
+logging:
+  file:
+    path: "/appserv/springboot/gmfopen-registry/logs"

@@ -1,0 +1,40 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row class="toolbar">
+    <button mat-icon-button *ngIf="showMenuButton" (click)="toggleMenu.emit()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <img src="/assets/logo-salute-piemonte-operatori.svg" style="width: 200px;">
+    <span class="example-spacer"></span>
+    <button mat-icon-button>
+      <mat-icon>alternate_email</mat-icon>
+    </button>
+    <button mat-icon-button>
+      <mat-icon>help</mat-icon>
+    </button>
+
+    <div *ngIf="isAuth" class="account-info">
+      <button mat-icon-button [routerLink]="['/', 'user-info']">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <span>{{nomeCognome}}</span>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>expand_more</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item  (click)="emitLogout()">Logout</button>
+      </mat-menu>
+    </div>
+
+  </mat-toolbar-row>
+
+  <mat-toolbar-row class="toolbar">
+    <span class="title-name">PGMEAS</span>
+    
+    <!-- span class="title-bar">{{toolbarTitle$ | async}}</span-->
+
+    <ng-container *ngFor="let title of titles; let i = index">
+      <mat-icon matSuffix>chevron_right</mat-icon>
+      <span class="title-bar">{{ title }}</span>
+    </ng-container>
+  </mat-toolbar-row>
+</mat-toolbar>

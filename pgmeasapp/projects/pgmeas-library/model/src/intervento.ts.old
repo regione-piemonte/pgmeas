@@ -1,0 +1,24 @@
+export interface Intervento {
+  intId: number;
+  intCod: string;
+  intTitolo: string;
+  intAnno: string;
+  intCup: string;
+  intImporto: number;
+  intPftePrevDurataGiorni: number;
+  intGaraPrevDurataGiorni: number;
+  intCollPrevDurataGiorni: number;
+  intProgEsecDurataGiorni: number;
+  intLavoriPrevDurataGiorni: number;
+  intFormaRealizzativaId: number;
+  intStrTipoId: number;
+  intQuadranteId: number;
+  intMacroareaId: number;
+  dataCreazione: number;
+  dataModifica: number;
+  dataCancellazione: number;
+  utenteCreazione: string;
+  utenteModifica: string;
+  utenteCancellazione: string;
+  enteId: number;
+}

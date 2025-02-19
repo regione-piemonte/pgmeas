@@ -1,0 +1,41 @@
+<form [formGroup]="form">
+  <div class="d-flex" mat-dialog-content>
+    <div class="header">
+      <h1>Nuovo Finanziamento</h1>
+      <button (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <mat-divider></mat-divider>
+    <mat-form-field class="seleziona-finanziamento">
+      <mat-label>Selezionare un tipo di finanziamento</mat-label>
+      <mat-select formControlName="tipo">
+        <mat-option (onSelectionChange)="selectedValue = $event" *ngFor="let finanziamenti of finanziamentiOptions"
+                    [value]="finanziamenti">
+          {{ finanziamenti.finTipoDetDesc }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <ng-container *ngIf="selectedValue">
+      <mat-form-field>
+        <mat-label>Descrizione</mat-label>
+        <input formControlName="dettaglio" matInput>
+      </mat-form-field>
+      <div class="atto-importo">
+        <!-- <mat-form-field class="atto">
+          <mat-label>Atto</mat-label>
+          <input formControlName="atto" matInput>
+        </mat-form-field> -->
+        <mat-form-field class="importo">
+          <mat-label>Importo</mat-label>
+          <input formControlName="importo" matInput type="number">
+        </mat-form-field>
+      </div>
+      <div class="buttons" mat-dialog-actions>
+        <p (click)="onNoClick()" class="annulla-button">Annulla</p>
+        <button [mat-dialog-close]="data"  (click)="onSave()" class="aggiungi-button" color="primary" mat-raised-button>Conferma</button>
+      </div>
+    </ng-container>
+  </div>
+</form>
+

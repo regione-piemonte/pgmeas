@@ -1,0 +1,78 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+@use 'pgmeas-palettes' as pgmeas;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$pgmeasapp-primary: mat.define-palette(pgmeas.$primary-palette);
+$pgmeasapp-accent: mat.define-palette(pgmeas.$accent-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$pgmeasapp-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$pgmeasapp-theme: mat.define-light-theme((
+  color: (
+    primary: $pgmeasapp-primary,
+    accent: $pgmeasapp-accent,
+    warn: $pgmeasapp-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($pgmeasapp-theme);
+
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+html, body {
+  overflow: hidden; /* Disabilita lo scorrimento */
+}
+
+body { margin: 0; font-family: "Open Sans", "Helvetica Neue", sans-serif; }
+
+.pgmeas-primary-text,
+.pgmeas-primary-indicator .mat-expansion-indicator::after {
+  color: mat.get-color-from-palette($pgmeasapp-primary, 'default');
+}
+
+.pgmeas-warn-snackbar {
+  --mdc-snackbar-container-color: #{mat.get-color-from-palette($pgmeasapp-warn, 'default')};
+  --mdc-snackbar-supporting-text-color: #{mat.get-color-from-palette($pgmeasapp-warn, 'default-contrast')};
+  --mat-snack-bar-button-color: #{mat.get-color-from-palette($pgmeasapp-warn, 'default-contrast')};
+}
+
+.mat-mdc-snack-bar-label .mdc-snackbar__label {  
+  white-space: pre-line; 
+}
+
+.pgmeas-transparent-dialog .mat-mdc-dialog-container {
+  --mdc-dialog-container-color: transparent;
+  --mdc-dialog-container-elevation: none;
+}
+
+div[mat-dialog-actions] {
+  padding: 0 24px 20px 24px;
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

@@ -1,0 +1,927 @@
+<h1 class="pgmeas-primary-text">Visualizza intervento</h1>
+<ng-container *ngIf="!loading; else loadingTemplate">
+  <ng-container>
+    <mat-card style="margin-bottom: 40px" *ngIf="intervento.statoNota && isStatoInserito(intervento.stato)">
+      <mat-card-content>
+        <h4>Motivazione del respingimento</h4>
+        <p>{{intervento.statoNota}}</p>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card style="margin-bottom: 40px">
+      <mat-card-header>
+        <a>
+          <h2>Riferimenti temporali dell'intervento</h2>
+        </a>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="date-programmazioni">
+          <p class="small-text">
+            Data di inserimento dell'intervento: <b>{{ dataCreazione }}</b>
+          </p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card style="margin-bottom: 40px">
+      <mat-card-header>
+        <h2>Localizzazione dell'intervento</h2>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="date-programmazioni">
+          <p class="small-text">
+            Azienda: <b>{{getDescrizioneAzienda(intervento)}}</b>
+          </p>
+        </div>
+        <div class="date-programmazioni">
+          <p class="small-text">
+            Quadrante: <b>{{ getDescrizioneQuadrante(intervento) }}</b>
+          </p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <form [formGroup]="insertionForm" (ngSubmit)="submit()">
+      <mat-card style="margin-bottom: 40px">
+        <mat-card-content>
+
+          <h4>Strutture</h4>
+
+          <div formArrayName="struttureAggiunte">
+            <ng-container *ngFor="
+          let strutturaInsInt of struttureAggiunte.controls;
+          let index = index
+        " [formGroupName]="index">
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <h4 class="pgmeas-primary-text">{{ strutturaInsInt.value.struttura?.strDenominazione }}
+                    <ng-container *ngIf="!checkStruttura(strutturaInsInt.value.struttura.strId)">({{
+                      strutturaInsInt.value.struttura?.strCod }})</ng-container>
+                  </h4>
+                </mat-expansion-panel-header>
+                <!-- informazioni per la struttura non censita -->
+                <div *ngIf="checkStruttura(strutturaInsInt.value.struttura.strId)">
+                  <ng-container *ngIf="strutturaInsInt.value.struttura.strNonCensita; else strutturaNuova">
+                    <p class="small-text">Struttura non censita</p>
+                  </ng-container>
+                  <ng-template #strutturaNuova>
+                    <p class="small-text">Nuova Struttura</p>
+                  </ng-template>
+                  <p class="small-text" *ngIf="strutturaInsInt.value.struttura.strComune">
+                    Comune Struttura: {{ strutturaInsInt.value.struttura.strComune }}
+                  </p>
+                  <p class="small-text" *ngIf="strutturaInsInt.value.struttura.strIndirizzo">
+                    Indirizzo: {{ strutturaInsInt.value.struttura.strIndirizzo }}
+                  </p>
+                  <p class="small-text" *ngIf="strutturaInsInt.value.struttura.strDatiCatastali">
+                    Dati Catastali: {{ strutturaInsInt.value.struttura.strDatiCatastali }}
+                  </p>
+                  <p class="small-text" *ngIf="strutturaInsInt.value.struttura.note">
+                    Note: {{ strutturaInsInt.value.struttura.note }}
+                  </p>
+                </div>
+                <p *ngIf="!checkStruttura(strutturaInsInt.value.struttura.strId)" class="small-text">
+                  Comune Struttura: {{ strutturaInsInt.value.struttura.strComune }}
+                </p>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <h4>Tipo Intervento Edilizio (ex art. 3 D.P.R. 380 del 6 giugno 2001)</h4>
+                  </mat-expansion-panel-header>
+                  <div formArrayName="listaInterventiEdilizi">
+                    <ng-container *ngFor="let intervento of getListaInterventiEdilizi(index).controls, let i = index"
+                      [formGroupName]="i">
+                      <div class="intervento-edilizio-div small-text"
+                        [ngStyle]="{'margin-left.px': getMarginFromSpazi(intervento.value.livello), 'margin-bottom': !intervento.value.selezionabile ? '20px' : '0'}">
+                        <mat-slide-toggle style="margin-bottom: 20px" *ngIf="intervento.value.selezionabile"
+                          formControlName="selezionato" />
+                        <span *ngIf="!intervento.value.selezionabile"
+                          style="display: inline-block; width: 40px;"></span>
+                        {{ intervento.value.descrizione }}
+                      </div>
+                    </ng-container>
+                  </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <h4>Costo complessivo della struttura</h4>
+                  </mat-expansion-panel-header>
+                  <!-- <mat-form-field>
+                    <mat-label>Costo Struttura</mat-label>
+                    <input matInput type="text" formControlName="costoStruttura" min="0" style="text-align: right;"
+                      (keypress)="allowOnlyNumbers($event)" />
+                  </mat-form-field><a style="padding-left: 10px;">€</a> -->
+                  <div class="costo-div">
+                    <label class="small-text">Costo Struttura</label>
+                    <div class="flex-div">
+                      <p>{{ strutturaInsInt.get('costoStruttura')?.value  |
+                        currency: 'EUR'}}</p>
+                      <!-- <a style="padding-left: 10px;">€</a> -->
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <h4>
+                      Cronoprogramma della Struttura (in giorni naturali
+                      consecutivi)
+                    </h4>
+                  </mat-expansion-panel-header>
+                  <p class="small-text">
+                    La durata deve essere comprensiva di tutte le procedure
+                    amministrative propedeutiche all'approvazione di ogni singola
+                    fase
+                  </p>
+                  <div class="durata-stimata-div">
+                    <div class="small-text cronoprogramma-div">
+                      <label>PROGETTAZIONE</label>
+                      <p>{{ strutturaInsInt.get('progettazione')?.value }}</p>
+                    </div>
+                    <div class="small-text cronoprogramma-div">
+                      <label>AFFIDAMENTO LAVORI</label>
+                      <p>{{ strutturaInsInt.get('affidamentoLavori')?.value }}</p>
+                    </div>
+                    <div class="small-text cronoprogramma-div">
+                      <label>ESECUZIONE LAVORI</label>
+                      <p>{{ strutturaInsInt.get('esecuzioneLavori')?.value }}</p>
+                    </div>
+                    <div class="small-text cronoprogramma-div">
+                      <label>COLLAUDO</label>
+                      <p>{{ strutturaInsInt.get('collaudo')?.value }}</p>
+                    </div>
+                  </div>
+                  <div class="appalto-integrato-div">
+                    <p class="appalto-integrato-p" class="small-text">APPALTO INTEGRATO</p>
+                    <mat-slide-toggle formControlName="appaltoIntegrato"></mat-slide-toggle>
+                  </div>
+                  <p class="small-text">
+                    Totale durata stimata della struttura (in giorni naturali complessivi):
+                    <b>{{ strutturaInsInt.value.totaleDurataStimataIntervento }}</b>
+                  </p>
+                </mat-expansion-panel>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <h4>Quadro economico</h4>
+                  </mat-expansion-panel-header>
+                  <!-- <div formArrayName="listaQuadroEconomico">
+                    <ng-container *ngFor="let quadro of getListaQuadroEconomico(index).controls, let i = index"
+                      [formGroupName]="i">
+                      <div
+                        [ngStyle]="{'margin-left.px': getMarginFromSpazi(quadro.value.livello), 'margin-bottom': !quadro.value.selezionabile ? '20px' : '0'}"
+                        class="small-text">
+                        {{ quadro.value.descrizione }}
+                        <div *ngIf="quadro.value.selezionabile">
+                          <mat-form-field>
+                            <input matInput type="text" formControlName="valoreNumerico" min="0"
+                              style="text-align: right;" (keypress)="allowOnlyNumbers($event)" />
+                          </mat-form-field><a *ngIf="quadro.value.selezionabile" style="padding-left: 10px;">€</a>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div> -->
+                  <app-quadro-economico-centralized
+                  [form]="getStrutturaForm(index)"
+                  [appaltoIntegrato]="strutturaInsInt.value.appaltoIntegrato"
+                  [isVisualizzazione]="true"
+                  [isRequired]="false"
+                  [idIntervento]="intervento.intId">
+                  </app-quadro-economico-centralized>
+                </mat-expansion-panel>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <h4>Responsabili</h4>
+                  </mat-expansion-panel-header>
+                  <div class="form-row">
+                    <div>
+                      <label class="small-text">Responsabile della Struttura Complessa o facente funzione: </label>
+                      <div class="flex-div">
+                        <div class="responsabili-div">
+                          <div class="flex-container small-text">
+                            <label>Nome:</label>
+                            <b>{{ strutturaInsInt.get('intstrRespStrComplesNome')?.value }}</b>
+                          </div>
+                        </div>
+                        <div class="responsabili-div">
+                          <div class="flex-container small-text">
+                            <label>Cognome:</label>
+                            <b>{{ strutturaInsInt.get('intstrRespStrComplesCognome')?.value }}</b>
+                          </div>
+                        </div>
+                        <div class="responsabili-div">
+                          <div class="flex-container small-text">
+                            <label>Codice Fiscale:</label>
+                            <b>{{ strutturaInsInt.get('intstrRespStrComplesCf')?.value }}</b>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div>
+                      <label class="small-text">Responsabile della Struttura Semplice o facente funzione: </label>
+                      <div class="flex-div">
+                        <div class="responsabili-div">
+                          <div class="flex-container small-text">
+                            <label>Nome:</label>
+                            <b>{{ strutturaInsInt.get('intstrRespStrSemplNome')?.value }}</b>
+                          </div>
+                        </div>
+                        <div class="responsabili-div">
+                          <div class="flex-container small-text">
+                            <label>Cognome:</label>
+                            <b>{{ strutturaInsInt.get('intstrRespStrSemplCognome')?.value }}</b>
+                          </div>
+                        </div>
+                        <div class="responsabili-div">
+                          <div class="flex-container small-text">
+                            <label>Codice Fiscale:</label>
+                            <b>{{ strutturaInsInt.get('intstrRespStrSemplCf')?.value }}</b>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+                <div  *ngIf="isStatoNotInseritoAndNotProposto(intervento.stato) || isRegione()">
+                <div class="parere-div" >
+                  <mat-checkbox color="primary" formControlName="parerePPP" (change)="checkParerePPPEnabled(index)" class="small-text">
+                    Parere Regione su PPP
+                  </mat-checkbox>
+
+                  <div class="parere-detail-div small-text">
+                    <label>Numero:&nbsp;</label>
+                    <b>{{ strutturaInsInt.get('numeroPPP')?.value }}</b>
+                  </div>
+                  <!-- <p>{{ strutturaInsInt.get('numeroPPP')?.value }}</p> -->
+                  <div class="parere-detail-div small-text">
+                    <label>Data:&nbsp;</label>
+                    <b>{{ strutturaInsInt.get('dataPPP')?.value | date: 'dd/MM/yyyy'}}</b>
+                  </div>
+                </div>
+
+                <div class="allega-div">
+                  <p class="small-text">Allegato PPP</p>
+                  <input #fileInputPPP type="file" accept=".pdf" (change)="onFileSelectedPPP($event, index)" style="display: none" />
+                </div>
+
+                <!-- Mostra il file se è stato caricato -->
+                <div *ngIf="checkFilePPP(index)" class="allega-div">
+                  <!-- Nome del file e link per la visualizzazione -->
+                  <a [href]="getFileUrlPPP(index)" [download]="getFileNamePPP(index)" target="_blank">{{
+                    getFileNamePPP(index) }}</a>
+                </div>
+
+                <ng-container *ngIf="strutturaInsInt.get('numeroHTA')?.value">
+                  <div class="parere-div">
+                    <mat-checkbox color="primary" formControlName="parereHTA" (change)="checkParereHtaEnabled(index)" class="small-text">
+                      Parere HTA
+                    </mat-checkbox>
+
+                    <div class="parere-detail-div small-text">
+                      <label>Numero:&nbsp;</label>
+                      <b>{{ strutturaInsInt.get('numeroHTA')?.value }}</b>
+                    </div>
+
+                    <div class="parere-detail-div small-text">
+                      <label>Data:&nbsp;</label>
+                      <b>{{ strutturaInsInt.get('dataHTA')?.value | date: 'dd/MM/yyyy'}}</b>
+                    </div>
+                  </div>
+
+                  <div class="allega-div">
+                    <p class="small-text">Allegato HTA</p>
+                    <input #fileInputHTA type="file" accept=".pdf" (change)="onFileSelectedHTA($event, index)" style="display: none" />
+                  </div>
+
+                  <!-- Mostra il file se è stato caricato -->
+                  <div *ngIf="checkFileHTA(index)" class="allega-div">
+                    <!-- Nome del file e link per la visualizzazione -->
+                    <a [href]="getFileUrlHTA(index)" [download]="getFileNameHTA(index)" target="_blank">{{
+                      getFileNameHTA(index) }}</a>
+
+                    <!-- Icona del cestino per rimuovere il file -->
+                  </div>
+
+                </ng-container>
+              </div>
+              </mat-expansion-panel>
+            </ng-container>
+          </div>
+        </mat-card-content>
+
+      </mat-card>
+
+
+      <mat-card style="margin-bottom: 40px">
+        <mat-card-content>
+          <h4>Principali indicatori dell’intervento</h4>
+          <div class="flex-container small-text">
+            <label>Cup:</label>
+            <b>{{ insertionForm.get('cup')?.value }}</b>
+          </div>
+
+          <div class="flex-container small-text">
+            <label>Codice PGMEAS intervento:</label>
+            <b>{{ insertionForm.get('codInterventoPGMEAS')?.value }}</b>
+          </div>
+
+          <div class="flex-container small-text">
+            <label>Codice PGMEAS intervento origine:</label>
+            <b>{{ insertionForm.get('codInterventoOriginePGMEAS')?.value }}</b>
+          </div>
+
+          <div class="flex-container small-text">
+            <label>Anno inserimento intervento origine:</label>
+            <b>{{ insertionForm.get('annoInserimentoInterventoOrigine')?.value }}</b>
+          </div>
+
+          <div class="flex-container small-text">
+            <label>Codice NSIS intervento:</label>
+            <b>{{ insertionForm.get('codNSISIntervento')?.value }}</b>
+          </div>
+
+          <div class="flex-container small-text">
+            <label>Titolo Intervento:</label>
+            <b>{{ insertionForm.get('titoloIntervento')?.value }}</b>
+          </div>
+
+          <div class="flex-container small-text">
+            <label>Obiettivi dell'intervento:</label>
+            <b>{{ getObiettiviList() }}</b>
+          </div>
+
+          <div class="flex-container small-text">
+            <label>Finalita' dell'intervento:</label>
+            <b>{{ getFinalitaList() }}</b>
+          </div>
+
+          <div class="flex-container small-text">
+            <label>Tipologia intervento:</label>
+            <b>{{ getTipologiaList() }}</b>
+          </div>
+
+          <div class="flex-container small-text">
+            <label>Descrizione attrezzatura:</label>
+            <b>{{ getDescrizioneAttrezzature() }}</b>
+          </div>
+
+          <div class="flex-container small-text">
+            <label>Categoria intervento:</label>
+            <b>{{ getCategorieIntervento() }}</b>
+          </div>
+
+          <div class="flex-container small-text">
+            <label>Anno priorità:</label>
+            <b>{{ insertionForm.get('annoPriorita')?.value }}</b>
+          </div>
+
+          <div class="flex-container small-text">
+            <label>Priorità:</label>
+            <b>{{ insertionForm.get('priorita')?.value }}</b>
+          </div>
+
+          <div class="flex-container small-text">
+            <label>Sotto Priorità:</label>
+            <b>{{ insertionForm.get('sottoPriorita')?.value }}</b>
+          </div>
+
+          <div class="flex-container small-text">
+            <label>Tipologia contrattuale:</label>
+            <b>{{ getTipologiaContrattuale() }}</b>
+          </div>
+
+          <div class="flex-container small-text">
+            <label>Tipologia appalto:</label>
+            <b>{{ getAppaltiTipologie() }}</b>
+          </div>
+
+          <div class="flex-container small-text">
+            <label>Stato progettuale:</label>
+            <b>{{ getStatoProgettuale() }}</b>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card style="margin-bottom: 40px">
+        <mat-card-content>
+          <h4>Costo complessivo dell'intervento
+          </h4>
+          <div class="costo-div">
+            <label class="small-text">Costo intervento</label>
+            <div class="flex-div">
+              <p>{{ intervento.intImporto  |
+                currency: 'EUR' }}</p>
+              <!-- <a style="padding-left: 10px;">€</a> -->
+            </div>
+          </div>
+          <!-- <mat-form-field>
+            <mat-label>Costo Intervento</mat-label>
+            <input matInput style="text-align: right;" type="text" formControlName="costoIntervento"
+              (keypress)="allowOnlyNumbers($event)" />
+          </mat-form-field><a style="padding-left: 10px;">€</a> -->
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card style="margin-bottom: 40px">
+        <mat-card-content>
+          <h4>Durata stimata dell'intervento (in giorni naturali
+            consecutivi)
+          </h4>
+          <p class="small-text">
+            La durata deve essere comprensiva di tutte le procedure
+            amministrative propedeutiche all'approvazione di ogni singola
+            fase
+          </p>
+          <div class="durata-stimata-div">
+            <div class="small-text cronoprogramma-div">
+              <label>PROGETTAZIONE</label>
+              <p>{{ insertionForm.get('progettazione')?.value }}</p>
+            </div>
+            <div class="small-text cronoprogramma-div">
+              <label>AFFIDAMENTO LAVORI</label>
+              <p>{{ insertionForm.get('affidamentoLavori')?.value }}</p>
+            </div>
+            <div class="small-text cronoprogramma-div">
+              <label>ESECUZIONE LAVORI</label>
+              <p>{{ insertionForm.get('esecuzioneLavori')?.value }}</p>
+            </div>
+            <div class="small-text cronoprogramma-div">
+              <label>COLLAUDO</label>
+              <p>{{ insertionForm.get('collaudo')?.value }}</p>
+            </div>
+          </div>
+          <div class="appalto-integrato-div">
+            <p class="appalto-integrato-p small-text">APPALTO INTEGRATO</p>
+            <mat-slide-toggle formControlName="appaltoIntegrato"></mat-slide-toggle>
+          </div>
+          <p class="small-text">
+            Totale durata stimata dell'intervento:
+            <b>{{ insertionForm.value.totaleDurataIntervento }}</b>
+          </p>
+        </mat-card-content>
+      </mat-card>
+      <mat-card style="margin-bottom: 40px">
+        <mat-card-content>
+          <h4>Responsabili dell'intervento
+          </h4>
+          <div class="form-row">
+            <div>
+              <label class="small-text">Direttore Generale: </label>
+              <div class="flex-div">
+                <div class="responsabili-div">
+                  <div class="flex-container small-text">
+                    <label>Nome:</label>
+                    <b>{{ insertionForm.get('direttoreNome')?.value }}</b>
+                  </div>
+                </div>
+                <div class="responsabili-div">
+                  <div class="flex-container small-text">
+                    <label>Cognome:</label>
+                    <b>{{ insertionForm.get('direttoreCognome')?.value }}</b>
+                  </div>
+                </div>
+                <div class="responsabili-div">
+                  <div class="flex-container small-text">
+                    <label>Codice fiscale:</label>
+                    <b>{{ insertionForm.get('direttoreCF')?.value }}</b>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <label class="small-text">Commissario: </label>
+              <div class="flex-div">
+                <div class="responsabili-div">
+                  <div class="flex-container small-text">
+                    <label>Nome:</label>
+                    <b>{{ insertionForm.get('commissarioNome')?.value }}</b>
+                  </div>
+                </div>
+                <div class="responsabili-div">
+                  <div class="flex-container small-text">
+                    <label>Cognome:</label>
+                    <b>{{ insertionForm.get('commissarioCognome')?.value }}</b>
+                  </div>
+                </div>
+                <div class="responsabili-div">
+                  <div class="flex-container small-text">
+                    <label>Codice fiscale:</label>
+                    <b>{{ insertionForm.get('commissarioCF')?.value }}</b>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <label class="small-text">RUP: </label>
+              <div class="flex-div">
+                  <div class="responsabili-div">
+                    <div class="flex-container small-text">
+                      <label>Nome:</label>
+                      <b>{{ insertionForm.get('rupNome')?.value }}</b>
+                    </div>
+                  </div>
+                  <div class="responsabili-div">
+                    <div class="flex-container small-text">
+                      <label>Cognome:</label>
+                      <b>{{ insertionForm.get('rupCognome')?.value }}</b>
+                    </div>
+                  </div>
+                  <div class="responsabili-div">
+                    <div class="flex-container small-text">
+                      <label>Codice fiscale:</label>
+                      <b>{{ insertionForm.get('rupCF')?.value }}</b>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <label class="small-text">Referente Pratica: </label>
+              <div class="flex-div">
+                <div class="responsabili-div">
+                  <div class="flex-container small-text">
+                    <label>Nome:</label>
+                    <b>{{ insertionForm.get('referenteNome')?.value }}</b>
+                  </div>
+                </div>
+                <div class="responsabili-div">
+                  <div class="flex-container small-text">
+                    <label>Cognome:</label>
+                    <b>{{ insertionForm.get('referenteCognome')?.value }}</b>
+                  </div>
+                </div>
+                <div class="responsabili-div">
+                  <div class="flex-container small-text">
+                    <label>Codice fiscale:</label>
+                    <b>{{ insertionForm.get('referenteCF')?.value }}</b>
+                  </div>
+                </div>
+                <div class="responsabili-div">
+                  <div class="flex-container small-text">
+                    <label>Telefono:</label>
+                    <b>{{ insertionForm.get('referenteTelefono')?.value }}</b>
+                  </div>
+                </div>
+                <div class="responsabili-div">
+                  <div class="flex-container small-text">
+                    <label>E-mail:</label>
+                    <b>{{ insertionForm.get('referenteEmail')?.value }}</b>
+                  </div>
+                </div>
+            </div>
+              <!-- <div class="responsabile-div">
+                <mat-form-field class="inputResponsabile">
+                  <mat-label>Nome</mat-label>
+                  <input matInput type="text" formControlName="referenteNome" />
+                </mat-form-field>
+                <mat-form-field class="inputResponsabile">
+                  <mat-label>Cognome</mat-label>
+                  <input matInput type="text" formControlName="referenteCognome" />
+                </mat-form-field>
+                <mat-form-field class="inputResponsabile">
+                  <mat-label>Codice fiscale</mat-label>
+                  <input matInput type="text" formControlName="referenteCF" />
+                </mat-form-field>
+                <mat-form-field class="inputResponsabile">
+                  <mat-label>Telefono</mat-label>
+                  <input matInput type="text" formControlName="referenteTelefono" />
+                </mat-form-field>
+                <mat-form-field class="inputResponsabile">
+                  <mat-label>E-mail</mat-label>
+                  <input matInput type="text" formControlName="referenteEmail" />
+                </mat-form-field>
+              </div> -->
+            </div>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+      <mat-card style="margin-bottom: 40px">
+        <mat-card-content>
+          <h4>Delibere aziendali dell'intervento
+          </h4>
+          <div class="form-row">
+            <div class="flex-container small-text">
+              <label>Delibera aziendale di approvazione num:</label>
+              <b>{{ insertionForm.get('delibera')?.value }}</b>
+            </div>
+            <!-- <mat-form-field class="custom-width">
+              <mat-label>Delibera aziendale di approvazione num</mat-label>
+              <input matInput type="text" formControlName="delibera" />
+            </mat-form-field> -->
+          </div>
+          <div class="form-row">
+            <div class="flex-container small-text">
+              <label>Data della delibera aziendale di approvazione: </label>
+              <b>{{ insertionForm.get('dataDelibera')?.value | date: 'dd/MM/yyyy'}}</b>
+            </div>
+          </div>
+          <h4>Allegato
+          </h4>
+          <div>
+            <label style="margin-right: 10px;">Atto di approvazione aziendale</label>
+            <input #fileInput type="file" accept=".pdf" (change)="onFileSelected($event)" style="display: none" />
+            <!-- Mostra il file se è stato caricato -->
+            <div *ngIf="fileName" class="allegato-div">
+              <!-- Nome del file e link per la visualizzazione -->
+              <a [href]="fileUrl" [download]="fileName" target="_blank" class="upload-button">{{ fileName }}</a>
+            </div>
+          </div>
+          <h4>Note
+          </h4>
+          <div>
+            <p class="small-text">{{ insertionForm.get('note')?.value }}</p>
+            <!-- <mat-form-field class="note-field">
+              <mat-label>Note</mat-label>
+              <input matInput type="text" formControlName="note" />
+            </mat-form-field> -->
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <div *ngIf="isStatoNotInseritoAndNotProposto(intervento.stato)|| isRegione()">
+        <mat-card style="margin-bottom: 40px" >
+          <mat-card-content>
+            <mat-checkbox color="primary" formControlName="finanziabile" class="small-text">
+              Finanziabile (ai sensi del D. Lgs. 118 del 23 Giugno 2011)
+            </mat-checkbox>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card style="margin-bottom: 40px" *ngIf="previsioniDiSpesa.controls.length" >
+          <mat-card-content>
+            <h4>Previsione di spesa</h4>
+            <div formArrayName="previsioniDiSpesa" *ngIf="previsioniDiSpesa.controls.length">
+              <table class="mat-table previsioni-spesa-table">
+                <tr class="mat-header-row">
+                  <th class="mat-header-cell">Anno</th>
+                  <th class="mat-header-cell col-importo">Importo (€)</th>
+                </tr>
+                <tr class="mat-row" *ngFor="let previsione of previsioniDiSpesa.controls;let index = index" [formGroupName]="index">
+                  <td class="mat-cell">
+                    <p>{{previsione.get('annoPrevisione')?.value}}</p>
+                  </td>
+                  <td class="mat-cell col-importo">
+                    <p>{{previsione.get('importoPrevisione')?.value |currency: 'EUR'}}</p>
+                  </td>
+                </tr>
+                <tr class="mat-header-row">
+                  <td class="mat-cell"><b>Totale</b></td>
+                  <td class="mat-cell col-importo-prev-spesa"><b>{{calcolaTotalePrevisioneSpesa() | currency}}</b></td>
+                </tr>
+              </table>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card style="margin-bottom: 40px" *ngIf="pianiFinanziariPrincipaliTabellaRows.length || pianiFinanziariNonPrincipaliTabellaRows.length">
+          <mat-card-content>
+            <h4>Piano finanziario</h4>
+
+            <ng-container *ngIf="pianiFinanziariPrincipaliTabellaRows.length">
+              <h4>Finanziamenti Principali</h4>
+              <table class="mat-table piani-finanziari-table">
+                <tr class="mat-header-row">
+                  <th class="mat-header-cell col-tipo">Tipo</th>
+                  <th class="mat-header-cell col-dettaglio">Dettaglio</th>
+                  <th class="mat-header-cell col-importo">Importo</th>
+                  <th class="mat-header-cell col-quota-regione">Di cui quota Regione</th>
+                  <th class="mat-header-cell col-quota-stato">Di cui quota Stato</th>
+                </tr>
+                <tr *ngFor="let row of pianiFinanziariPrincipaliTabellaRows; let index = index">
+                  <td class="mat-cell col-tipo">
+                    {{row.finTipoDesc}}
+                  </td>
+                  <td class="mat-cell col-dettaglio">
+                    {{row.finTipoDetDesc}}
+                  </td>
+                  <td class="mat-cell col-importo">
+                    {{row.finImporto |currency: 'EUR'}}
+                  </td>
+                  <td class="mat-cell col-quota-regione">
+                    {{row.finPercRegione |currency: 'EUR'}}
+                  </td>
+                  <td class="mat-cell col-quota-stato">
+                    {{row.finPercStato |currency: 'EUR'}}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="mat-cell col-tipo">
+                    <b>Totale</b>
+                  </td>
+                  <td class="mat-cell col-dettaglio">
+                  </td>
+                  <td class="mat-cell col-importo">
+                    <b>{{totImportoPrincipali | currency: 'EUR'}}</b>
+                  </td>
+                  <td class="mat-cell col-quota-regione">
+                    <b>{{totImportoRegionePrincipali  | currency: 'EUR'}}</b>
+                  </td>
+                  <td class="mat-cell col-quota-stato">
+                    <b> {{totImportoStatoPrincipali | currency: 'EUR'}}</b>
+                  </td>
+                </tr>
+              </table>
+            </ng-container>
+
+            <ng-container *ngIf="pianiFinanziariNonPrincipaliTabellaRows.length">
+              <h4>Altri Finanziamenti</h4>
+              <table class="mat-table piani-finanziari-table">
+                <tr class="mat-header-row">
+                  <th class="mat-header-cell col-tipo">Tipo</th>
+                  <th class="mat-header-cell col-dettaglio">Dettaglio</th>
+                  <th class="mat-header-cell col-importo">Importo</th>
+                  <th class="mat-header-cell col-quota-regione">Di cui quota Regione</th>
+                  <th class="mat-header-cell col-quota-stato">Di cui quota Stato</th>
+                </tr>
+                <tr *ngFor="let row of pianiFinanziariNonPrincipaliTabellaRows; let index = index">
+                  <td class="mat-cell col-tipo">
+                    {{row.finTipoDesc}}
+                  </td>
+                  <td class="mat-cell col-dettaglio">
+                    {{row.finTipoDetDesc}}
+                  </td>
+                  <td class="mat-cell col-importo">
+                    {{row.finImporto |currency: 'EUR'}}
+                  </td>
+                  <td class="mat-cell col-quota-regione">
+                    {{row.finPercRegione |currency: 'EUR'}}
+                  </td>
+                  <td class="mat-cell col-quota-stato">
+                    {{row.finPercStato |currency: 'EUR'}}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="mat-cell col-tipo">
+                    <b>Totale</b>
+                  </td>
+                  <td class="mat-cell col-dettaglio">
+                  </td>
+                  <td class="mat-cell col-importo">
+                    <b>{{totImportoAltri | currency: 'EUR'}}</b>
+                  </td>
+                  <td class="mat-cell col-quota-regione">
+                    <b>{{totImportoRegioneAltri  | currency: 'EUR'}}</b>
+                  </td>
+                  <td class="mat-cell col-quota-stato">
+                    <b> {{totImportoStatoAltri | currency: 'EUR'}}</b>
+                  </td>
+                </tr>
+              </table>
+            </ng-container>
+
+            <ng-container *ngIf="pianiFinanziariNonPrincipaliTabellaRows.length || pianiFinanziariPrincipaliTabellaRows.length" 
+            class="piani-finanziari-container">
+            <h4>Totale Finanziamenti</h4>
+            <table class="mat-table piani-finanziari-table">
+              <tr class="mat-header-row">
+                <th class="mat-header-cell col-nome"></th>
+                <th class="mat-header-cell col-importo">Importo</th>
+                <th class="mat-header-cell col-quota-regione">Di cui quota Regione</th>
+                <th class="mat-header-cell col-quota-stato">Di cui quota Stato</th>
+              </tr>
+              <tr>
+                <td class="mat-cell col-nome">
+                  Totale finanziamenti principali
+                </td>
+                <td class="mat-cell col-importo">
+                  {{totImportoPrincipali | currency: 'EUR'}}
+                </td>
+                <td class="mat-cell col-quota-regione">
+                  {{totImportoRegionePrincipali  | currency: 'EUR'}}
+                </td>
+                <td class="mat-cell col-quota-stato">
+                  {{totImportoStatoPrincipali | currency: 'EUR'}}
+                </td>
+              </tr>
+              <tr>
+                <td class="mat-cell col-nome">
+                  Totale altri finanziamenti
+                </td>
+                <td class="mat-cell col-importo">
+                  {{totImportoAltri | currency: 'EUR'}}
+                </td>
+                <td class="mat-cell col-quota-regione">
+                  {{totImportoRegioneAltri  | currency: 'EUR'}}
+                </td>
+                <td class="mat-cell col-quota-stato">
+                  {{totImportoStatoAltri | currency: 'EUR'}}
+                </td>
+              </tr>
+              <tr>
+                <td class="mat-cell col-nome">
+                  <b> Totale finanziamenti </b> 
+                </td>
+                <td class="mat-cell col-importo">
+                  <b> {{totImporto | currency: 'EUR'}} </b>
+                </td>
+                <td class="mat-cell col-quota-regione">
+                  <b> {{totImportoRegione  | currency: 'EUR'}} </b>
+                </td>
+                <td class="mat-cell col-quota-stato">
+                  <b> {{totImportoStato | currency: 'EUR'}} </b>
+                </td>
+              </tr>
+            </table>
+          </ng-container>
+
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card style="margin-bottom: 40px">
+          <mat-card-content>
+            <h4>Delibere dell'intervento</h4>
+
+                <div class="flex-container small-text" *ngIf="DGRApprovazione.intAllegatoNumero">
+                  <p class="delibere-p small-text">D.G.R. di approvazione</p>
+                  <label>Numero:</label>
+                  <b class="delibere-p">{{ DGRApprovazione.intAllegatoNumero }}</b>
+                  <label>Data atto:</label>
+                  <b class="delibere-p">{{ DGRApprovazione.intAllegatoData | date: 'dd/MM/yyyy'}}</b>
+                  <a [href]="fileUrlDGRApprovazione" [download]="DGRApprovazione.fileNameUser" target="_blank">{{ DGRApprovazione.fileNameUser }}</a>
+                </div>
+
+                <div class="flex-container small-text" *ngIf="DGRPropostaConsiglioRegionale.intAllegatoNumero">
+                  <p class="delibere-p small-text">D.G.R. di proposta al Consiglio Regionale</p>
+                  <label>Numero:</label>
+                  <b class="delibere-p">{{ DGRPropostaConsiglioRegionale.intAllegatoNumero }}</b>
+                  <label>Data atto:</label>
+                  <b class="delibere-p">{{ DGRPropostaConsiglioRegionale.intAllegatoData | date: 'dd/MM/yyyy' }}</b>
+                  <a [href]="fileUrlDGRPropostaConsRegionale" [download]="DGRPropostaConsiglioRegionale.fileNameUser" target="_blank">{{ DGRPropostaConsiglioRegionale.fileNameUser }}</a>
+                </div>
+
+                <div class="flex-container small-text" *ngIf="DCRApprovazione.intAllegatoNumero">
+                  <p class="delibere-p small-text">D.C.R. di approvazione</p>
+                  <label>Numero:</label>
+                  <b class="delibere-p">{{ DCRApprovazione.intAllegatoNumero }}</b>
+                  <label>Data atto:</label>
+                  <b class="delibere-p">{{ DCRApprovazione.intAllegatoData | date: 'dd/MM/yyyy' }}</b>
+                  <a [href]="fileUrlDCRApprovazione" [download]="DCRApprovazione.fileNameUser" target="_blank">{{ DCRApprovazione.fileNameUser }}</a>
+                </div>
+
+                <ng-container *ngIf="DeterminazioniDirigenziali.length">
+
+                  <div class="determinazioni-dirigenziali-div">
+                    <p class="small-text">Determinazioni Dirigenziali</p>
+                  </div>
+
+                  <table class="mat-table piani-finanziari-table">
+                    <tr class="mat-header-row">
+                      <th class="mat-header-cell">D.D.n.</th>
+                      <th class="mat-header-cell">Data</th>
+                      <th class="mat-header-cell">Allegato</th>
+                    </tr>
+                    <tr *ngFor="let row of DeterminazioniDirigenziali; let index = index">
+
+                      <td class="mat-cell">
+                        <div class="flex-container small-text">
+                          <label>Numero:</label>
+                          <b class="delibere-p">{{ DeterminazioniDirigenziali[index].intAllegatoNumero }}</b>
+                        </div>
+                      </td>
+
+                      <td class="mat-cell">
+                        <div class="flex-container small-text">
+                          <label>Data atto:</label>
+                          <b class="delibere-p">{{ DeterminazioniDirigenziali[index].intAllegatoData | date: 'dd/MM/yyyy' }}</b>
+                        </div>
+                      </td>
+
+                      <td class="mat-cell">
+                        <a [href]="fileUrlDeterminazioniDirigenziali![index]" [download]="DeterminazioniDirigenziali[index].fileNameUser" target="_blank">{{
+                        DeterminazioniDirigenziali[index].fileNameUser }}</a>
+                      </td>
+
+                    </tr>
+                  </table>
+                </ng-container>
+
+          </mat-card-content>
+        </mat-card>
+    </div>
+      <mat-card>
+        <div class="search-container">
+          <div class="buttons" mat-dialog-actions>
+            <button mat-button color="primary" (click)="indietro()"  style="margin-top: 40px;">Indietro</button>
+          </div>
+          <button
+          mat-flat-button
+          color="primary"
+          style="margin-right: 10px; margin-top: 10px"
+          (click)="stampaIntervento()"
+          >
+          Scarica pdf
+        </button>
+        </div>
+      </mat-card>
+    </form>
+  </ng-container>
+</ng-container>
+
+<ng-template #loadingTemplate>
+  <mat-spinner style="margin: 20px auto"></mat-spinner>
+</ng-template>

@@ -1,0 +1,103 @@
+<form [formGroup]="dichiarazioneDiAppaltabilitaModelloA" *ngIf="modA">
+  <mat-card>
+    <mat-card-header>
+      <p class="card-header">Dichiarazione di appaltabilità</p>
+    </mat-card-header>
+    <mat-card-content>
+      <div formArrayName="listaDichiarazioneDiAppaltabilitaModelloA">
+        <ng-container *ngFor="let dichiarazioneStruttura of getModelloA().controls; let h = index" [formGroupName]="h">
+          <mat-accordion>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h3 class="pgmeas-primary-text" *ngIf="denominazioneStruttura[h]">
+                    {{ denominazioneStruttura[h].strDenominazione }}
+                  </h3>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <ng-template matExpansionPanelContent formArrayName="listaDichiarazioni">
+                <div *ngFor="let intervento of getListaDichiarazioni(h).controls; let i = index" [formGroupName]="i">
+                  <div *ngIf="!getDichiarazioneAppaltabilita(intervento.value.classifTreeId)" class="d-flex">
+                    <mat-slide-toggle [formControlName]="'intstrDaTreeSelezionata'" color="primary">
+                      <p>{{ intervento.value.descrizione }}</p>
+                    </mat-slide-toggle>
+                  </div>
+                  <div *ngIf="getDichiarazioneAppaltabilita(intervento.value.classifTreeId)">
+                    <mat-slide-toggle [formControlName]="'intstrDaTreeSelezionata'" color="primary">
+                      <p>{{ intervento.value.descrizione }}</p>
+                    </mat-slide-toggle>
+                    <mat-form-field>
+                      <mat-label>Data validazione</mat-label>
+                      <input [matDatepicker]="picker" [formControlName]="'dataValidazione'" matInput>
+                      <mat-datepicker-toggle [for]="picker" matIconSuffix></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <label>con atto numero:</label>
+                    <mat-form-field>
+                      <input matInput type="text" formControlName="atto" />
+                    </mat-form-field>
+                    <br>
+                    <label>Elenco attrezzature: </label>
+                    <ul>
+                      <li *ngFor="let attrezzatura of attrezzatureComponent">{{attrezzatura.intTipoDetDesc}}</li>
+                    </ul>
+                  </div>
+                </div>
+              </ng-template>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </ng-container>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</form>
+
+<form [formGroup]="dichiarazioneDiAppaltabilitaModelloAA" *ngIf="!modA">
+  <mat-card>
+    <mat-card-header>
+      <p class="card-header">Dichiarazione di appaltabilità</p>
+    </mat-card-header>
+    <mat-card-content>
+      <div formArrayName="listaDichiarazioneDiAppaltabilitaModelloAA">
+        <ng-container *ngFor="let dichiarazioneStruttura of getModelloAA().controls; let h = index" [formGroupName]="h">
+          <mat-accordion>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h3 class="pgmeas-primary-text" *ngIf="denominazioneStruttura[h]">
+                    {{ denominazioneStruttura[h].strDenominazione }}
+                  </h3>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <ng-template matExpansionPanelContent formArrayName="listaDichiarazioni">
+                <div *ngFor="let intervento of getListaDichiarazioniAA(h).controls; let i = index" [formGroupName]="i">
+                  <div *ngIf="!getDichiarazioneAppaltabilita(intervento.value.classifTreeId)" class="d-flex">
+                    <p>{{ intervento.value.descrizione }}</p>
+                  </div>
+                  <div *ngIf="getDichiarazioneAppaltabilita(intervento.value.classifTreeId)">
+                    <p>{{ intervento.value.descrizione }}</p>
+                    <mat-form-field>
+                      <mat-label>Data validazione</mat-label>
+                      <input [matDatepicker]="picker" [formControlName]="'dataValidazione'" matInput>
+                      <mat-datepicker-toggle [for]="picker" matIconSuffix></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <label>con atto numero:</label>
+                    <mat-form-field>
+                      <input matInput type="text" formControlName="atto" />
+                    </mat-form-field>
+                    <br>
+                    <label>Elenco attrezzature: </label>
+                    <ul>
+                      <li *ngFor="let attrezzatura of attrezzatureComponent">{{attrezzatura.intTipoDetDesc}}</li>
+                    </ul>
+                  </div>
+                </div>
+              </ng-template>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </ng-container>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</form>

@@ -1,0 +1,119 @@
+<h1 class="title-header pgmeas-primary-text">{{title}}</h1>
+<ng-container *ngIf="intervento; else searchLoadingTemplate">
+  <ng-container *ngIf="!salvataggioEffettuato; else salvataggioTemplate">
+    <div *ngIf="intervento" class="container">
+        <mat-card class="card-motivazione-margin" *ngIf="intervento.noteRespingimentoModulo && !isSuperUser()">
+          <mat-card-header>
+            <p class="card-motivazione-title">Motivazione del respingimento</p>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{intervento.noteRespingimentoModulo}}</p>
+            </mat-card-content>
+        </mat-card>
+      <app-appalto (formData)="receiveData('appalto', $event)"
+                  [canEdit]="canEdit"
+                  [canEditRegione]="canEditRegione"
+                  #appaltoComponent
+                  [allegati]="allegatiBe"
+
+                  [denominazioneStruttura]="denominazioneStrutture"
+                  [enti]="enti"
+                  [dataFromBe]="dataFromBe"
+                  [interventoStruttura]="interventoStruttura"
+                  [intervento]="intervento"
+                  [statoProgList]="statoProgList"
+                  (tipoModello)="onTipoModello($event)"></app-appalto>
+    <app-deliberazioni (formData)="receiveData('deliberazioni', $event)"
+                  [canEdit]="canEdit"
+                  #deliberazioniComponent
+                  [allegati]="allegatiBe"
+                  [intervento]="intervento"></app-deliberazioni>
+      <app-piano-finanziario (formData)="receiveData('pianoFinanziario', $event)"
+                            [denominazioneStruttura]="denominazioneStrutture"
+                            [canEdit]="canEdit"
+                            [enti]="enti"
+                            [finanziamenti]="finanziamento"
+                            [interventoStruttura]="interventoStruttura" [intervento]="intervento"></app-piano-finanziario>
+      <app-quadro-economico (formData)="receiveData('quadroEconomico', $event)"
+                            [denominazioneStruttura]="denominazioneStrutture"
+                            [interventoStruttura]="interventoStruttura"
+                            [canEdit]="canEdit"
+                            [canEditRegione]="canEditRegione"
+                            [appaltoIntegratoStruttura]="appaltoIntegratoStruttura"
+                            (quadroEconomicoValue)="updateQuadroEconomico($event)"></app-quadro-economico>
+      <app-piano-cronologico (formData)="receiveData('pianoCronologico', $event)"
+                            [canEdit]="canEdit"
+                            #pianoCronologicoComponent
+                            [intervento]="intervento"></app-piano-cronologico>
+      <app-piano-cronologico-struttura (formData)="receiveData('pianoCronologicoStruttura', $event)"
+                            [canEditRegione]="canEditRegione"
+                            [denominazioneStruttura]="denominazioneStrutture"
+                            [canEdit]="canEdit"
+                            #pianoCronologicoStrutturaComponent
+                            [interventoStruttura]="interventoStruttura"
+                            (appaltoIntegrato)="updateAppaltoIntegrato($event)"></app-piano-cronologico-struttura>
+      <app-dichiarazione-appalatabilita #dichiarazioneAppalatabilitaComponent (formData)="receiveData('dichiarazioneAppaltabilita', $event)"
+                                        [denominazioneStruttura]="denominazioneStrutture"
+                                        [interventoStruttura]="interventoStruttura"
+                                        [intervento]="intervento"
+                                        [canEdit]="canEdit"
+                                        [canEditRegione]="canEditRegione"
+                                        [classificazioneTreeDA]="classificazioneTreeDA"
+                                        [classificazioneTreeDAA]="classificazioneTreeDAA"
+                                        [tipoModelloInit]="tipoModuloInit"
+                                        [interventoTipoDet]="interventoTipoDet"></app-dichiarazione-appalatabilita>
+      <app-allegati (formData)="receiveData('allegati', $event)"
+                    [enti]="enti"
+                    [user]="user"
+                    [canEdit]="canEdit"
+                    [canEditRegione]="canEditRegione"
+                    [note]="note"
+                    [noteAttive]="true"
+                    [dataFromBe]="allegatiBe"
+                    [intervento]="intervento"></app-allegati>
+      <app-responsabili (formData)="receiveData('responsabili', $event)"
+                        [intervento]="intervento"
+                        [interventoStruttura]="interventoStruttura"
+                        [canEdit]="canEdit"
+                        [canEditRegione]="canEditRegione"
+                        #responsabiliComponent
+                       ></app-responsabili>
+      <ng-container *ngIf=" checkAllegatiRegione()">
+        <app-allegati-regione (formData)="receiveData('allegatiRegione', $event)"
+          [canEdit]="canEdit"
+          [canEditRegione]="canEditRegione"
+          [intervento]="intervento"></app-allegati-regione >
+      </ng-container>
+      <div class="d-flex-between">
+        <div class="d-flex-between">
+          <button mat-button color="primary" style="margin-right: 10px;" (click)="back()">INDIETRO</button>
+          <ng-container *ngIf="!canEdit">
+            <button (click)="onPrintPdf(intervento.intId)" [disabled]="!allFormsValid && canEdit" class="stampa-pdf-btn" mat-raised-button>Scarica PDF</button>
+          </ng-container>
+        </div>
+        <ng-container *ngIf="!isConfirmOnGoing; else isLoading">
+
+          <button (click)="saveData()"
+                  *ngIf="canEdit"
+                  color="primary"
+                  class="salva-dati-btn"
+                  mat-raised-button>Conferma
+
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+</ng-container>
+
+<ng-template #searchLoadingTemplate>
+  <mat-spinner style="margin: 20px auto;"></mat-spinner>
+</ng-template>
+
+<ng-template #isLoading>
+  <mat-spinner strokeWidth="5" style="width: 40px! important; height: 40px !important;"></mat-spinner>
+</ng-template>
+<ng-template #salvataggioTemplate>
+  <app-success [selettore]="!moduloTipoId?'INS-MOD_A':'MOD-MOD_A'" [intId]="intervento.intId" [canEditRegione]="canEditRegione" [moduloCod]="intervento.moduloTipo"
+    [message]="!moduloTipoId?'Inserimento del modulo fatto con successo.':'Modifica del modulo fatto con successo'"></app-success>
+</ng-template>

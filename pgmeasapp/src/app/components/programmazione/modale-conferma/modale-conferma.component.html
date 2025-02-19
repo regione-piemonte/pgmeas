@@ -1,0 +1,17 @@
+
+  <div class="d-flex" mat-dialog-content>
+    <div class="header">
+      <h1>{{data.titolo}}</h1>
+      <button (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div>
+      {{data.messaggio}}
+    </div>
+    <div class="buttons" mat-dialog-actions>
+      <p (click)="onNoClick()" class="annulla-button">Annulla</p>
+      <button [mat-dialog-close]="data"  (click)="onSave()" class="aggiungi-button" color="primary" mat-raised-button>Conferma</button>
+    </div>
+  </div>
+

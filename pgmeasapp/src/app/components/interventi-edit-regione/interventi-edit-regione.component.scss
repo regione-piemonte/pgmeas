@@ -1,0 +1,399 @@
+.date-programmazioni {
+  display: flex;
+}
+
+.date-margin {
+  margin-right: 2rem;
+}
+
+.small-button {
+  width: 140px;
+}
+
+.error-margin-bottom {
+  margin-bottom: 1rem;
+}
+
+.intervento-edilizio-div {
+  display: flex;
+  flex-direction: row ;
+}
+
+.intervento-edilizio-div.indent {
+  margin-left: 42px !important; /* Assumi la larghezza del mat-slide-toggle */
+  margin-bottom: 20px
+}
+
+.durata-stimata-div {
+  display: flex;
+  flex-direction: row;
+}
+
+.durata-stimata-input {
+  margin-right: 2rem;
+}
+
+.appalto-integrato-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.appalto-integrato-p {
+  margin-right: 0.5rem;
+}
+
+mat-expansion-panel {
+  margin-bottom: 1em;
+}
+
+.inputResponsabile {
+  margin-bottom: 1em;
+  margin-left: 1em;
+}
+
+.custom-select .mat-form-field-wrapper {
+  background-color: #f5f5f5; /* Sfondo grigio chiaro */
+  border-radius: 5px; /* Bordi arrotondati */
+}
+
+.custom-select .mat-form-field-underline {
+  background-color: red; /* Linea inferiore rossa */
+}
+
+.custom-select .mat-select-trigger {
+  color: black; /* Testo nero */
+}
+
+/* Per rimuovere il bordo inferiore quando non è selezionato */
+.custom-select.mat-focused .mat-form-field-underline {
+  background-color: red; /* Mantiene la linea rossa quando il campo è attivo */
+}
+
+.long-select {
+  width: 600px; /* Puoi regolare questo valore come preferisci */
+  max-width: 100%; /* Impedisce di espandersi oltre il contenitore */
+}
+
+.triennio-container {
+  display: flex;            /* Abilita Flexbox */
+  justify-content: space-between; /* Spazio tra gli elementi */
+  align-items: center;     /* Allinea verticalmente gli elementi */
+}
+
+.button-copia {
+  margin-left: auto;       /* Spinge il pulsante verso destra */
+}
+
+.form-row {
+  //display: flex;                /* Abilita Flexbox per la riga */
+  //justify-content: flex-start; /* Spinge i contenuti ai lati opposti */
+  align-items: center;         /* Allinea verticalmente gli elementi */
+  margin-bottom: 10px;         /* Aggiunge spazio tra le righe */
+}
+
+label {
+  flex: 1;                     /* Fai in modo che il label occupi tutto lo spazio disponibile */
+  text-align: left;           /* Allinea il testo del label a sinistra */
+}
+
+.custom-form-field {
+  position: relative;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+.custom-form-field input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+  background-color: whitesmoke;
+}
+
+.custom-form-field input:focus {
+  outline: none;
+  border-color: #3f51b5; /* Colore del focus simile a Material Design */
+}
+
+.parentesi{
+  font-size: xxx-large;
+  align-self: baseline;
+}
+
+.custom-width {
+  width: 600px; /* Puoi specificare qualunque larghezza desideri */
+}
+.custom-costo-width{
+  width: 400px;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Distribuisce lo spazio tra gli elementi */
+}
+
+.search-container button {
+  margin-left: auto; /* Spinge il bottone a destra */
+}
+
+.annulla-button {
+  color: #005CA9;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.parere-date-div {
+  margin-left: 2rem;
+}
+
+.parere-div {
+  display: flex;
+}
+
+.allega-button {
+  margin-left: 2rem;
+}
+
+.allega-div {
+  display: flex;
+  align-items: center;
+}
+
+.previsione-control-div {
+  margin-right: 2rem;
+}
+
+.custom-width-error {
+  width: 28rem;
+}
+
+.principale-checkbox {
+  margin-bottom: 2rem;
+}
+
+
+
+.error-div {
+  display: flex;
+  justify-content: end;
+}
+
+.delibere-div {
+  display: flex;
+  flex-direction: row;
+}
+
+.delibere-p {
+  margin-right: 2rem;
+}
+
+.delibere-download-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 2rem;
+}
+
+.determinazioni-dirigenziali-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.determinazioni-dirigenziali-button {
+  margin-left: 2rem;
+}
+
+.small-text{
+  font-size: 14px;
+}
+
+table{
+  th{
+    font-size: 12px;
+  }
+}
+
+/* Stile per la tabella */
+.mat-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Effetto di elevazione */
+  font-family: 'Arial', sans-serif;
+}
+
+/* Stile per la riga dell'intestazione */
+.mat-header-row {
+  font-weight: bold; /* Testo in grassetto */
+  font-size: 16px; /* Dimensione del font */
+  font: normal normal bold 16px / 20px Open Sans;
+}
+
+/* Stile per le celle dell'intestazione */
+.mat-header-cell {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd; /* Bordo solo sotto la cella */
+}
+
+/* Stile per le righe della tabella */
+.mat-row {
+  background-color: #fff; /* Colore di sfondo per le righe */
+  border-top: 1px solid #ddd; /* Bordo superiore per ogni riga */
+}
+
+/* Stile per le celle */
+.mat-cell {
+  padding: 12px 15px;
+  color: #333; /* Colore del testo per le celle */
+  font-size: 14px; /* Dimensione del font */
+  border-bottom: 1px solid #ddd; /* Bordo solo sotto la cella */
+}
+
+/* Allineamento a destra per colonne numeriche */
+.mat-cell input[type="number"] {
+  text-align: right; /* Allineamento a destra per numeri */
+}
+
+/* Allineamento a centro per i campi di input */
+.mat-cell input[disabled] {
+  text-align: center; /* Allineamento a centro per il campo "annoPrevisione" */
+}
+
+/* Stile per i pulsanti */
+.mat-icon-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+}
+
+/* Cambia colore del bottone al passaggio del mouse */
+.mat-icon-button:hover {
+  background-color: #f1f1f1;
+}
+
+/* Stile per il campo di input all'interno del mat-form-field */
+.mat-form-field {
+  width: 100%;
+}
+
+/* Stile per l'input disabilitato */
+.mat-form-field input[disabled] {
+  background-color: #e0e0e0; /* Colore di sfondo per gli input disabilitati */
+  color: #333;
+  font-size: 14px;
+}
+
+/* Stile per i messaggi di errore */
+.mat-error {
+  color: #f44336; /* Colore rosso per gli errori */
+  font-size: 12px;
+}
+
+/* Stile per l'icona del bottone di eliminazione */
+.mat-icon {
+  color: #f44336; /* Colore rosso per l'icona */
+}
+
+.mat-icon-button:hover .mat-icon {
+  color: #d32f2f; /* Colore più scuro per l'icona al passaggio del mouse */
+}
+
+.note-field {
+  width: 100%;
+}
+
+.upload-button{
+  color: #005CA9;
+  font: normal normal normal 14px/20px Open Sans;
+  letter-spacing: 0px;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.allegato-div {
+  display: flex;
+  align-items: center;
+}
+
+.button-margin {
+  margin-bottom: 1rem;
+}
+
+.responsabile-div {
+  display: flex;
+  margin-top: 8px;
+  margin-left: -1rem;
+}
+
+mat-error {
+  font-size: 14px;
+}
+
+.titolo-textarea-field {
+  width: 600px;
+  height:20%
+}
+
+.note-textarea-field {
+  width: 100%;
+  height:20%
+}
+
+.disableSelect{
+  color:rgba(0, 0, 0, 0.38)
+}
+
+.piani-finanziari-table {
+  margin-top: 2rem;
+  width: 100%; /* Assicurati che la tabella occupi l'intero spazio disponibile */
+}
+
+.col-tipo {
+  width: 15%; /* Larghezza fissa per la colonna "Tipo" */
+}
+
+.col-dettaglio {
+  width: 20%; /* Larghezza per la colonna "Dettaglio" */
+}
+
+.col-nome {
+  width: 35%; /* Larghezza per la colonna "Nome per i Totali" */
+}
+
+.col-importo {
+  width: 15%; /* Larghezza per la colonna "Importo" */
+  text-align: right; 
+}
+
+.col-importo-prev-spesa {
+  padding-left: 11rem;
+}
+
+.col-quota-regione {
+  width: 20%; /* Larghezza per la colonna "Di cui quota Regione" */
+  text-align: right; 
+}
+
+.col-quota-stato {
+  width: 20%; /* Larghezza per la colonna "Di cui quota Stato" */
+  text-align: right; 
+}
+
+.col-azione {
+  width: 10%; /* Larghezza per la colonna con l'icona di azione */
+}
+
+/* Per evitare sovrapposizioni o rotture della tabella */
+.piani-finanziari-container mat-header-cell, mat-cell {
+  white-space: nowrap; /* Evita che il contenuto vada a capo */
+  text-align: center; /* Allinea il testo al centro (opzionale) */
+}

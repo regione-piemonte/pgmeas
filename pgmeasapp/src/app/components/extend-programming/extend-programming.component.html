@@ -1,0 +1,86 @@
+<ng-container *ngIf="!loading; else loadingTemplate">
+  <h1 class="pgmeas-primary-text">Proroga programmazione</h1>
+  <mat-card>
+    <mat-card-header>
+      <h4>Periodo operativo della programmazione</h4>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <div class="small-text flex-div">
+        <p>Triennio: </p>
+        <b>{{ calcolaTriennio() }}</b>
+      </div>
+
+      <div class="date-div">
+
+        <div class="small-text flex-div">
+          <p>Data inizio inserimento:</p>
+          <b>{{ dataInizio }}</b>
+        </div>
+
+        <div class="small-text flex-div">
+          <p>Data fine inserimento:</p>
+          <b>{{ dataFine }}</b>
+        </div>
+
+      </div>
+
+      <table mat-table [dataSource]="dataSource">
+
+        <!-- Colonna per enteCodDesc -->
+        <ng-container matColumnDef="enteCodEsteso">
+          <th mat-header-cell *matHeaderCellDef> Azienda </th>
+          <td mat-cell *matCellDef="let element"
+              [matTooltip]="element.enteDesc"
+              matTooltipPosition="above"
+              class="truncate-text">
+            {{ element.enteDesc }}
+          </td>
+        </ng-container>
+
+        <!-- Colonna per faseProrogaFine -->
+        <ng-container matColumnDef="faseProrogaFine">
+          <th mat-header-cell *matHeaderCellDef> Data di fine proroga </th>
+          <td mat-cell *matCellDef="let element">
+            <ng-container *ngIf="element.faseProrogaFine; else nodata">
+              {{element.faseProrogaFine}}
+            </ng-container>
+            <ng-template #nodata>
+              -
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <!-- Colonna per icona modifica -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="apriModaleProroga('ENTE', element)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <!-- Header e righe della tabella -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <mat-paginator [length]="dataSource.data.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons class="paginator small-text"></mat-paginator>
+
+    </mat-card-content>
+
+    <div class="buttons" mat-dialog-actions>
+      <button mat-button color="primary" (click)="back()">INDIETRO</button>
+      <button mat-flat-button color="primary" style="margin-right: 10px; margin-top: 10px; margin-left: 20px"
+      type="button" (click)="apriModaleProroga('TUTTE')" class="conferma-button">Proroga tutte le aziende</button>
+    </div>
+
+  </mat-card>
+</ng-container>
+
+<ng-template #loadingTemplate>
+  <mat-spinner style="margin: 20px auto"></mat-spinner>
+</ng-template>
+

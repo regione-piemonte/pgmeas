@@ -1,0 +1,34 @@
+@use '@angular/material' as mat;
+
+$success-palette: mat.define-palette(mat.$green-palette);
+
+mat-icon {
+  color: mat.get-color-from-palette($success-palette, 'default');
+}
+
+.annulla-button {
+  color: #005CA9;
+  font-size: 14px;
+  cursor: pointer
+}
+
+.search-container {
+  display: flex;
+  justify-content: space-between; /* Distribuisce gli elementi agli estremi */
+  align-items: center;
+  gap: 10px; /* Aggiunge uno spazio tra i bottoni */
+}
+
+.search-container button {
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.left-buttons {
+  display: flex;
+  gap: 10px; /* Aggiunge uno spazio tra i bottoni */
+}
+
+.right-button {
+  margin-left: auto; /* Spinge il bottone a destra */
+}

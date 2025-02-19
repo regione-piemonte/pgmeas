@@ -1,0 +1,205 @@
+.date-programmazioni {
+  display: flex;
+}
+
+.date-margin {
+  margin-right: 2rem;
+}
+
+.small-button {
+  width: 140px;
+}
+
+.error-margin-bottom {
+  margin-bottom: 1rem;
+}
+
+.intervento-edilizio-div {
+  display: flex;
+  flex-direction: row ;
+}
+
+.intervento-edilizio-div.indent {
+  margin-left: 42px !important; /* Assumi la larghezza del mat-slide-toggle */
+  margin-bottom: 20px
+}
+
+.durata-stimata-div {
+  display: flex;
+  flex-direction: row;
+}
+
+.durata-stimata-input {
+  margin-right: 2rem;
+}
+
+.appalto-integrato-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.appalto-integrato-p {
+  margin-right: 0.5rem;
+}
+
+mat-expansion-panel {
+  margin-bottom: 1em;
+}
+
+.inputResponsabile {
+  margin-bottom: 1em;
+  margin-left: 1em;
+}
+
+.responsabile-div {
+  display: flex;
+  margin-top: 8px;
+  margin-left: -1rem;
+}
+
+.custom-select .mat-form-field-wrapper {
+  background-color: #f5f5f5; /* Sfondo grigio chiaro */
+  border-radius: 5px; /* Bordi arrotondati */
+}
+
+.custom-select .mat-form-field-underline {
+  background-color: red; /* Linea inferiore rossa */
+}
+
+.custom-select .mat-select-trigger {
+  color: black; /* Testo nero */
+}
+
+/* Per rimuovere il bordo inferiore quando non è selezionato */
+.custom-select.mat-focused .mat-form-field-underline {
+  background-color: red; /* Mantiene la linea rossa quando il campo è attivo */
+}
+
+.long-select {
+  width: 600px;  /* Puoi regolare questo valore come preferisci */
+  max-width: 100%; /* Impedisce di espandersi oltre il contenitore */
+}
+
+.triennio-container {
+  display: flex;            /* Abilita Flexbox */
+  justify-content: space-between; /* Spazio tra gli elementi */
+  align-items: center;     /* Allinea verticalmente gli elementi */
+}
+
+.button-copia {
+  margin-left: auto;       /* Spinge il pulsante verso destra */
+}
+
+.form-row {
+  //display: flex;                /* Abilita Flexbox per la riga */
+  //justify-content: flex-start; /* Spinge i contenuti ai lati opposti */
+  align-items: center;         /* Allinea verticalmente gli elementi */
+  margin-bottom: 10px;         /* Aggiunge spazio tra le righe */
+}
+
+label {
+  flex: 1;                     /* Fai in modo che il label occupi tutto lo spazio disponibile */
+  text-align: left;           /* Allinea il testo del label a sinistra */
+}
+
+.custom-form-field {
+  position: relative;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+.custom-form-field input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+  background-color: whitesmoke;
+}
+
+.custom-form-field input:focus {
+  outline: none;
+  border-color: #3f51b5; /* Colore del focus simile a Material Design */
+}
+
+.parentesi{
+  font-size: xxx-large;
+  align-self: baseline;
+}
+
+.custom-width {
+  width: 600px; /* Puoi specificare qualunque larghezza desideri */
+}
+.custom-costo-width{
+  width: 400px;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Distribuisce lo spazio tra gli elementi */
+}
+
+.search-container button {
+  margin-left: auto; /* Spinge il bottone a destra */
+}
+
+.annulla-button {
+  color: #005CA9;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.small-text {
+  font-size: 14px;
+}
+
+.note-field {
+  width: 100%;
+}
+
+.upload-button{
+  color: #005CA9;
+  font: normal normal normal 14px/20px Open Sans;
+  letter-spacing: 0px;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+}
+
+.allegato-div {
+  display: flex;
+  align-items: center;
+}
+
+.button-margin {
+  margin-bottom: 1rem;
+}
+
+.titolo-textarea-field {
+  width: 600px;
+  height:20%
+}
+
+.note-textarea-field {
+  width: 100%;
+  height:20%
+}
+
+.form-container {
+  display: flex;
+  align-items: center;
+}
+
+.form-field {
+  flex: 1 !important;
+}
+
+.insert-button {
+  margin-left: 10px;
+}
+
+

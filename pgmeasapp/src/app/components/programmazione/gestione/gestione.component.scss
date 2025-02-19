@@ -1,0 +1,45 @@
+:host {
+  .container {
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+}
+
+.title-header {
+  font: normal normal bold 24px/5px Open Sans;
+  letter-spacing: 0;
+  font-size: 24px;
+  padding: 54px 0 54px 0;
+}
+
+.d-flex-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.stampa-pdf-btn {
+  background-color: white;
+  color: #005CA9 !important;
+  border: 1px solid #005CA9;
+  width: 206px;
+}
+
+.salva-dati-btn {
+  width: 206px;
+  border-bottom-color: #005CA9;
+  color: white !important;
+}
+
+.card-motivazione-title{
+  margin: 0;
+  text-align: left;
+  font: normal normal bold 20px/24px Open Sans;
+  letter-spacing: 0;
+  color: #000000DE;
+}
+
+.card-motivazione-margin{
+  padding:40px;
+  margin-bottom: 20px;
+}

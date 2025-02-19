@@ -1,0 +1,12 @@
+<div style="margin-top: 100px; text-align: center;">
+  <mat-icon color="warn" style="font-size: 200px; width: 200px; height: 200px;">error</mat-icon>
+  <h1>Ops! Si è verificato un errore...</h1>
+  <p>{{message}}</p>
+  <mat-expansion-panel *ngIf="dump" style="max-width: 800px; margin: 0 auto;">
+    <mat-expansion-panel-header>
+      Informazioni tecniche
+    </mat-expansion-panel-header>
+    <pre style="overflow-y: auto;">{{dump}}</pre>
+  </mat-expansion-panel>
+  <button mat-button color="primary" [routerLink]="['/', 'home']" style="margin-top: 40px;">TORNA ALLA HOME</button>
+</div>

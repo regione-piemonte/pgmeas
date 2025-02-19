@@ -1,0 +1,76 @@
+<form [formGroup]="responsabiliForm">
+  <mat-card>
+    <mat-card-header>
+      <p class="card-header">Responsabili</p>
+    </mat-card-header>
+    <mat-card-content style="width: 80%">
+    
+      <p class="small-text">Direttore generale</p>
+      <mat-form-field class="input-field">
+        <mat-label>Nome</mat-label>
+        <input type="text" formControlName="nomeDirettore" matInput placeholder="Nome" readonly="{{disableRegionali()}}">
+      </mat-form-field>
+      <mat-form-field class="input-field">
+        <mat-label>Cognome</mat-label>
+        <input type="text" formControlName="cognomeDirettore" matInput placeholder="Cognome" readonly="{{disableRegionali()}}">
+      </mat-form-field>
+      <mat-form-field class="input-field">
+        <mat-label>Codice Fiscale</mat-label>
+        <input type="text" appUppercase formControlName="codiceFiscaleDirettore" matInput placeholder="Codice Fiscale" readonly="{{disableRegionali()}}">
+      </mat-form-field>
+      <p class="small-text">Commissario</p>
+      <mat-form-field class="input-field">
+        <mat-label>Nome</mat-label>
+        <input type="text" formControlName="nomeCommissario" matInput placeholder="Nome" readonly="{{disableRegionali()}}">
+      </mat-form-field>
+      <mat-form-field class="input-field">
+        <mat-label>Cognome</mat-label>
+        <input type="text" formControlName="cognomeCommissario" matInput placeholder="Cognome" readonly="{{disableRegionali()}}">
+      </mat-form-field>
+      <mat-form-field class="input-field">
+        <mat-label>Codice Fiscale</mat-label>
+        <input type="text" appUppercase formControlName="codiceFiscaleCommissario" matInput placeholder="Codice Fiscale" readonly="{{disableRegionali()}}">
+      </mat-form-field>
+      <p class="small-text">RUP</p>
+      <mat-form-field class="input-field">
+        <mat-label>Nome</mat-label>
+        <input type="text" formControlName="nomeRup" matInput placeholder="Nome" readonly="{{disableRegionali()}}">
+      </mat-form-field>
+      <mat-form-field class="input-field">
+        <mat-label>Cognome</mat-label>
+        <input type="text" formControlName="cognomeRup" matInput placeholder="Cognome" readonly="{{disableRegionali()}}">
+      </mat-form-field>
+      <mat-form-field class="input-field">
+        <mat-label>Codice Fiscale</mat-label>
+        <input type="text" appUppercase formControlName="codiceFiscaleRup" matInput placeholder="Codice Fiscale" readonly="{{disableRegionali()}}">
+      </mat-form-field>
+      <p class="small-text m-14">Referente pratica</p>
+      <div class="d-flex">
+        <mat-form-field class="input-field">
+          <mat-label>Nome</mat-label>
+          <input type="text" formControlName="nomeReferentePratica" matInput placeholder="Nome" readonly="{{disableRegionali()}}">
+        </mat-form-field>
+        <mat-form-field class="input-field">
+          <mat-label>Cognome</mat-label>
+          <input type="text" formControlName="cognomeReferentePratica" matInput placeholder="Cognome" readonly="{{disableRegionali()}}">
+        </mat-form-field>
+        <mat-form-field class="input-field">
+          <mat-label>Codice Fiscale</mat-label>
+          <input type="text" appUppercase formControlName="codiceFiscaleReferentePratica" matInput placeholder="Codice Fiscale" readonly="{{disableRegionali()}}">
+        </mat-form-field>
+        <mat-form-field class="input-field">
+          <mat-label>Email</mat-label>
+          <input type="text" formControlName="emailReferentePratica" matInput placeholder="Email" readonly="{{disableRegionali()}}">
+        </mat-form-field>
+        <mat-form-field class="input-field">
+          <mat-label>Telefono</mat-label>
+          <input type="text" formControlName="telefonoReferentePratica" matInput placeholder="Telefono" readonly="{{disableRegionali()}}">
+        </mat-form-field>
+        <!-- <mat-form-field class="input-field">
+          <mat-label>Fax</mat-label>
+          <input type="text" formControlName="faxReferentePratica" matInput placeholder="Fax">
+        </mat-form-field> -->
+      </div>
+    </mat-card-content>
+  </mat-card>
+</form>

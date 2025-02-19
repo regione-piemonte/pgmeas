@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" content="text/html"/>
+    <!--    <link href="http://localhost:8080/css/style.css" rel="stylesheet" type="text/css" media="all"/>-->
+    <link href="classpath:/static/css/model2.css" rel="stylesheet" type="text/css" media="all"/>
+    <title>PDF TEMPLATE</title>
+</head>
+
+<body>
+
+<div class="actuator">
+    <H2 th:text="${data.intestazioneEnteAtt.nomeEnte}">NOME AZIENDA</H2>
+    <H4 th:text="${data.intestazioneEnteAtt.dipartimento}">DIPARTIMENTO</H4>
+    <span th:text="${data.intestazioneEnteAtt.indirizzo.via}">INDIRIZZO</span><br/>
+    <span th:text="${data.intestazioneEnteAtt.indirizzo.cap}">00100</span> -
+    <span th:text="${data.intestazioneEnteAtt.indirizzo.citta}">ROMA</span>
+</div>
+<div class="model">
+    <H1>Modulo A</H1>
+</div>
+<div class="document">
+    Prot. n° <span th:text="${data.documento.numProtocollo}"></span><br/>
+    Del <span th:text="${#dates.format(data.documento.numProtocolloData, 'dd/MM/yyyy')}"></span>
+</div>
+<div class="addressedTo">
+    Al settore <span th:text="${data.destinatario.dipartimento}"></span><br/>
+    di <span th:text="${data.destinatario.nomeEnte}"></span><br/>
+    <span th:text="${data.destinatario.indirizzo.via}"></span><br/>
+    <span th:text="${data.destinatario.indirizzo.cap}"></span> -
+    <span th:text="${data.destinatario.indirizzo.citta}"></span>
+</div>
+
+<br></br>
+<br></br>
+<br></br>
+<div class="subject bold">OGGETTO: Richiesta di ammissione al finanziamento</div>
+<div class="subject bold">FONTI DI FINANZIAMENTO:</div>
+<!--<div class="sources">
+    <ul>
+        <li th:each="s:${data.fontiFin}" th:text="${s}"></li>
+    </ul>
+</div>-->
+<table class="sources">
+    <tr th:each="s:${data.fontiFin}">
+    <td th:text="${s}"></td>
+    </tr> 
+</table>
+
+<div class="subject bold">ENTE ATTUATORE: <span th:text="${data.enteAttuatore}"></span></div>
+<div class="subject bold">TITOLO INTERVENTO: <span th:text="${data.titoloIntervento}"></span></div>
+<div class="subject bold">CODICE INTERVENTO: <span th:text="${data.intCode}"></span></div>
+<div class="subject bold">CODICE CUP: <span th:text="${data.cupCode}"></span></div>
+<div class="subject bold">LOCALIZZAZIONE: <span th:text="${data.location}"></span></div>
+<div class="subject bold">COSTO COMPLESSIVO DELL'INTERVENTO:<span th:text="${#numbers.formatDecimal(data.importoComplessivo,1,'POINT',2,'COMMA')}"></span></div>
+<div class="subject bold">PIANO FINANZIARIO:</div>
+<table class="financialPlan">
+    <tr>
+        <th>Specifiche del Finanziamento</th>
+        <th>Estremi dell'atto</th>
+        <th>Importo [€]</th>
+    </tr>
+    <tr th:each="mf : ${data.pianoFinanziario.vociPianoFinanziario}">
+        <td th:text="${mf.tipo}"></td>
+        <td th:text="${mf.atto}"></td>
+        <td align="right" th:text="${#numbers.formatDecimal(mf.importo,1,'POINT',2,'COMMA')}"></td>
+    
+    <tr>
+   <td colspan="2">Totale Piano finanziario</td>
+        <td align="right" th:text="${#numbers.formatDecimal(#aggregates.sum(data.pianoFinanziario.vociPianoFinanziario.![importo]),1,'POINT',2,'COMMA')}"></td>
+  </tr> 
+</table>
+<div class="subject bold">QUADRO ECONOMICO:</div>
+<table class="economicFramework">
+       		   
+   <!--<th:block th:each="st : ${data.quadroEconomico}">
+            <tr>
+                <td colspan="3" th:text="${'st.nomeStruttura'}" />
+                <tr>-->
+        <tr>
+        <th>Descrizione</th>
+        <th>Importo [€]</th>
+    </tr>
+               
+  <th:block th:each = "qe : ${data.quadroEconomico}">
+                <tr th:each = "voce : ${qe.vociPianoFinanziario}">
+                <td th:text="${voce.tipo}"></td> 
+            <td align="right" th:text="${#numbers.formatDecimal(voce.importo,1,'POINT',2,'COMMA')}"></td>
+                
+              <tr>
+        <td>Totale</td>
+        <td align="right" th:text="${#numbers.formatDecimal(#aggregates.sum(qe.vociPianoFinanziario.![importo]),1,'POINT',2,'COMMA')}"></td>
+    </tr>   
+</th:block>
+ 
+</table>
+<div class="subject bold">PIANO CRONOLOGICO DI ATTIVAZIONE DELL'INTERVENTO:</div>
+<div>
+<table>
+ <tr th:each ="piano : ${data.pianoCronologico}">
+    <td>a) Tempo previsto per la durata dei lavori:</td>            
+    <td th:text="${piano.numGiorniProgEsecutivo}">
+   giorni consecutivi dalla data del verbale di consegna lavori.</td>
+  
+   <td> b) Tempo previsto per l'attivazione:</td>
+    <td th:text="${piano.numGiorniLavori}">
+   giorni dopo l'ultimazione dei lavori.</td>
+   </tr>
+  
+	</table>
+</div>
+<div class="subject bold">PROGETTO:</div>
+
+<div class="subject bold page-break">DICHIARAZIONE DI APPALTABILITA' DELL'INTERVENTO</div>
+
+<div>
+  <table>
+      <th:block th:each="da: ${data.dichiarazioneAppaltabilita}" >
+      <tr>
+                <td colspan="3"th:text="${da.titolo}"/>
+               
+      <tr th:each="lista: ${da.dichiarazioni}" >
+      <td th:text="${lista.voce}"></td>
+		<td>
+			<input type="checkbox" th:if="${lista.flag == 'true'}"  checked="checked"/>
+			<input th:unless="${lista.flag == 'true'}" type="checkbox"/>
+			<span th:if="${lista.validazioneData}" th:text="${#dates.format(lista.validazioneData, 'dd/MM/yyyy')}"></span>
+		</td>
+      
+      </tr>
+      </table>  
+    
+</div>
+<div class="signatures">
+    <table style="width:100%">
+        <tr>
+            <td style="width:50%; text-align: center;">
+                Il/I Responsabile/i del/i Procedimento/i<br/>
+
+            </td>
+            <td style="width:50%; text-align: center;">
+                Il Direttore Generale/Il Commissario<br/>
+
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="reference">
+<table>
+    <tr>
+   <td> Referente della pratica:</td>
+   <td th:text="${data.refPratica.refPraticaNome}">
+   </tr>
+   <tr>
+    <td> Telefono: </td>
+     <td th:text="${data.refPratica.refPraticaTel}"></td>
+    </tr>
+    <tr> 
+    <td>FAX: </td>
+    <td th:text="${data.refPratica.refPraticaFax}"></td>
+    </tr>
+    <tr>
+    <td>E-mail: </td>
+    <td th:text="${data.refPratica.refPraticaEmail}"></td>
+    </table>
+</div>
+</body>
+</html>

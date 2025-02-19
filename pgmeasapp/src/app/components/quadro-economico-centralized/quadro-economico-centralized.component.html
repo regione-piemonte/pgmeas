@@ -1,0 +1,65 @@
+<form [formGroup]="form">
+  <ng-container formArrayName="quadroEconomicoArray">
+    <div *ngFor="let group of quadroEconomicoArray.controls; let i = index" [formGroupName]="i">
+      <div
+        [ngStyle]="{
+          'margin-left.px': getMarginFromSpazi(quadroEconomicoList[i].livello),
+          'margin-bottom': !quadroEconomicoList[i].selezionabile ? '20px' : '0'
+        }"
+        class="small-text"
+      >
+        <div class="flex-div divider"
+          [ngClass]="{'total-row': quadroEconomicoList[i].classifElemCod?.includes('TOT')}">
+          <p
+            [ngStyle]="{
+              'font-weight': quadroEconomicoList[i].livello === 1 ? 'bold' : 'normal'
+            }">
+            {{ quadroEconomicoList[i].descrizione }}
+          </p>
+          <div *ngIf="quadroEconomicoList[i]?.classifTreeEditabile || quadroEconomicoList[i]?.classifTreeConImporto">
+                      <div class="align-div">
+                        <div *ngIf="!isVisualizzazione" class="small-div">
+                          <div class="flex-div">
+                             <mat-form-field>
+                              <mat-label>{{ quadroEconomicoList[i].classifEtichetta }}</mat-label>
+                              <!-- <input
+                                matInput
+                                type="number"
+                                formControlName="valoreNumerico"
+                                min="0"
+                                style="text-align: right;"
+                                (keypress)="allowOnlyNumbers($event)"
+                                (blur)="roundToDecimals(quadroEconomicoList[i].classifElemCod ?? '', quadroEconomicoList[i].classifTreeImportoDecimali ?? 2)"
+                              /> -->
+                              <input
+                    matInput
+                    style="text-align: right;"
+                    type="text"
+                    currencyMask
+                    formControlName="valoreNumerico"
+                    [options]="{  thousands: '.', decimal: ',', precision:quadroEconomicoList[i].classifTreeImportoDecimali ?? 2 ,prefix:'',suffix:'', allowNegative: false,inputMode:natural,nullable :true}"
+                  >
+                            </mat-form-field>
+                            <p class="simbolo-p">{{ quadroEconomicoList[i].classifSimbolo }}</p>
+                          </div>
+                           <!-- <small *ngIf="quadroEconomicoList[i].classifSimbolo === '€'">{{ getNumero(group.get('valoreNumerico')?.value)  | currency: 'EUR'}}</small> -->
+                        </div>
+                        <div class="costo-div" *ngIf="isVisualizzazione">
+                          <div class="flex-div" *ngIf="quadroEconomicoList[i].classifSimbolo === '€'">
+                            <p>{{ getNumero(group.get('valoreNumerico')?.value)  | currency: 'EUR'}}</p>
+                          </div>
+                          <div class="flex-div" *ngIf="quadroEconomicoList[i].classifSimbolo != '€'">
+                            <p>{{ getNumero(group.get('valoreNumerico')?.value) + ' ' + quadroEconomicoList[i].classifSimbolo }}</p>
+                          </div>
+                        </div>
+                      </div>
+            <mat-error *ngIf="group.get('valoreNumerico')?.hasError('outOfBounds')">
+              {{ getErrorMessage(quadroEconomicoList[i].classifElemCod ?? '') }}
+            </mat-error>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</form>
+

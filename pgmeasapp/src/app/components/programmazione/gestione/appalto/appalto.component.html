@@ -1,0 +1,137 @@
+<ng-container *ngIf="intervento && interventoStruttura">
+  <form [formGroup]="appaltoForm">
+    <mat-card>
+      <mat-card-header>
+        <p class="card-header">{{ intervento.intTitolo }}</p>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="d-flex-between m-14" style="width: 60%; margin-bottom: 0;">
+          <p class="small-text" style="margin-bottom: 0;">Codice PGMEAS intervento: <b>{{ intervento.intCod }}</b></p>
+          <p class="small-text" style="margin-bottom: 0;">CUP: <b>{{ intervento.intCup }}</b></p>
+        </div>
+        <div class=" m-14" style="width: 100%; margin-top: 0;">
+          <!-- <p style="width: 50%" class="small-text">Fonte finanziamento: <b>{{ intervento.intDgRegionaleApprovazione }}</b></p> -->
+          <p style="width: 50%" class="small-text">Ente attuatore: <b>{{ ente[0].enteDesc }}</b></p>
+        </div>
+        <!-- <mat-form-field class="input-field" style="width: 100%">
+          <mat-label>Oggetto</mat-label>
+          <input formControlName="oggetto" matInput placeholder="Oggetto" style="width: 100%" type="text">
+        </mat-form-field>   -->   
+
+         <!--NEW BIS-->
+        <mat-radio-group 
+        formControlName="oggetto"
+        aria-labelledby="radio-group-label"
+        class="radio-group"
+        (change)="onChange($event)"
+        >
+          <mat-radio-button class="radio-button"  disabled="{{disableRegionali()}}"
+          [value]="'MOD_A'"
+          id="MOD_A"
+          [checked]="moduloTipo">
+            Richiesta di ammissione al finanziamento per edilizia sanitaria</mat-radio-button>   
+          <br>
+          <mat-radio-button class="radio-button" disabled="{{disableRegionali()}}" 
+          [value]="'MOD_A_A'"
+          id="MOD_A_A"
+          [checked]="!moduloTipo">
+            Richiesta di ammissione al finanziamento per attrezzature sanitarie</mat-radio-button>      
+        </mat-radio-group> 
+        <br>
+        <p style="width: 50%" class="small-text">Oggetto*: <b>{{ fraseOggetto}}</b></p>
+        <!--NEW BIS-->
+
+        
+        <p class="subsection-paragraph m-14">Stato progettuale</p>
+        <mat-form-field class="custom-select long-select">
+          <mat-select formControlName="statoProgetto" multiple>
+            <mat-option *ngFor="let option of checkboxOptions; let i = index" [value]="option.value" disabled="{{disableRegionali()}}">
+              {{ option.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!--
+        <div class="d-flex-between" formArrayName="statoProgetto">
+          <div *ngFor="let option of checkboxOptions; let i = index" class="d-flex">
+            <input [formControlName]="i"
+
+                   class="checkbox rounded-checkbox"
+                   type="checkbox">
+            <label class="checkbox-label-container">
+              {{ option.label }}
+            </label>
+          </div>
+          
+        </div>
+        -->
+        <ng-container formArrayName="strutture">
+          <ng-container *ngFor="let intervento of interventoStruttura; let i = index">
+            <mat-accordion [formGroupName]="i">
+              <mat-expansion-panel>
+                <mat-expansion-panel-header class="pgmeas-primary-indicator pgmeas-primary-text" >
+                  <mat-panel-title *ngIf="denominazioneStruttura[i]">
+                    <h3  class="pgmeas-primary-text">
+                      {{ denominazioneStruttura[i].strDenominazione }}
+                    </h3>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <p *ngIf="denominazioneStruttura[i] && denominazioneStruttura[i].strPgmeas" class="small-text"> 
+                  <span *ngIf="denominazioneStruttura[i].strNuova">Nuova Struttura</span>
+                  <span *ngIf="denominazioneStruttura[i].strNonCensita">Struttura Non Censita</span>
+                </p>
+                <p *ngIf="denominazioneStruttura[i] && denominazioneStruttura[i].strPgmeas" class="small-text"> Comune: <b> {{ denominazioneStruttura[i].strComune }} </b> </p>
+                <p *ngIf="denominazioneStruttura[i]" class="small-text"> Indirizzo: <b> {{ denominazioneStruttura[i].strIndirizzo }}</b></p>
+                <p *ngIf="denominazioneStruttura[i]" class="small-text"> Dati Catastali: <b> {{ denominazioneStruttura[i].strDatiCatastali }}</b></p>
+                <p *ngIf="denominazioneStruttura[i] && denominazioneStruttura[i].strPgmeas" class="small-text"> Note: <b> {{ denominazioneStruttura[i].note }} </b> </p>
+                <p class="small-text"> Responsabile Struttura Complessa facente funzione: <b>{{ intervento.intstrResponsabileStrutturaComplessaCognome }}
+                  {{ intervento.intstrResponsabileStrutturaComplessaNome }}</b></p>
+                <p class="small-text"> Responsabile Struttura Semplice facente funzione: <b>{{ intervento.intstrResponsabileStrutturaSempliceCognome }}
+                  {{ intervento.intstrResponsabileStrutturaSempliceNome }}</b></p>
+                <div class="d-flex-between expansion-panel-content-container align-item-center">
+                  <!-- <mat-form-field>
+                    <mat-label>CIG</mat-label>
+                    <input appAutoComma formControlName="cig" matInput type="text">
+                  </mat-form-field>
+                  <mat-checkbox formControlName="parereRegionePPP">Parere Regione su PPP</mat-checkbox>
+                  <mat-form-field>
+                    <mat-label>Determina di accertamento e/o impegno</mat-label>
+                    <input formControlName="determinaAccertamento" matInput type="text">
+                  </mat-form-field> -->
+                  <mat-card-content>
+                    <div class="parere-div"  *ngIf="intervento.parerePPP.parere">
+                      <div class="flex-container small-text" *ngFor="let row of intervento.parerePPP.allegati; let index = index">
+                                           
+                        <label>Parere Regione su PPP numero: </label>
+                        <b class="delibere-p"> {{ row.intAllegatoNumero }}</b>
+                        <label>Data atto:</label>
+                        <b class="delibere-p"> {{ row.intAllegatoData | date: 'dd/MM/yyyy'}}</b>
+                        <label>Allegato:</label>
+                      
+                        <button mat-stroked-button color="primary" (click)="downloadPdf(row.idAllegato!)">Visualizza</button>
+                      </div>
+                    </div>
+                    <div class="parere-div"  *ngIf="intervento.parereHta.parere">
+                      <div class="flex-container small-text" *ngFor="let row of intervento.parereHta.allegati; let index = index">
+                                            
+                        <label> Parere HTA numero: </label>
+                        <b class="delibere-p"> {{ row.intAllegatoNumero }}</b>
+                        <label>Data atto: </label>
+                        <b class="delibere-p">{{ row.intAllegatoData | date: 'dd/MM/yyyy'}}</b>
+                        <label>Allegato: </label>
+                    
+                        <button mat-stroked-button color="primary" (click)="downloadPdf(row.idAllegato!)">Visualizza</button>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </ng-container>
+          <div class="appalto-bottom">
+            <p class="small-text m-14"><b>Costo complessivo dell'intervento: </b>{{ intervento.intImporto | currency:'EUR' }}</p>
+          </div>
+        </ng-container>
+      </mat-card-content>
+    </mat-card>
+  </form>
+</ng-container>

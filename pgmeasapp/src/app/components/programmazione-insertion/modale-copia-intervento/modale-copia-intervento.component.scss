@@ -1,0 +1,95 @@
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    padding: 0;
+    font-size: 20px;
+    color: black;
+  }
+
+  button {
+    background-color: transparent;
+    border: none !important;
+    cursor: pointer;
+  }
+}
+
+.d-flex {
+  display: flex;
+  flex-direction: column;
+}
+
+.atto-importo {
+  display: flex;
+  justify-content: space-between;
+  .atto{
+    width: 368px;
+  }
+  .importo {
+    width: 168px;
+  }
+  mat-form-field {
+    width: 200px;
+  }
+}
+
+
+.buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  button {
+    width: 40%;
+  }
+}
+
+.aggiungi-button {
+  background: #005CA9 0 0 no-repeat padding-box;
+  border-radius: 3px;
+  color: white;
+}
+
+.annulla-button {
+  color: #005CA9;
+  font-size: 14px;
+  cursor: pointer
+}
+
+.seleziona-finanziamento {
+  width: 338px;
+
+  mat-label {
+    font-size: 14px;
+  }
+}
+
+.date-programmazioni {
+  display: flex;
+}
+
+.form-row {
+  display: flex;                /* Abilita Flexbox per la riga */
+  justify-content: flex-start; /* Spinge i contenuti ai lati opposti */
+  align-items: center;         /* Allinea verticalmente gli elementi */
+  margin-bottom: 10px;         /* Aggiunge spazio tra le righe */
+}
+
+label {
+  flex: 1;                     /* Fai in modo che il label occupi tutto lo spazio disponibile */
+  text-align: left;           /* Allinea il testo del label a sinistra */
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Distribuisce lo spazio tra gli elementi */
+}
+
+.search-container button {
+  margin-left: auto; /* Spinge il bottone a destra */
+}

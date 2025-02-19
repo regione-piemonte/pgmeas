@@ -1,0 +1,299 @@
+// mat-card {
+//   background: #FFFFFF 0 0 no-repeat padding-box;
+//   box-shadow: 1px 2px 8px #C4C4C4;
+//   padding: 0 0 0 29px;
+//   margin-bottom: 15px;
+// }
+
+.card-header{
+  margin: 0;
+  text-align: left;
+  font: normal normal bold 20px/24px Open Sans;
+  letter-spacing: 0;
+  color: #000000DE;
+}
+
+table {
+  // height: 100%;
+  // box-shadow: none;
+  // border-bottom: 1px solid gray;
+  // margin: 10px 0;
+  // table-layout: fixed;
+  // width: 100%;
+    th{
+      font-size: 12px;
+    }
+  // th{
+  //   font-size: 16px;
+  //   font: normal normal bold 16px/20px Open Sans;
+  //   letter-spacing: 0;
+  //   color: #000000;
+  //   opacity: 1;
+  // }
+}
+
+/* Stile per la tabella */
+.mat-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Effetto di elevazione */
+  font-family: 'Arial', sans-serif;
+}
+
+ /* Allineare gli importi (Importo, Quota Regione, Quota Stato) a destra */
+// .col-tipo, .col-dettaglio {
+//   text-align: left;
+// }
+// .col-dettaglio {
+//   width: 40% !important;
+// }
+// .col-importo, .col-quota-regione, .col-quota-stato {
+//   text-align: right;
+// }
+/* Uniformare la larghezza delle colonne */
+// .mat-header-cell, .mat-cell {
+//   padding: 8px;
+// }
+
+/* Stile per la riga dell'intestazione */
+.mat-header-row {
+  font-weight: bold; /* Testo in grassetto */
+  font-size: 16px; /* Dimensione del font */
+  font: normal normal bold 16px / 20px Open Sans;
+}
+
+/* Stile per le celle dell'intestazione */
+.mat-header-cell {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd; /* Bordo solo sotto la cella */
+}
+
+/* Stile per le celle */
+.mat-cell {
+  padding: 12px 15px;
+  color: #333; /* Colore del testo per le celle */
+  font-size: 14px; /* Dimensione del font */
+  border-bottom: 1px solid #ddd; /* Bordo solo sotto la cella */
+}
+
+/* Allineamento a destra per colonne numeriche */
+.mat-cell input[type="number"] {
+  text-align: right; /* Allineamento a destra per numeri */
+}
+
+/* Allineamento a centro per i campi di input */
+.mat-cell input[disabled] {
+  text-align: center; /* Allineamento a centro per il campo "annoPrevisione" */
+}
+
+/* Se vuoi che le colonne abbiano la stessa larghezza */
+// .col-tipo, .col-dettaglio, .col-importo, .col-quota-regione, .col-quota-stato {
+//   width: auto;
+// }
+
+.col-nome {
+  width: 35%; /* Larghezza per la colonna "Nome per i Totali" */
+}
+
+.col-tipo {
+  width: 15%; /* Larghezza fissa per la colonna "Tipo" */
+}
+
+.col-dettaglio {
+  width: 20%; /* Larghezza per la colonna "Dettaglio" */
+}
+
+.col-importo {
+  width: 15%; /* Larghezza per la colonna "Importo" */
+  text-align: right;
+}
+
+.col-quota-regione {
+  width: 20%; /* Larghezza per la colonna "Di cui quota Regione" */
+  text-align: right;
+}
+
+.col-quota-stato {
+  width: 20%; /* Larghezza per la colonna "Di cui quota Stato" */
+  text-align: right;
+}
+
+// .col-azione {
+//   width: 10%; /* Larghezza per la colonna con l'icona di azione */
+// }
+
+/* Posizionare il totale vicino all'etichetta e non a destra della maschera */
+// .totale-cell {
+//   text-align: left;  /* Allineato a sinistra per il totale */
+//   font-weight: bold;
+// }
+
+/* Per evitare sovrapposizioni o rotture della tabella */
+.piani-finanziari-container mat-header-cell, mat-cell {
+  white-space: nowrap; /* Evita che il contenuto vada a capo */
+  // text-align: center; /* Allinea il testo al centro (opzionale) */
+}
+
+.piani-finanziari-table {
+  margin-top: 2rem;
+  width: 100%; /* Assicurati che la tabella occupi l'intero spazio disponibile */
+}
+
+
+// .last-row {
+//   background-color: #F8F8F8;
+//   font: normal normal bold 16px/20px Open Sans;
+// }
+
+// .last-column{
+//   text-align: right !important;
+// }
+
+// .aggiungi-finanziamento{
+//   color: #005CA9;
+//   font-size: 14px;
+//   cursor: pointer;
+// }
+
+// .totale{
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   background-color: #F8F8F8;
+//   padding: 5px 10px;
+//   p{
+//     font-size: 14px;
+//     font-weight: bold;
+//   }
+// }
+
+// .column {
+//   min-width: 150px; /* Set your desired minimum width */
+//   text-align: left;
+// }
+
+
+// .m-14 {
+//   margin: 14px 0 !important;
+// }
+// .d-flex-between{
+//   display: flex;
+//   justify-content: space-between;
+// }
+
+.input-field {
+  width: 338px;
+/*  mat-label{
+    font-size: 11px;
+  }
+  input{
+    font-size: 11px;
+  } */
+}
+
+::ng-deep .mdc-text-field--filled{
+  background-color: transparent !important;
+}
+
+// .checkbox-label-container {
+//   font-size: 14px;
+//   vertical-align: center;
+// }
+
+.card-header{
+  margin: 0;
+  text-align: left;
+  font: normal normal bold 20px/24px Open Sans;
+  letter-spacing: 0;
+  color: #000000DE;
+}
+
+// .small-text{
+//   font-size: 14px;
+// }
+
+// .appalto-bottom{
+//   padding: 5px 10px;
+//   /* UI Properties */
+//   background: #F8F8F8 0% 0% no-repeat padding-box;
+//   opacity: 1;
+// }
+
+mat-accordion{
+  margin: 10px;
+}
+
+// .subsection-paragraph{
+//   font-size: 16px;
+//   font-weight: bold;
+// }
+
+// .rounded-checkbox {
+//   width: 20px; /* Regola la dimensione secondo le tue necessità */
+//   height: 20px;
+//   border-radius: 50%;
+//   appearance: none;
+//   -webkit-appearance: none;
+//   -moz-appearance: none;
+//   background-color: #fff; /* Colore di sfondo */
+//   border: 2px solid #ccc; /* Colore del bordo */
+//   cursor: pointer;
+// }
+
+// .rounded-checkbox:checked {
+//   background-color: #0058B1; /* Colore di sfondo quando è selezionato */
+//   border: 1px solid #0058B1; /* Colore del bordo */
+//   padding: 2px;
+// }
+
+// .d-flex{
+//   display: flex;
+//   align-items: center;
+// }
+
+// .align-item-center{
+//   align-items: center;
+// }
+
+.expansion-panel-content-container{
+  width: 100%;
+  input{
+    font-size: 14px;
+  }
+  mat-form-field{
+    /* mat-label{
+       font-size: 11px;
+    } */
+    width: calc(100% / 3 - 40px);
+    input{
+      font-size: 14px;
+    }
+  }
+}
+
+mat-panel-title{
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 0px;
+}
+
+// .totale-complessivo{
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   background-color: #E2E2E2;
+//   padding: 5px 10px;
+//   p{
+//     font-size: 14px;
+//     font-weight: bold;
+//   }
+// }
+
+// .marginTopTotaleFinanz{
+//   margin-top: 3rem;
+// }
+
+// .col-nome2 {
+//   width: 55%; /* Larghezza per la colonna "Nome per i Totali" */
+// }

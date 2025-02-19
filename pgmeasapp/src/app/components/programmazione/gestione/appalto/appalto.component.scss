@@ -1,0 +1,130 @@
+@use '@angular/material' as mat;
+@use '/src/pgmeas-palettes' as pgmeas;
+
+$pgmeasapp-primary: mat.define-palette(pgmeas.$primary-palette);
+
+.m-14 {
+  margin: 14px 0 !important;
+}
+.d-flex-between{
+  display: flex;
+  justify-content: space-between;
+}
+
+.input-field {
+  width: 338px;
+/*  mat-label{
+    font-size: 11px; 
+  }
+  input{
+    font-size: 11px; 
+  } */
+}
+
+::ng-deep .mdc-text-field--filled{
+  background-color: transparent !important;
+}
+
+.checkbox-label-container {
+  font-size: 14px;
+  vertical-align: center;
+}
+
+.card-header{
+  margin: 0;
+  text-align: left;
+  font: normal normal bold 20px/24px Open Sans;
+  letter-spacing: 0;
+  color: #000000DE;
+}
+
+.small-text{
+  font-size: 14px;
+}
+
+mat-card {
+  background: #FFFFFF 0 0 no-repeat padding-box;
+  box-shadow: 1px 2px 8px #C4C4C4;
+  padding: 0 0 0 29px;
+  margin-bottom: 15px;
+}
+
+.appalto-bottom{
+  padding: 5px 10px;
+  /* UI Properties */
+  background: #F8F8F8 0 0 no-repeat padding-box;
+  opacity: 1;
+}
+
+mat-accordion{
+  margin: 10px;
+}
+
+
+.subsection-paragraph{
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.rounded-checkbox {
+  width: 20px; /* Regola la dimensione secondo le tue necessità */
+  height: 20px;
+  border-radius: 50%;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #fff; /* Colore di sfondo */
+  border: 2px solid #ccc; /* Colore del bordo */
+  cursor: pointer;
+}
+
+.rounded-checkbox:checked {
+  background-color: mat.get-color-from-palette($pgmeasapp-primary, 'default');; /* Colore di sfondo quando è selezionato */
+  border: 1px solid mat.get-color-from-palette($pgmeasapp-primary, 'default');; /* Colore del bordo */
+  padding: 2px;
+}
+
+.d-flex{
+  display: flex;
+  align-items: center;
+}
+
+.align-item-center{
+  align-items: center;
+}
+
+
+.expansion-panel-content-container{
+  width: 100%;
+  input{
+    font-size: 14px;
+  }
+  mat-form-field{
+    /* mat-label{
+       font-size: 11px; 
+    } */
+    width: calc(100% / 3 - 40px);
+    input{
+      font-size: 14px;
+    }
+  }
+}
+
+mat-panel-title{
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 0;
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.delibere-p {
+  margin-right: 2rem !important;
+}
+.long-select{
+  width: 100%;
+}

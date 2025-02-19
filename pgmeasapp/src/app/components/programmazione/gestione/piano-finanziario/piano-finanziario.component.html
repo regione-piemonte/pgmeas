@@ -1,0 +1,153 @@
+<mat-card style="margin-bottom: 40px">
+  <mat-card-header>
+    <p class="card-header">Piano finanziario</p>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="form">
+      <!-- <div formArrayName="finanziamentiForm" style="overflow-y: auto"> -->
+      <div>
+        <h4>Finanziamenti Principali</h4>
+
+        <table class="mat-table piani-finanziari-table">
+          <tr class="mat-header-row">
+            <th class="mat-header-cell col-tipo">Tipo</th>
+            <th class="mat-header-cell col-dettaglio">Dettaglio</th>
+            <th class="mat-header-cell col-importo">Importo</th>
+            <th class="mat-header-cell col-quota-regione">Di cui quota Regione</th>
+            <th class="mat-header-cell col-quota-stato">Di cui quota Stato</th>
+          </tr>
+
+          <ng-container *ngFor="let pianoFinanziario of intervento.pianiFinanziari let i = index">
+            <tr>
+              <ng-container *ngIf="pianoFinanziario.isPrincipale">
+                <td class="mat-cell col-tipo">{{ pianoFinanziario.tipologiaDesc }}</td>
+                <td class="mat-cell col-dettaglio">{{ pianoFinanziario.tipologiaDettaglioDesc }}</td>
+                <td class="mat-cell col-importo">
+                  {{ pianoFinanziario.importoTotale ? (pianoFinanziario.importoTotale | currency: 'EUR') : ' - ' }}
+
+                </td>
+                <td class="mat-cell  col-quota-regione">
+                  {{ getRegionImport(pianoFinanziario)| currency: 'EUR'}}
+                </td>
+                <td class="mat-cell  col-quota-stato">
+                  {{ getStatoImport(pianoFinanziario) | currency: 'EUR'}}
+                </td>
+              </ng-container>
+            </tr>
+          </ng-container>
+          <tr>
+            <td class="mat-cell col-tipo"><b>Totale</b></td>
+            <td class="mat-cell col-dettaglio"></td>
+            <td class="mat-cell col-importo"><b>{{getTotaleComplessivoPrincipale() | currency: 'EUR'}}</b></td>
+            <td class="mat-cell col-quota-regione"><b>{{getTotaleRegionePrincipale() | currency: 'EUR'}}</b></td>
+            <td class="mat-cell col-quota-stato"><b>{{getTotaleStatoPrincipale() | currency: 'EUR'}}</b></td>
+          </tr>
+
+        </table>
+
+      </div>
+      <div>
+        <h4>Altri finanziamenti</h4>
+        <ng-container *ngIf="altriFinanziamentiDisponibili">
+          <table class="mat-table piani-finanziari-table">
+            <tr class="mat-header-row">
+              <th class="mat-header-cell col-tipo">Tipo</th>
+              <th class="mat-header-cell col-dettaglio">Dettaglio</th>
+              <th class="mat-header-cell col-importo">Importo</th>
+              <th class="mat-header-cell col-quota-regione">Di cui quota Regione</th>
+              <th class="mat-header-cell col-quota-stato">Di cui quota Stato</th>
+            </tr>
+
+            <ng-container *ngFor="let pianoFinanziario of intervento.pianiFinanziari let i = index">
+              <tr>
+                <ng-container *ngIf="!pianoFinanziario.isPrincipale">
+                  <td class="mat-cell col-tipo">{{ pianoFinanziario.tipologiaDesc }}</td>
+                  <td class="mat-cell col-dettaglio">{{ pianoFinanziario.tipologiaDettaglioDesc }}</td>
+                  <td class="mat-cell col-importo">{{ pianoFinanziario.importoTotale ? (pianoFinanziario.importoTotale |
+                    currency: 'EUR') : ' - ' }}</td>
+                  <td class="mat-cell  col-quota-regione">
+                    {{ getRegionImport(pianoFinanziario)| currency: 'EUR'}}
+                  </td>
+                  <td class="mat-cell  col-quota-stato">
+                    {{ getStatoImport(pianoFinanziario) | currency: 'EUR'}}
+                  </td>
+                </ng-container>
+              </tr>
+            </ng-container>
+
+            <tr>
+              <td class="mat-cell col-tipo"><b>Totale</b></td>
+              <td class="mat-cell col-dettaglio"></td>
+              <td class="mat-cell col-importo"><b>{{getTotaleComplessivoSecondario() | currency: 'EUR'}}</b></td>
+              <td class="mat-cell  col-quota-regione"><b>{{getTotaleRegioneSecondario() | currency: 'EUR'}}</b></td>
+              <td class="mat-cell  col-quota-stato"><b>{{getTotaleStatoSecondario() | currency: 'EUR'}}</b></td>
+            </tr>
+
+          </table>
+        </ng-container>
+        <ng-container *ngIf="!altriFinanziamentiDisponibili">Nessuno</ng-container>
+        <!-- <div class="totale">
+          <p>Totale complessivo</p>
+          <p>{{ getTotaleComplessivo() | currency: 'EUR' }}</p>
+        </div> -->
+
+        <!--DETTAGLIO TOTALE FINANZIAMENTI-->
+        <ng-container
+          *ngIf="pianiFinanziariNonPrincipaliTabellaRows.length || pianiFinanziariPrincipaliTabellaRows.length"
+          class="piani-finanziari-container">
+          <h4>Totale Finanziamenti</h4>
+          <table class="mat-table piani-finanziari-table">
+            <tr class="mat-header-row">
+              <th class="mat-header-cell col-nome"></th>
+              <th class="mat-header-cell col-importo">Importo</th>
+              <th class="mat-header-cell col-quota-regione">Di cui quota Regione</th>
+              <th class="mat-header-cell col-quota-stato">Di cui quota Stato</th>
+            </tr>
+            <tr>
+              <td class="mat-cell col-nome">
+                Totale finanziamenti principali
+              </td>
+              <td class="mat-cell col-importo">
+                {{totImportoPrincipali | currency: 'EUR'}}
+              </td>
+              <td class="mat-cell col-quota-regione">
+                {{totImportoRegionePrincipali | currency: 'EUR'}}
+              </td>
+              <td class="mat-cell col-quota-stato">
+                {{totImportoStatoPrincipali | currency: 'EUR'}}
+              </td>
+            </tr>
+            <tr>
+              <td class="mat-cell col-nome">
+                Totale altri finanziamenti
+              </td>
+              <td class="mat-cell col-importo">
+                {{totImportoAltri | currency: 'EUR'}}
+              </td>
+              <td class="mat-cell col-quota-regione">
+                {{totImportoRegioneAltri | currency: 'EUR'}}
+              </td>
+              <td class="mat-cell col-quota-stato">
+                {{totImportoStatoAltri | currency: 'EUR'}}
+              </td>
+            </tr>
+            <tr>
+              <td class="mat-cell col-nome">
+                <p><strong>Totale finanziamenti</strong></p>
+              </td>
+              <td class="mat-cell col-importo">
+                <strong>{{totImporto | currency: 'EUR'}}</strong>
+              </td>
+              <td class="mat-cell col-quota-regione">
+                <strong> {{totImportoRegione | currency: 'EUR'}}</strong>
+              </td>
+              <td class="mat-cell col-quota-stato">
+                <strong>{{totImportoStato | currency: 'EUR'}}</strong>
+              </td>
+            </tr>
+          </table>
+        </ng-container>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,44 @@
+.d-flex {
+  display: flex;
+  flex-direction: column;
+}
+
+.small-text {
+  font-size: 14px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Spazio tra i campi */
+  width: 100%; /* Assicura che i campi si adattino alla larghezza del contenitore */
+}
+
+mat-form-field {
+  width: 100%; /* I campi occupano tutta la larghezza disponibile */
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Distribuisce lo spazio tra gli elementi */
+}
+
+.annulla-button {
+  color: #005CA9;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.struttura-radio {
+  display: flex;
+}
+
+.right-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+

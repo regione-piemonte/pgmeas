@@ -1,0 +1,48 @@
+::ng-deep mat-sidenav-content:has(asset-loader) {
+  background: url('/assets/macchia.svg') top -220px right -240px no-repeat;
+  background-size: 700px 718px; 
+  
+  
+  display: flex; /* Permette di gestire il layout del contenuto */
+  flex-direction: column;
+  height: 100%; /* Assicura che l'altezza si adatti al genitore */
+}
+
+::ng-deep asset-loader {
+  flex: 1; /* Fa sì che il componente figlio occupi tutto lo spazio disponibile */
+  display: flex; /* Assicura che il layout interno del componente funzioni correttamente */
+  flex-direction: column;
+  height: 100%; /* Adatta l'altezza del componente al contenitore */
+  /* background-color: blue; */
+}
+
+
+.image-container {
+  display: flex;
+  justify-content: space-between; /* Distribuisce uniformemente lo spazio tra le immagini */
+  align-items: flex-end; /* Allinea le immagini in basso */
+  margin-top: 20px;
+  flex-wrap: wrap; /* Permette la disposizione su più righe se necessario */
+  position: absolute;
+  bottom: -2px;
+  z-index: -99; /* Posizionamento sopra altri elementi, se necessario */
+}
+
+.image-item {
+  width: 32%; /* Ogni immagine occupa il 33% della larghezza disponibile */
+  height: auto; /* Mantiene le proporzioni */
+  object-fit: contain; /* Assicura che l'immagine sia contenuta nel box */
+  display: block;
+  position: relative; /* Posizionamento relativo per ogni immagine */
+}
+
+.image-item-1 {
+  bottom: -20px; 
+}
+.image-item-2 {
+  bottom: -3px; 
+}
+.image-item-3 {
+  bottom: -2px; 
+}
+

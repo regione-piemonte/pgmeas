@@ -1,0 +1,86 @@
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    padding: 0;
+    font-size: 20px;
+    color: black;
+  }
+
+  button {
+    background-color: transparent;
+    border: none !important;
+    cursor: pointer;
+  }
+}
+
+.d-flex {
+  display: flex;
+  flex-direction: column;
+}
+
+.atto-importo {
+  display: flex;
+  justify-content: space-between;
+  .atto{
+    width: 368px;
+  }
+  .importo {
+    width: 168px;
+  }
+  mat-form-field {
+    width: 200px;
+  }
+}
+
+
+.buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  button {
+    width: 40%;
+  }
+}
+
+.aggiungi-button {
+  background: #005CA9 0 0 no-repeat padding-box;
+  border-radius: 3px;
+  color: white;
+}
+
+.annulla-button {
+  color: #005CA9;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.seleziona-finanziamento {
+  width: 338px;
+
+  mat-label {
+    font-size: 14px;
+  }
+}
+
+.div-success {
+  background-color: #A6D5AB;
+}
+
+.div-error {
+  background-color: rgb(220, 98, 98);
+}
+
+.custom-width {
+  width: 400px; /* Puoi specificare qualunque larghezza desideri */
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}

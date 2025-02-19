@@ -1,0 +1,65 @@
+<div class="d-flex" mat-dialog-content *ngIf="!salvataggioEffettuato; else salvataggioTemplate">
+  <h4>Strutture</h4>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()"  class="small-text">
+
+    <mat-radio-group class="small-text struttura-radio" formControlName="strutturaTipo">
+      <mat-radio-button [value]="true">
+        Struttura non censita
+      </mat-radio-button>
+      <br>
+      <mat-radio-button [value]="false">
+        Nuova struttura
+      </mat-radio-button>
+    </mat-radio-group>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Denominazione</mat-label>
+      <input matInput formControlName="denominazione" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Comune</mat-label>
+      <input matInput formControlName="comune" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Indirizzo</mat-label>
+      <input matInput formControlName="indirizzo" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Dati Catastali</mat-label>
+      <input matInput formControlName="datiCatastali" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Nota</mat-label>
+      <textarea matInput formControlName="nota"></textarea>
+    </mat-form-field>
+
+    <mat-error *ngIf="form.errors?.['invalidCombination'] && form.touched" class="error">
+      E' necessario compilare Denominazione, Comune e Indirizzo o i Dati Catastali.
+    </mat-error>
+
+    <div class="search-container">
+      <div class="buttons">
+        <p class="annulla-button" (click)="closeModal($event)" type="button">Annulla</p>
+      </div>
+      <button mat-flat-button color="primary" style="margin-right: 10px; margin-top: 10px" type="submit">
+        Inserisci
+      </button>
+    </div>
+  </form>
+
+</div>
+
+<ng-template #salvataggioTemplate>
+  <app-success [selettore]="'SALVATAGGIOSTRUTTURA'"
+    [message]="'Inserimento della struttura completato con successo.'"></app-success>
+    <div class="right-buttons">
+      <button mat-flat-button color="primary" (click)="closeModal($event)">
+        Torna all'intervento
+      </button>
+    </div>
+</ng-template>

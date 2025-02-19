@@ -1,0 +1,128 @@
+<ng-container *ngIf="!dialogConfirm">
+  <ng-container *ngIf="!loading; else loadingTemplate">
+    <div class="margin-div">
+      <div class="header">
+        <h1>{{data.titolo}}</h1>
+        <button (click)="onNoClick()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <ng-container *ngIf="!isSalvataggio && !isBroken">
+        <div class="small-text">
+
+          <div class="date-div">
+
+            <div class="small-text flex-div">
+              <p>Triennio: </p>
+              <b class="date-b">{{ calcolaTriennio() }}</b>
+            </div>
+
+            <div class="small-text flex-div">
+              <p>Data inizio inserimento:</p>
+              <b class="date-b">{{ data.dataInizio }}</b>
+            </div>
+
+            <div class="small-text flex-div">
+              <p>Data fine inserimento:</p>
+              <b class="date-b">{{ data.dataFine }}</b>
+            </div>
+
+            <p>{{data.messaggio}}</p>
+
+            <mat-form-field class="durata-stimata-input">
+              <mat-label>Data fine proroga</mat-label>
+              <form>
+                <input matInput [matDatepicker]="DataFinePicker" readonly  (click)="DataFinePicker.open()" placeholder="gg/mm/aaaa" [(ngModel)]="dataFineProroga"
+                  [name]="'DataFine'" (keydown)="onInputDate($event)">
+              </form>
+              <mat-datepicker-toggle matSuffix [for]="DataFinePicker"></mat-datepicker-toggle>
+              <mat-datepicker #DataFinePicker></mat-datepicker>
+            </mat-form-field>
+            <mat-error *ngIf="hasErrorDate">
+              La data di fine proroga deve essere entro l'anno corrente e successiva alla data fine programmazione
+            </mat-error>
+
+          </div>
+
+        </div>
+      </ng-container>
+      <ng-container *ngIf="isSalvataggio">
+        <div class="div-success small-text">
+          {{data.risultato}}
+        </div>
+      </ng-container>
+      <ng-container *ngIf="isBroken">
+        <div class="div-error small-text">
+          {{messaggioErrore}}
+        </div>
+      </ng-container>
+    </div>
+
+
+
+    <div class="buttons" mat-dialog-actions>
+      <p (click)="onNoClick()" class="annulla-button">Annulla</p>
+      <ng-container *ngIf="!isSalvataggio && !isBroken; else buttonHomepage">
+        <button (click)="onSave()" class="aggiungi-button" color="primary" mat-raised-button [disabled]="isSubmitting">Conferma</button>
+      </ng-container>
+      <ng-template #buttonHomepage>
+        <button [mat-dialog-close]="data" [routerLink]="['/', 'home']" class="aggiungi-button" color="primary"
+          mat-raised-button>Torna alla homepage</button>
+      </ng-template>
+    </div>
+  </ng-container>
+
+  <ng-template #loadingTemplate>
+    <mat-spinner style="margin: 20px auto"></mat-spinner>
+  </ng-template>
+
+</ng-container>
+
+<ng-container *ngIf="dialogConfirm">
+
+  <ng-container *ngIf="!loading; else loadingTemplate">
+    <div class="margin-div">
+      <div class="header">
+        <h1>{{data.titolo}}</h1>
+        <button (click)="onNoClick()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <ng-container *ngIf="!isSalvataggio && !isBroken">
+        <div class="small-text">
+          Attenzione! La nuova data di fine proroga verrà applicata per tutte le ASR. Confermi l'operazione?
+        </div>
+      </ng-container>
+      <ng-container *ngIf="isSalvataggio">
+        <div class="div-success small-text">
+          {{data.risultato}}
+        </div>
+      </ng-container>
+      <ng-container *ngIf="isBroken">
+        <div class="div-error small-text">
+          {{messaggioErrore}}
+        </div>
+      </ng-container>
+    </div>
+
+
+
+    <div class="buttons" mat-dialog-actions>
+      <p (click)="onNoClick()" class="annulla-button">Annulla</p>
+      <ng-container *ngIf="!isSalvataggio && !isBroken; else buttonHomepage">
+        <button (click)="onSaveAll()" class="aggiungi-button" color="primary" mat-raised-button>Conferma</button>
+      </ng-container>
+      <ng-template #buttonHomepage>
+        <button [mat-dialog-close]="data" [routerLink]="['/', 'home']" class="aggiungi-button" color="primary"
+          mat-raised-button>Torna alla homepage</button>
+      </ng-template>
+    </div>
+  </ng-container>
+
+  <ng-template #loadingTemplate>
+    <mat-spinner style="margin: 20px auto"></mat-spinner>
+  </ng-template>
+
+</ng-container>

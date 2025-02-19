@@ -1,0 +1,5571 @@
+swagger: '2.0'
+info:
+  description: Api che recuperano i dati relativi alle tabelle tipologiche utilizzate nell'applicativo PGMEAS.
+  version: v1
+  title: REST API PGMEAS
+  contact:
+    name: CSI Piemonte
+basePath: /proxy/api
+tags:
+  - name: PGMEASGATEWAY
+  - name: PGMEASREGISTRY
+  - name: PGMEASPROJECT
+  - name: PGMEASGDPR (Log Audit)
+schemes:
+  - https
+paths:
+# PGMEASGATEWAY
+  /richiestaammissione/moduloa:
+    post:
+      tags:
+        - PGMEASGATEWAY
+      summary: generazione moduloA
+      description: 'Crea il file pdf per richiesta ammissione finanziamento'
+      operationId: convertAndResponse
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/ModelAPayload'
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            $ref: '#/definitions/FileDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+# PGMEASREGISTRY
+  /tipologiche/tipoAllegato:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista delle tipologie di allegato'
+      operationId: AllegatoTipoService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/AllegatoTipoDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+  /tipologiche/classifElem:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista relativa alla Classificazione degli Elementi'
+      operationId: ClassificazioneElementoService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/ClassificazioneElementoDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+  /tipologiche/classifTree:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista delle alberazioni reletive alle voci dei moduli Dichiarazione appaltabilità e Quadro economico'
+      operationId: ClassificazioneTreeService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/ClassificazioneTreeDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/classifTs:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista relativa alle testate  di un albero di voci del quadro economico'
+      operationId: ClassificazioneTsService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/ClassificazioneTsDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/classifTsTipo:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista delle tipologie di testa di un albero di voci (Quadro economico, Intevento edilizio) '
+      operationId: ClassificazioneTsTipoService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/ClassificazioneTsTipoDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/ente:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista degli enti censiti '
+      operationId: EnteService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/EnteDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/enteTipo:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista delle tipologie Ente (ASL, AO, AOU...) '
+      operationId: EnteTipoService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/EnteTipoDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/fase:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista degli stati possibili nella fase di programmazione (gestione monitoraggio) '
+      operationId: FaseService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/FaseDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/finanzImportoTipo:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista delle tipologie di importo (INAIL, Stato, Regione... )'
+      operationId: FinanziamentoImportoTipoService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/FinanziamentoImportoTipoDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/finanzTipoDet:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista delle delle classificazioni di finanziamento'
+      operationId: FinanziamentoTipoDetService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/FinanziamentoTipoDetDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/finanzTipo:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista delle tipologie di fondi di finanziamento (INAL, Regionali Statali...)'
+      operationId: FinanziamentoTipoService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/FinanziamentoTipoDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/intervAppaltoTipo:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista delle tipologie di appalto/intervento '
+      operationId: InterventoAppaltoTipoService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            $ref: '#/definitions/InterventoAppaltoTipoDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/intervCategoria:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista delle categorie d''intervento'
+      operationId: InterventoCategoriaService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/InterventoCategoriaDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/intervContrattoTipo:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista delle tipolgie di contratto da applicare sugli inteventi '
+      operationId: InterventoContrattoTipoService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/InterventoContrattoTipoDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/intervFinalita:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista delle finalità relativo ad un determinato intervento'
+      operationId: InterventoFinalitaService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/InterventoFinalitaDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/intervFormaRealizzativa:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista delle forme realizzative relative ad un determinato appalto '
+      operationId: InterventoFormaRealizzativaService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/InterventoFormaRealizzativaDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/intervObiettivo:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista degli obiettivi possibili relativi ad un determinato intervento (Adeguamento, Conservazione, Potenziamento...)'
+      operationId: InterventoObiettivoService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/InterventoObiettivoDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/intervStatoProgettuale:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista degli stati progettuali (Capitolato Prestazionale Forniture, Progetto Esecutivo...)'
+      operationId: InterventoStatoProgettualeService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/InterventoStatoProgettualeDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/intervStato:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista degli eventuali stati relativi ad un determinato intevento (Collaudato, Annullato...) '
+      operationId: InterventoStatoService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/InterventoStatoDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/intervStrutturaTipo:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista delle strutture tipo per un determinato intervento (Nuova Struttura, Struttura esistente...)'
+      operationId: InterventoStrutturaTipoService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/InterventoStrutturaTipoDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/intervTipoDett:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista dei dettaglio relativi alla tipologia d''intervento'
+      operationId: InterventoTipoDetService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/InterventoTipoDetDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/intervTipo:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista delle tipologie d''intervento (Recupero, Restauro, Ristrutturazione...)'
+      operationId: InterventoTipoService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/InterventoTipoDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/organo:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista degli organi censiti (Regione, Consiglio...)'
+      operationId: OrganoService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/OrganoDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/parametro:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista dei messaggi di errori censiti per l''applicazione '
+      operationId: ParametroService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/ParametroDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/parametroTipo:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista delle tipologie di parametro (Errore, Parametro, Messaggio Push...)'
+      operationId: ParametroTipoService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/ParametroTipoDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/piano:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista dei piani triennali censiti (2022-2024, 2023-2025...)'
+      operationId: PianoTriennaleService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/PianoTriennaleDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/provvedimentoLivello:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista dei livelli di provvedimento'
+      operationId: ProvvedimentoLivelloService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/ProvvedimentoLivelloDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/provvedimentoTipo:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista delle possibili tipologie relative ad un determinato provvedimento'
+      operationId: ProvvedimentoTipoService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/ProvvedimentoTipoDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/quadrante:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista dei quadranti territoriali censiti'
+      operationId: QuadranteService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/QuadranteDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/struttura:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista delle strutture Ospedaliere censite'
+      operationId: StrutturaService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/StrutturaDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+
+
+  /tipologiche/strutturaTipo:
+    get:
+      tags:
+        - PGMEASREGISTRY
+      summary: getAllData
+      description: 'Restituisce la lista delle tipologie relative ad una determinata struttura '
+      operationId: StrutturaTipoService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string          
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/StrutturaTipoDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        '502':
+          description: Service invocation error
+          schema:
+            $ref: '#/definitions/Errore'
+      security:
+        - basicAuth: []
+
+# PGMEASPROJECT
+  /intervento/interventi/{anno}:
+    get:
+      tags:
+        - PGMEASPROJECT
+      summary: getInterventoByAnno
+      description: 'Restituisce la Lista di tutti gli INTERVENTI per un determinato ANNO '
+      operationId: InterventoService.getInterventoByAnno
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string
+        - name: anno
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/InterventoResultDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+       
+      security:
+        - basicAuth: []
+
+  /intervento/{id}:
+    get:
+      tags:
+        - PGMEASPROJECT
+      summary: getInterventoById
+      description: 'Restituisce il Dettaglio di un Intervento '
+      operationId: InterventoService.getInterventoById
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            $ref: '#/definitions/InterventoResultDto'
+        '400':
+          description: Bad request Risorsa non trovata
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+
+        '500':
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+       
+      security:
+        - basicAuth: []
+
+  /intervento/struttura/{intId}:
+    get:
+      tags:
+        - PGMEASPROJECT
+      summary: getInterventoStrutturaByIdInt
+      description: 'Restituisce la Lista di tutte le strutture per un dato intervento '
+      operationId: InterventoService.getInterventoStrutturaByIdInt
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string
+        - name: intId
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/InterventoStrutturaDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+        
+      security:
+        - basicAuth: []
+
+  /intervento/finanziamentoPrevSpesa/{intId}:
+    get:
+      tags:
+        - PGMEASPROJECT
+      summary: getInterventoFinanziamentoPrevSpesaByIdInt
+      description: 'Restituisce la previsione di spesa del finanziamento un dato intervento'
+      operationId: InterventoService.getInterventoFinanziamentoPrevSpesaByIdInt
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string
+        - name: intId
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/InterventoFinanziamentoPrevSpesaDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+       
+      security:
+        - basicAuth: []
+
+  /intervento/finanziamentoLiquidazione/{intId}:
+    get:
+      tags:
+        - PGMEASPROJECT
+      summary: getFinanziamentoLiquidazioneByIdInt
+      description: 'Restituisce la liquidazione del finanziamento per un dato intervento '
+      operationId: InterventoService.getFinanziamentoLiquidazioneByIdInt
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string
+        - name: intId
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/FinanziamentoLiquidazioneDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+        
+      security:
+        - basicAuth: []
+
+  /intervento/finanziamentoLiquidazioneRichiesta/{intId}:
+    get:
+      tags:
+        - PGMEASPROJECT
+      summary: getFinanziamentoLiquidazioneRichiestaByIdInt
+      description: 'Restituisce la richiesta di liquidazione di un finanziamento per un dato intervento'
+      operationId: InterventoService.getFinanziamentoLiquidazioneRichiestaByIdInt
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string
+        - name: intId
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/FinanziamentoLiquidazioneRichiestaDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+
+      security:
+        - basicAuth: []
+
+  /intervento/garaAppalto/{intId}:
+    get:
+      tags:
+        - PGMEASPROJECT
+      summary: getInterventoGaraAppaltoByIdInt
+      description: 'Restituisce l''intervento-gara-appalto per id intervento '
+      operationId: InterventoService.getInterventoGaraAppaltoByIdInt
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string
+        - name: intId
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/InterventoGaraAppaltoDto2'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+        
+      security:
+        - basicAuth: []
+
+  /intervento/allegato/{intId}:
+    get:
+      tags:
+        - PGMEASPROJECT
+      summary: getInterventoAllegatoByIdInt
+      description: 'Restituisce l''allegato per id intervento '
+      operationId: InterventoService.getInterventoAllegatoByIdInt
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string
+        - name: intId
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/AllegatoDto2'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+       
+      security:
+        - basicAuth: []
+
+  /intervento/anni:
+    get:
+      tags:
+        - PGMEASPROJECT
+      summary: getAnniIntervento
+      description: 'Restituisce una Lista di tutti gli anni presenti nella tabella intervento '
+      operationId: InterventoService.getAnniIntervento
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/ListaAnniDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+      security:
+        - basicAuth: []
+
+  /intervento/quadroeconomico/{intId}:
+    get:
+      tags:
+        - PGMEASPROJECT
+      summary: getQePerIdIntervento
+      description: 'Estrazione quadri economici e dichiarazione di appaltabilita per struttura/idIntervento '
+      operationId: InterventoService.getQePerIdIntervento
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string
+        - name: intId
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/InterventoStrutturaDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+
+      security:
+        - basicAuth: []
+
+
+  /intervento/finanziamenti:
+    get:
+      tags:
+        - PGMEASPROJECT
+      summary: getAllData
+      description: 'Restituisce la lista dei finanziamenti'
+      operationId: FinanziamentoService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/FinanziamentoResultDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+        
+      security:
+        - basicAuth: []
+
+  /intervento/finanziamenti/{intId}:
+    get:
+      tags:
+        - PGMEASPROJECT
+      summary: getFinanziamentiByIntId
+      description: 'Restituisce i finanziamenti per id intervento '
+      operationId: InterventoService.getFinanziamentiByIntId
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string
+        - name: intId
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/FinanziamentoResultDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+        
+      security:
+        - basicAuth: []
+
+  /intervento/finanziamento/datiMonitoraggio:
+    post:
+      tags:
+        - PGMEASPROJECT
+      summary: inserimentoDatiMonitoraggio
+      description: 'Inserimento Dati Monitoraggio '
+      operationId: FinanziamentoService.inserimentoDatiMonitoraggio
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Identita-CodiceFiscale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosi' di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: X-Codice-Servizio
+          in: header
+          description: 'Contiene il codice del servizio chiamante '
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: false
+          schema:
+            $ref: '#/definitions/MonitoraggioDto'
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/AllegatoDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+        
+      security:
+        - basicAuth: []
+  /intervento/dicappaltabilitavalidazione/{classifTreeId}/{enteId}/{intstrDaTsId}:
+    get:
+      tags:
+        - PGMEASPROJECT
+      summary: getIntDataValidDicAppalto
+      description: 'Data di validita per la dichiarazione di appaltabilita '
+      operationId: InterventoService.getIntDataValidDicAppalto
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string
+        - name: classifTreeId
+          in: path
+          required: true
+          type: integer
+          format: int32
+        - name: enteId
+          in: path
+          required: true
+          type: integer
+          format: int32
+        - name: intstrDaTsId
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: string
+            format: date-time
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+        
+      security:
+        - basicAuth: []
+
+  /allegato/{id}/download:
+    get:
+      tags:
+        - PGMEASPROJECT
+      summary: download pdf file
+      description: 'Download file pdf'
+      operationId: FinanziamentoService.downloadpdf
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Identita-CodiceFiscale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosi' di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: X-Codice-Servizio
+          in: header
+          description: 'Contiene il codice del servizio chiamante '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Download del file pdf avvenuto correttamente
+          schema:
+            $ref: '#/definitions/FileDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+        
+      security:
+        - basicAuth: []
+        
+  /allegato/richiestaAmmissioneFinanziamento:
+    post:
+      tags:
+        - PGMEASPROJECT
+      summary: richiesta di Ammissione al Finanziamento
+      description: 'richiestaAmmissioneFinanziamento'
+      operationId: AllegatoServiceImpl.richiestaAmmissioneFinanziamento
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Identita-CodiceFiscale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosi' di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: X-Codice-Servizio
+          in: header
+          description: 'Contiene il codice del servizio chiamante '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/RichiestaAmmissioneFinanziamentoDto'
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/AllegatoDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+        
+      security:
+        - basicAuth: []
+  
+  
+  /provvedimenti:
+    get:
+      tags:
+        - PGMEASPROJECT
+      summary: getAllData
+      description: 'Restituisce la lista dei provvedimenti'
+      operationId: ProvvedimentoService.getAllData
+      produces:
+        - application/json
+      parameters:
+        - name: Shib-Iride-IdentitaDigitale
+          in: header
+          description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+          required: true
+          type: string
+        - name: X-Request-Id
+          in: header
+          description: Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato dal front-end, viene propagato agli strati successivi e viene restituito al front-end assieme alla response, permettendo cosï¿½ di tracciare l'intero ciclo di vita della richiesta
+          required: true
+          type: string
+        - name: X-Forwarded-For
+          in: header
+          description: 'Contiene l''elenco degli ip che hanno gestito la richiesta. Utile per i log e l''audit. Il formato della stringa ï¿½  ``` <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server> ``` Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244` '
+          required: true
+          type: string
+        - name: lcceToken
+          in: query
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/ProvvedimentoResultDto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: not found
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+        
+      security:
+        - basicAuth: []
+# PGMEASGDPR
+  /audit/add:    
+    post:
+      tags:
+        - PGMEASGDPR (Log Audit)
+      summary: createAudit
+      description: Inserisce nella tabella csi_log_audit le informazioni della chiamata API effettuata (log di Audit)
+      operationId: LogAuditService.createAudit
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: lcceToken
+          in: query
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: false
+          schema:
+            $ref: '#/definitions/AuditBody'
+      responses:
+        '200':
+          description: Operazione eseguita con successo
+          schema:
+            $ref: '#/definitions/LogAudit'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+        
+      security:
+        - basicAuth: []
+securityDefinitions:
+  basicAuth:
+    description: ''
+    type: basic
+    
+definitions:
+  ModelAPayload:
+    type: object
+    properties:
+      intestazioneEnteAtt:
+          $ref: '#/definitions/EnteAttuatore' 
+      documento:
+          $ref: '#/definitions/Documento'
+      destinatario:
+          $ref: '#/definitions/EnteAttuatore'   
+      inCopia:
+        type: array
+        items:
+          $ref: '#/definitions/EnteAttuatore'
+      fontiFin:
+        type: array
+        items:
+          example: ["fonte1", "fonte2", "fonte3"]
+      enteAttuatore:
+        type: string
+      titoloIntervento:
+        type: string
+      fileName:
+        type: string
+      codAzienda:
+        type: string
+      intCode:
+        type: string
+      cupCode:
+        type: string
+      location:
+        type: string
+      importoComplessivo:
+        type: number
+      pianoFinanziario:
+          $ref: '#/definitions/PianoFinanziario'
+      quadroEconomico:
+        type: array
+        items:
+          $ref: '#/definitions/QuadroEconomico'
+      pianoCronologico:
+          $ref: '#/definitions/PianoCronologico'
+      approvazione:
+          $ref: '#/definitions/ApprovazioneProgetto'
+      dichiarazioneAppaltabilita:
+        type: array
+        items:
+          $ref: '#/definitions/DichiarazioniAppaltabilita'
+      responsabili:
+          $ref: '#/definitions/Responsabili'
+      refPratica:
+          $ref: '#/definitions/RiferimentoPratica'
+        
+  EnteAttuatore:
+    type: object
+    properties:
+      nomeEnte:
+        type: string
+      dipartimento:
+        type: string
+      indirizzo:
+        type: object
+        items:
+          $ref: '#/definitions/Indirizzo'
+  
+  Indirizzo:
+    type: object
+    properties:
+      via:
+        type: string
+      citta:
+        type: string
+      cap:
+        type: string
+    
+  PianoFinanziario:
+    type: object
+    properties:
+      vociPianoFinanziario:
+        type: array
+        items:
+          $ref: '#/definitions/PianoFinanziarioItem'
+   
+  PianoFinanziarioItem:
+    type: object
+    properties:
+      tipo:
+        type: string
+      atto:
+        type: string
+      importo:
+        type: number
+    
+  QuadroEconomico:
+    type: object
+    properties:
+      a:
+        type: object
+        properties:
+          key:
+            type: string
+          value:
+            type: number
+            format: double 
+      b:
+         type: object
+         properties:
+          key:
+            type: string
+          value:
+            type: number
+            format: double 
+      c:
+         type: object
+         properties:
+          key:
+            type: string
+          value:
+            type: number
+            format: double 
+      d:
+        type: object
+        properties:
+          key:
+            type: string
+          value:
+            type: number
+            format: double
+      e:
+        type: object
+        properties:
+          key:
+            type: string
+          value:
+            type: number
+            format: double 
+      f:
+        type: object
+        properties:
+          key:
+            type: string
+          value:
+            type: number
+            format: double 
+      g:
+        type: object
+        properties:
+          key:
+            type: string
+          value:
+            type: number
+            format: double
+
+  PianoCronologico:
+    type: object
+    properties:
+      numGiorniProgEsecutivo:
+        type: integer
+      numGiorniLavori:
+        type: integer
+    
+
+  ApprovazioneProgetto:
+    type: object
+    properties:
+      data:
+        type: object
+      atto:
+        type: string
+      stato:
+        type: array
+        items:
+          $ref: '#/definitions/Dichiarazioni'
+      
+  Dichiarazioni:
+    type: object
+    properties:
+      voce:
+        type: string
+      flag:
+        type: string
+    
+
+  DichiarazioniAppaltabilita:
+    type: object
+    properties:
+      titolo:
+        type: string
+      dichiarazioni:
+        type: array
+        items:
+          $ref: '#/definitions/Dichiarazioni'
+      data:
+       type: string
+    
+  Documento:
+    type: object
+    properties:
+      numProtocollo:
+        type: string
+      numProtocolloData:
+        type: object    
+    
+  Responsabili:
+    type: object
+    properties:
+      respProcedimentoNome:
+        type: string
+      respProcedimentoCognome:
+        type: string
+      dirGeneraleNome:
+        type: string
+      dirGeneraleCognome:
+        type: string
+      respProcedimentoRuolo:
+        type: string
+      gmName:
+        type: string
+      gmRole:
+        type: string
+    
+
+
+  RiferimentoPratica:
+    type: object
+    properties:
+      refPraticaNome:
+        type: string
+      refPraticaCognome:
+        type: string
+      refPraticaTel:
+        type: string
+      refPraticaFax:
+        type: string
+      refPraticaEmail:
+        type: string
+
+# tabella pgmeas_d_allegato_tipo     
+  AllegatoTipoDto:
+    type: object
+    properties:
+      allegatoTipoId:
+        type: integer
+        format: int64
+      allegatoTipoCod:
+        type: string
+      allegatoTipoDesc:
+        type: string
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+# tabella pgmeas_d_classif_elem     
+  ClassificazioneElementoDto:
+    type: object
+    properties:
+      classifId:
+        type: integer
+        format: int64
+      classifCod:
+        type: string
+      classifDesc:
+        type: string
+      classifDescEstesa:
+        type: string
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_classif_tree     
+  ClassificazioneTreeDto:
+    type: object
+    properties:
+      classifTreeId:
+        type: integer
+        format: int64
+      classifTsId:
+        type: integer
+        format: int64
+      classifId:
+        type: integer
+        format: int64
+      classifIdPadre:
+        type: integer
+        format: int64
+      classifTreeLivello:
+        type: integer
+        format: int64
+      classifTreeOrdine:
+        type: integer
+        format: int64
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_classif_ts     
+  ClassificazioneTsDto:
+    type: object
+    properties:
+      classifTsId:
+        type: integer
+        format: int64
+      classifTsCod:
+        type: string
+      classifTsDesc:
+        type: string
+      classifTsTipoId:
+        type: integer
+        format: int64
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_classif_ts_tipo     
+  ClassificazioneTsTipoDto:
+    type: object
+    properties:
+      classifTsTipoId:
+        type: integer
+        format: int64
+      classifTsTipoCod:
+        type: string
+      classifTsTipoDesc:
+        type: string
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+  EnteDto:
+    type: object
+    properties:
+      enteId:
+        type: integer
+        format: int64
+      enteCodEsteso:
+        type: string
+      enteRegioneCod:
+        type: string
+      enteRegioneDesc:
+        type: string
+      enteCod:
+        type: string
+      enteDesc:
+        type: string
+      enteIndirizzo:
+        type: string
+      enteCap:
+        type: string
+      enteComune:
+        type: string
+      enteProvinciaSigla:
+        type: string
+      enteTelefono:
+        type: string
+      enteFax:
+        type: string
+      enteEmail:
+        type: string
+      enteSitoWeb:
+        type: string
+      entePartitaIva:
+        type: string
+      enteTipoId:
+        type: string
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+  EnteTipoDto:
+    type: object
+    properties:
+      enteTipoId:
+        type: integer
+        format: int64
+      enteTipoCod:
+        type: string
+      enteTipoDesc:
+        type: string
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_fase     
+  FaseDto:
+    type: object
+    properties:
+      faseId:
+        type: integer
+        format: int64
+      faseCod:
+        type: string
+      faseDesc:
+        type: string
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_finanziamento_importo_tipo     
+  FinanziamentoImportoTipoDto:
+    type: object
+    properties:
+      finImpTipoId:
+        type: integer
+        format: int64
+      finImpTipoCod:
+        type: string
+      finImpTipoDesc:
+        type: string
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_finanziamento_tipo_det     
+  FinanziamentoTipoDetDto:
+    type: object
+    properties:
+      finTipoDetId:
+        type: integer
+        format: int64
+      finTipoDetCod:
+        type: string
+      finTipoDetDesc:
+        type: string
+      finTipoId:
+        type: integer
+        format: int64
+      finTipoDetPercentualeStato:
+        type: integer
+        format: int64
+      finTipoDetPercentualeRegione:
+        type: integer
+        format: int64
+      finTipoDetPercentualeAltro:
+        type: integer
+        format: int64
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_finanziamento_tipo     
+  FinanziamentoTipoDto:
+    type: object
+    properties:
+      finTipoId:
+        type: integer
+        format: int64
+      finTipoCod:
+        type: string
+      finTipoDesc:
+        type: string
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_intervento_appalto_tipo     
+  InterventoAppaltoTipoDto:
+    type: object
+    properties:
+      intAppaltoTipoId:
+        type: integer
+        format: int64
+      intAppaltoTipoCod:
+        type: string
+      intAppaltoTipoDesc:
+        type: string
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_intervento_categoria     
+  InterventoCategoriaDto:
+    type: object
+    properties:
+      intCategoriaId:
+        type: integer
+        format: int64
+      intCategoriaCod:
+        type: string
+      intCategoriaDesc:
+        type: string
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_intervento_contratto_tipo     
+  InterventoContrattoTipoDto:
+    type: object
+    properties:
+      intContrattoTipoId:
+        type: integer
+        format: int64
+      intContrattoTipoCod:
+        type: string
+      intContrattoTipoDesc:
+        type: string
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_intervento_finalita     
+  InterventoFinalitaDto:
+    type: object
+    properties:
+      intFinalitaId:
+        type: integer
+        format: int64
+      intfinalitaCod:
+        type: string
+      intfinalitaDesc:
+        type: string
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_intervento_forma_realizzativa     
+  InterventoFormaRealizzativaDto:
+    type: object
+    properties:
+      intFormaRealizzativaId:
+        type: integer
+        format: int64
+      intFormaRealizzativaCod:
+        type: string
+      intFormaRealizzativaDesc:
+        type: string
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_intervento_obiettivo     
+  InterventoObiettivoDto:
+    type: object
+    properties:
+      intObiettivoId:
+        type: integer
+        format: int64
+      intObiettivoCod:
+        type: string
+      intObiettivoDesc:
+        type: string
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_intervento_stato     
+  InterventoStatoDto:
+    type: object
+    properties:
+      intStatoId:
+        type: integer
+        format: int64
+      intStatoCod:
+        type: string
+      intStatoDesc:
+        type: string
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_intervento_stato_progettuale     
+  InterventoStatoProgettualeDto:
+    type: object
+    properties:
+      intStatoProgId:
+        type: integer
+        format: int64
+      intStatoProgCod:
+        type: string
+      intStatoProgDesc:
+        type: string
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_intervento_struttura_tipo     
+  InterventoStrutturaTipoDto:
+    type: object
+    properties:
+      intStrTipoId:
+        type: integer
+        format: int64
+      intStrTipoCod:
+        type: string
+      intStrTipoDesc:
+        type: string
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_intervento_tipo     
+  InterventoTipoDto:
+    type: object
+    properties:
+      intTipoId:
+        type: integer
+        format: int64
+      intTipoCod:
+        type: string
+      intTipoDesc:
+        type: string
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_intervento_tipo_det     
+  InterventoTipoDetDto:
+    type: object
+    properties:
+      intTipoDetId:
+        type: integer
+        format: int64
+      intTipoDetCod:
+        type: string
+      intTipoDetDesc:
+        type: string
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_organo     
+  OrganoDto:
+    type: object
+    properties:
+      organoId:
+        type: integer
+        format: int64
+      organoCod:
+        type: string
+      organoDesc:
+        type: string
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_c_parametro     
+  ParametroDto:
+    type: object
+    properties:
+      parametroId:
+        type: integer
+        format: int64
+      parametroCod:
+        type: string
+      parametroDesc:
+        type: string
+      parametroValore:
+        type: string
+      parametroTipoId:
+        type: integer
+        format: int64
+      
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_c_parametro_tipo     
+  ParametroTipoDto:
+    type: object
+    properties:
+      parametroTipoId:
+        type: integer
+        format: int64
+      parametroTipoCod:
+        type: string
+      parametroTipoDesc:
+        type: string
+
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_piano_triennale     
+  PianoTriennaleDto:
+    type: object
+    properties:
+      pianoId:
+        type: integer
+        format: int64
+      pianoCod:
+        type: string
+      pianoDesc:
+        type: string
+      annoDa:
+        type: integer
+        format: int64
+      annoA:
+        type: integer
+        format: int64
+
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_provvedimento_livello     
+  ProvvedimentoLivelloDto:
+    type: object
+    properties:
+      provLivId:
+        type: integer
+        format: int64
+      provLivCod:
+        type: string
+      provLivDesc:
+        type: string
+
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_provvedimento_tipo     
+  ProvvedimentoTipoDto:
+    type: object
+    properties:
+      provTipoId:
+        type: integer
+        format: int64
+      provTipoCod:
+        type: string
+      provTipoDesc:
+        type: string
+      organoId:
+        type: integer
+        format: int64
+
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# tabella pgmeas_d_quadrante     
+  QuadranteDto:
+    type: object
+    properties:
+      quadranteId:
+        type: integer
+        format: int64
+      quadranteCod:
+        type: string
+      quadranteDesc:
+        type: string
+
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+  
+# tabella pgmeas_t_struttura     
+  StrutturaDto:
+    type: object
+    properties:
+      strId:
+        type: integer
+        format: int64
+      strCod:
+        type: string
+      strDenominazione:
+        type: string
+      strHsp11Cod:
+        type: string
+      strFimCod:
+        type: string
+      strBisCod:
+        type: string
+      strIndirizzo:
+        type: string
+      strCoordinataX:
+        type: number
+        format: float
+      strCoordinataY:
+        type: number
+        format: float
+      enteId:
+        type: integer
+        format: int64
+
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+ 
+# tabella pgmeas_d_struttura_tipo     
+  StrutturaTipoDto:
+    type: object
+    properties:
+      strutturaTipoId:
+        type: integer
+        format: int64
+      strutturaTipoCod:
+        type: string
+      strutturaTipoDesc:
+        type: string
+
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+
+# PGMEAS PROJECT        
+  InterventoResultDto:
+    type: object
+    properties:
+      intId:
+        type: integer
+        format: int64
+      intCod:
+        type: string
+      intTitolo:
+        type: string
+      intAnno:
+        type: integer
+        format: int64
+      intCup:
+        type: string
+      intImporto:
+        type: number
+        format: double
+      intCodicNsis:
+        type: string
+      intDgAziendaleApprovazione:
+        type: string
+      intDgAziendaleApprovazioneData:
+        type: string
+        format: date-time
+      intDgRegionaleApprovazione:
+        type: string
+      intDgRegionaleApprovazioneData:
+        type: string
+        format: date-time
+      intDirettoreGeneraleCognome:
+        type: string
+      intDirettoreGeneraleNome:
+        type: string
+      intCommissarioCognome:
+        type: string
+      intCommissarioNome:
+        type: string
+      intReferentePraticaCognome:
+        type: string
+      intReferentePraticaNome:
+        type: string
+      intReferentePraticaTelefono:
+        type: string
+      intReferentePraticaFax:
+        type: string
+      intReferentePraticaEmail:
+        type: string
+      intFormaRealizzativaId:
+        type: integer
+        format: int64
+      intStrTipoId:
+        type: integer
+        format: int64
+      intQuadranteId:
+        type: integer
+        format: int64
+      listaIntFinalitaId:
+        type: array
+        items:
+          type: integer
+          format: int64
+      listaIntObiettivoId:
+        type: array
+        items:
+          type: integer
+          format: int64
+      listaIntCategoriaId:
+        type: array
+        items:
+          type: integer
+          format: int64
+      listaIntStatoId:
+        type: array
+        items:
+          type: integer
+          format: int64
+      listaIntStatoProgettualeId:
+        type: array
+        items:
+          type: integer
+          format: int64
+      listaIntTipoId:
+        type: array
+        items:
+          type: integer
+          format: int64
+      listaIntAppaltoTipoId:
+        type: array
+        items:
+          type: integer
+          format: int64
+      listaIntContrattoId:
+        type: array
+        items:
+          type: integer
+          format: int64
+      listaIntStrutturaId:
+        type: array
+        items:
+          type: integer
+          format: int64
+      listaAllegatoMonitoraggioId:
+        type: array
+        items:
+          type: integer
+          format: int64
+      allegatoRichiestaAmmissioneFinanziamentoId:
+        type: integer
+        format: int64
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+      enteId:
+        type: integer
+        format: int64
+  
+  InterventoStrutturaDto:
+    type: object
+    properties:
+      intStrId:
+        type: integer
+        format: int64
+      intId:
+        type: integer
+        format: int64
+      strId:
+        type: integer
+        format: int64
+      intstrImporto:
+        type: number
+        format: double
+      intstrResponsabileCognome:
+        type: string
+      intstrResponsabileNome:
+        type: string
+      intstrResponsabileProcedimentoCognome:
+        type: string
+      intstrResponsabileProcedimentoNome:
+        type: string
+      intstrParereVincolantePpp:
+        type: boolean
+      intstrParereVincolantePppNprotocollo:
+        type: string
+      intstrParereCabinaDiRegia:
+        type: boolean
+      intstrParereCabinaDiRegiaNprotocollo:
+        type: string
+      intstrAperturaCantiereDataPrevista:
+        type: string
+        format: date
+      intstrAperturaCantiereDataEffettiva:
+        type: string
+        format: date
+      intstrPrioritaAnno:
+        type: string
+      intstrPriorita:
+        type: integer
+        format: int64
+      intstrSottopriorita:
+        type: string
+      intstrCollaudoDataPrevista:
+        type: string
+        format: date
+      intstrCollaudoDataEffettiva:
+        type: string
+        format: date
+      intstrPftePrevisioneDurataGg:
+        type: integer
+        format: int64
+      intstrGaraPrevisioneDurataGg:
+        type: integer
+        format: int64
+      intstrCollaudoPrevisioneDurataGg:
+        type: integer
+        format: int64
+      intstrProgettoesecutivoPrevisioneDurataGg:
+        type: integer
+        format: int64
+      intstrLavoriPrevisioneDurataGg:
+        type: integer
+        format: int64
+      intstrAttivazionePrevisioneDurataGg:
+        type: integer
+        format: int64
+      mapClassfifTreeIdImporto:
+        type: object
+        properties:
+          key:
+            type: integer
+            format: int32
+          value:
+            type: number
+            format: double            
+      mapClassfifTreeIdDaSelezionata:
+        type: object
+        properties:
+          key:
+            type: integer
+            format: int32
+          value:
+            type: boolean          
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+      enteId:
+        type: integer
+        format: int64#
+
+  InterventoFinanziamentoPrevSpesaDto:
+    type: object
+    properties:
+      intFinPrevSpesaId:
+        type: integer
+        format: int64
+      intId:
+        type: integer
+        format: int64
+      finId:
+        type: integer
+        format: int64
+      intFinPrevSpesaAnno:
+        type: integer
+        format: int64
+      intFinPrevSpesaImporto:
+        type: number
+        format: double
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+      enteId:
+        type: integer
+        format: int64#
+  
+  FinanziamentoLiquidazioneDto:
+    type: object
+    properties:
+      liqId:
+        type: integer
+        format: int64
+      liqNumero:
+        type: integer
+        format: int64
+      liqDataDa:
+        type: string
+        format: date-time
+      liqDataA:
+        type: string
+        format: date-time
+      liqImporto:
+        type: number
+        format: double
+      finId:
+        type: integer
+        format: int64
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+      enteId:
+        type: integer
+        format: int64#
+  
+  FinanziamentoLiquidazioneRichiestaDto:
+    type: object
+    properties:
+      liqRicId:
+        type: integer
+        format: int64
+      liqRicNumero:
+        type: integer
+        format: int64
+      liqRicProtocollo:
+        type: string
+      liqRicProtocolloData:
+        type: string
+        format: date-time
+      liqRicImporto:
+        type: number
+        format: double
+      finId:
+        type: integer
+        format: int64
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+      enteId:
+        type: integer
+        format: int64#
+      listaLiquidazione:
+        type: array
+        items:
+          $ref: '#/definitions/LiquidazioneDto'
+  
+  ListaAnniDto:
+    type: array
+    items:
+      type: integer
+      format: int32
+    example: [2022, 2023, 2024]
+  
+
+  InterventoGaraAppaltoDto:
+    type: object
+    properties:
+      intStr:
+        type: integer
+        format: int64
+      cig:
+        type: string
+      parereRegionePPP:
+        type: boolean
+      determinaAccertamento:
+        type: string
+      listaCig:
+        type: array
+        items:
+          type: string
+          
+  InterventoGaraAppaltoDto2:
+    type: object
+    properties:
+      garaAppaltoId:
+        type: integer
+        format: int64
+      garaAppaltoCigCod:
+        type: string
+      garaAppaltoData:
+        type: string
+        format: date-time
+      intstrId:
+        type: integer
+        format: int64
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+      enteId:
+        type: integer
+        format: int64#
+
+  
+  FinanziamentoResultDto:
+    type: object
+    properties:
+      finId:
+        type: integer
+        format: int64
+      finCod:
+        type: string
+      finImporto:
+        type: number
+        format: double
+      finNote:
+        type: string      
+      finTipoDetId:
+        type: integer
+        format: int64
+      finPrincipale:
+        type: boolean
+      provId:
+        type: integer
+        format: int64
+      intId:
+        type: integer
+        format: int64
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+      enteId:
+        type: integer
+        format: int64#
+
+  ProvvedimentoResultDto:
+    type: object
+    properties:
+      provId:
+        type: integer
+        format: int64
+      provIdPadre:
+        type: integer
+        format: int64
+      provTitolo:
+        type: string
+      provData:
+        type: string
+        format: date-time
+      provImporto:
+        type: number
+        format: double
+      provEnteProvenienza:
+        type: string
+      provOggetto:
+        type: string
+      provNumero:
+        type: number
+        format: double
+      provNumero2:
+        type: number
+        format: double
+      provNote:
+        type: string      
+      provLivId:
+        type: integer
+        format: int64
+      finTipoDetId:
+        type: integer
+        format: int64
+      provTipoId:
+        type: integer
+        format: int64
+      provIdSostituito:
+        type: integer
+        format: int64
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+      enteId:
+        type: integer
+        format: int64#
+
+  LiquidazioneDto:
+    type: object
+    properties:
+      rLiqRicId:
+        type: integer
+        format: int64
+      liqRicId:
+        type: integer
+        format: int64
+      liqId:
+        type: integer
+        format: int64
+      validitaInizio:
+        type: string
+        format: date-time
+      validitaFine:
+        type: string
+        format: date-time
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+      enteId:
+        type: integer
+        format: int64#
+      liqImportoErogato:
+        type: number
+        format: double
+      liqImportoIncassato:
+        type: number
+        format: double
+      liqImportoTotaleSpesoAzienda:
+        type: number
+        format: double
+
+  RichiestaAmmissioneFinanziamentoDto:
+    type: object
+    properties:
+      intId:
+        type: integer
+        format: int64
+      allegatoOggetto:
+        type: string
+      allegato1:
+        items:
+          $ref: '#/definitions/RafAllegatoDto'
+      allegato2:
+        items:
+          $ref: '#/definitions/RafAllegatoDto'
+      intStatoProgIdList:
+        type: array
+        items:
+          type: integer
+          format: int64
+      interventoStrutturaMap:
+        type: object
+        properties:
+          key:
+            type: integer
+            format: int32
+          value:
+            type: object
+            $ref: '#/definitions/RafInterventoStrutturaDto'
+      finanziamentoList:
+        type: array
+        items:
+          $ref: '#/definitions/RafFinanziamentoDto'
+      intDirettoreGeneraleCognome:
+        type: string
+      intDirettoreGeneraleNome:
+        type: string
+      intCommissarioCognome:
+         type: string
+      intCommissarioNome:
+         type: string
+      intReferentePraticaCognome:
+         type: string
+      intReferentePraticaNome:
+         type: string
+      intReferentePraticaEmail:
+         type: string
+      intReferentePraticaFax:
+         type: string
+      intReferentePraticaTelefono:
+         type: string
+      pdfBase64:
+         type: string
+      
+      
+  RafFinanziamentoDto:
+    type: object
+    properties:
+      finImporto: 
+        type: number
+        format: double
+      finNote:
+        type: string
+      finTipoDetId:
+        type: integer
+      provTitolo:
+        type: string
+      
+      
+  RafInterventoStrutturaDto:
+    type: object
+    properties:
+      intstrParereVincolantePpp:
+        type: boolean
+      intstrParereVincolantePppNprotocollo:
+        type: string
+      garaAppaltoCigCodList:
+        type: array
+        items:
+          type: string
+      intstrPftePrevisioneDurataGg:
+        type: integer
+      intstrGaraPrevisioneDurataGg:
+        type: integer
+      intstrProgettoesecutivoPrevisioneDurataGg:
+        type: integer
+      intstrLavoriPrevisioneDurataGg:
+        type: integer
+      intstrCollaudoPrevisioneDurataGg:
+        type: integer
+      dicAppMap:
+        type: object
+        properties:
+          key:
+            type: integer
+            format: int32
+          value:
+            type: object
+            $ref: '#/definitions/RafDicAppDto'
+           
+      quadroEconMap:
+        type: object
+        properties:
+          key:
+            type: integer
+            format: int32
+          value:
+            type: number
+            format: double
+      intstrResponsabileProcedimentoCognome:
+        type: string
+      intstrResponsabileProcedimentoNome:
+        type: string
+      
+  RafDicAppDto:
+    type: object
+    properties:
+      intstrDaTreeSelezionata:
+        type: boolean
+      intstrDaTreeValidazioneData:
+        type: number
+        format: date
+        
+        
+        
+        
+        
+        
+        
+        
+  RafAllegatoDto:
+    type: object
+    properties:
+      fileNameUser:
+        type: string
+      fileType:
+        type: string
+      base64:
+        type: string
+      
+  AllegatoDto:
+    type: object
+    properties:
+      allegatoOggetto:
+        type: string
+      allegatoProtocolloNumero:
+        type: string
+      allegatoProtocolloData:
+        type: string
+        format: date-time
+      fileNameSystem:
+        type: string
+      fileNameUser:
+        type: string
+      fileType:
+        type: string
+      filePath:
+        type: string
+      allegatoTipoId:
+        type: integer
+        format: int64#
+      intId:
+        type: integer
+        format: int64#
+      enteId:
+        type: integer
+        format: int64#
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+      dataCreazione:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      
+  AllegatoDto2:
+    type: object
+    properties:
+      allegatoId:
+        type: integer
+        format: int64#
+      allegatoOggetto:
+        type: string
+      allegatoProtocolloNumero:
+        type: string
+      allegatoProtocolloData:
+        type: string
+        format: date-time
+      fileNameUser:
+        type: string
+      fileNameSystem:
+        type: string
+      fileType:
+        type: string
+      filePath:
+        type: string
+      allegatoTipoId:
+        type: integer
+        format: int64#
+      intId:
+        type: integer
+        format: int64#
+      dataCreazione:
+        type: string
+        format: date-time
+      dataModifica:
+        type: string
+        format: date-time
+      dataCancellazione:
+        type: string
+        format: date-time
+      utenteCreazione:
+        type: string
+      utenteModifica:
+        type: string
+      utenteCancellazione:
+        type: string
+      enteId:
+        type: integer
+        format: int64#
+  
+  RichAmmissioneStrutturaDto:
+    type: object
+    properties:
+      intStr:
+        type: integer
+        format: int64
+      intGaraAppalto:
+        $ref: '#/definitions/InterventoGaraAppaltoDto'
+      altriFinanziamentiDisp:
+        type: array
+        items:
+          $ref: '#/definitions/AltriFinDisponibiliDto'
+      quadroEconomico:
+        $ref: '#/definitions/QuadroEconomicoDto'
+      pianoCronologico:
+        $ref: '#/definitions/PianoCronologicoDto'
+      dichiarazioneAppaltabilita:
+        $ref: '#/definitions/DichiarazioneAppaltabilitaDto'
+  
+  AltriFinDisponibiliDto:
+    type: object
+    properties:
+      intStr:
+        type: integer
+        format: int64
+      finTipoDetId:
+        type: integer
+        format: int64
+      tipo:
+        type: string
+      dettaglio:
+        type: string
+      quotaRegione:
+        type: integer
+        format: int64
+      quotaStato:
+        type: integer
+        format: int64
+      atto:
+        type: string
+      importo:
+        type: number
+        format: double
+  
+  QuadroEconomicoDto:
+    type: object
+    properties:
+      intStr:
+        type: integer
+        format: int64
+      a:
+        type: object
+        properties:
+          key:
+            type: integer
+            format: int32
+          value:
+            type: number
+            format: double
+      b:
+        type: object
+        properties:
+          key:
+            type: integer
+            format: int32
+          value:
+            type: number
+            format: double
+      c:
+        type: object
+        properties:
+          key:
+            type: integer
+            format: int32
+          value:
+            type: number
+            format: double
+      d:
+        type: object
+        properties:
+          key:
+            type: integer
+            format: int32
+          value:
+            type: number
+            format: double
+      e:
+        type: object
+        properties:
+          key:
+            type: integer
+            format: int32
+          value:
+            type: number
+            format: double
+      f:
+        type: object
+        properties:
+          key:
+            type: integer
+            format: int32
+          value:
+            type: number
+            format: double
+      g:
+        type: object
+        properties:
+          key:
+            type: integer
+            format: int32
+          value:
+            type: number
+            format: double
+  
+  PianoCronologicoDto:
+    type: object
+    properties:
+      intStr:
+        type: integer
+        format: int64
+      tempoPrevistoPerPFTE:
+        type: integer
+        format: int64
+      tempoPrevistoPerGARA:
+        type: integer
+        format: int64
+      tempoPrevistoPerProgettoEsecutivo:
+        type: integer
+        format: int64
+      tempoPrevistoPerCollaudo:
+        type: integer
+        format: int64
+      tempoPrevistoPerLavori:
+        type: integer
+        format: int64
+      tempoPrevistoPerAttivazione:
+        type: integer
+        format: int64
+      enteAttuatore:
+        type: string
+  
+  DichiarazioneAppaltabilitaDto:
+    type: object
+    properties:
+      intStr:
+        type: integer
+        format: int64
+      dichiarazioneAppaltabilitaDisp:
+        type: object
+        properties:
+          key:
+            type: integer
+            format: int32
+          value:
+            type: boolean
+      data:
+        type: string
+        format: date-time
+        
+  ReferentePraticaDto:
+    type: object
+    properties:
+      intId:
+        type: integer
+        format: int64
+      refPratica:
+        type: string
+      refPraticaTel:
+        type: string
+      refPraticaFax:
+        type: string
+      refPraticaEmail:
+        type: string
+  
+  MonitoraggioDto:
+    type: object
+    properties:
+      intId:
+        type: integer
+        format: int64
+      enteId:
+        type: integer
+        format: int64
+      allegatoOggetto:
+        type: string
+      listaIntStatoProgettualeId:
+        type: array
+        items:
+          type: integer
+          format: int64
+        example: [1, 2, 5]
+      listaIntStruttura:
+        type: array
+        items:
+          $ref: '#/definitions/InterventoStrutturaDto'
+      listaIntFinanziamentoPrevSpesa:
+        type: array
+        items:
+          $ref: '#/definitions/InterventoFinanziamentoPrevSpesaDto'
+      listaFinanziamentoLiquidazioneRichiesta:
+        type: array
+        items:
+          $ref: '#/definitions/LiquidazioneDto'
+
+  FileDto:
+    type: object
+    properties:
+      base64:
+        type: string
+        format: base64
+# GESTIONE GDPR
+  AuditBody:
+    type: object
+    properties:
+      dataOra:
+        type: string
+        format: date-time
+      ipAddress:
+        type: string
+      idApp:
+        type: string
+      fiscalCode:
+        type: string
+      status:
+        type: integer
+        format: int64      
+      method:
+        type: string
+      uuid:
+        type: string
+        
+  LogAudit:
+    type: object
+    properties:
+      auditId:
+        type: integer
+      dataOra: 
+        type: string
+        format: date-time
+      idApp:
+        type: string
+      ipAddress:
+        type: string
+      utente:
+        type: string
+      operazione:
+        type: string
+      oggOper:
+        type: string
+      keyOper:
+        type: string
+      uuid:
+        type: string
+      requestPayload:
+        type: string
+      responsePayload:
+        type: string
+      esitoChiamata:
+        type: integer
+      
+      
+
+# GESTIONE ERRORI  
+  Errore:
+    type: object
+    properties:
+      status:
+        type: integer
+        format: int32
+      code:
+        type: string
+      title:
+        type: string
+      detail:
+        type: array
+        items:
+          $ref: '#/definitions/ErroreDettaglio'
+  
+  ResponseDetail:
+    type: object
+    properties:
+      key:
+        type: string
+      value:
+        type: string
+  
+  ResponseWrite:
+    type: object
+    properties:
+      status:
+        type: integer
+        format: int32
+      code:
+        type: string
+      title:
+        type: string
+      responseDetail:
+        type: array
+        items:
+          $ref: '#/definitions/ResponseDetail'
+  
+  ErroreDettaglio:
+    type: object
+    properties:
+      chiave:
+        type: string
+      valore:
+        type: string

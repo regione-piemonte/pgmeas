@@ -1,0 +1,57 @@
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    padding: 0;
+    font-size: 20px;
+    color: black;
+  }
+
+  button {
+    background-color: transparent;
+    border: none !important;
+    cursor: pointer;
+  }
+}
+
+.div-success {
+  background-color: #A6D5AB;
+}
+
+.div-error {
+  background-color: rgb(220, 98, 98);
+}
+
+.aggiungi-button {
+  background: #005CA9 0 0 no-repeat padding-box;
+  border-radius: 3px;
+  color: white;
+}
+
+.annulla-button {
+  color: #005CA9;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.small-text {
+  font-size: 14px;
+}
+
+.buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  button {
+    width: 40%;
+  }
+}
+
+.margin-div {
+  margin-left: 1rem;
+}

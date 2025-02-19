@@ -1,0 +1,298 @@
+<h1 class="pgmeas-primary-text">Modulo C</h1>
+<form *ngIf="!loading; else loadingTemplate" id="myForm" [formGroup]="myForm" (ngSubmit)="submit()">
+  <mat-form-field subscriptSizing="dynamic" style="width: 100%; margin-bottom: 40px;" *ngIf="!readOnly">
+    <mat-label>Oggetto</mat-label>
+    <input matInput formControlName="allegatoOggetto">
+    <mat-error *ngIf="myForm.get('allegatoOggetto')!.invalid">Campo obbligatorio</mat-error>
+  </mat-form-field>
+  <div style="display: grid; grid-template-columns: auto auto; gap: 40px; margin-bottom: 40px;">
+    <mat-card>
+      <mat-card-header><h2>Fonte del finanziamento</h2></mat-card-header>
+      <mat-card-content>
+        <p><b>{{getFonteDelFinanziamentoLabel() | orDash}}</b></p>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-header><h2>Aggiornamento dati al</h2></mat-card-header>
+      <mat-card-content>
+        <p><b>{{allegato.allegatoProtocolloData | date:'shortDate' | orDash}}</b></p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <mat-card style="margin-bottom: 40px;">
+    <mat-card-header><h2>Dati intervento</h2></mat-card-header>
+    <mat-card-content>
+      <p>Azienda di riferimento: <b>{{getEnte()?.enteDesc | orDash}}</b> (codice: <b>{{getEnte()?.enteCod | orDash}}</b>)</p>
+      <p>Intervento: <b>{{entity.intTitolo | orDash}}</b> (ID: <b>{{entity.intCod | orDash}}</b>)</p>
+      <p>RUP: <b>{{entity.intReferentePraticaCognome | orDash}} {{entity.intReferentePraticaNome | orDash}}</b></p>
+      <p>ID intervento (procedura regionale): <b>{{entity.intCod | orDash}}</b></p>
+      <p>Codice NSIS: <b>{{entity.intCodicNsis | orDash}}</b></p>
+      <p>Codice CUP: <b>{{entity.intCup | orDash}}</b></p>
+      <p>Codici CIG: <b>{{getCodiciCigLabel() | orDash}}</b></p>
+      <p>Provvedimento di Assegnazione: <b>{{intDgRegionaleApprovazione | orDash}}</b></p>
+      <p>Data decreto: <b>{{intDgRegionaleApprovazioneData | date | orDash}}</b></p>
+      <p>Data di aggiudicazione: <b>{{intDgRegionaleApprovazioneData| date | orDash}}</b></p>
+      <p>
+        Stato dei lavori:
+        <mat-form-field subscriptSizing="dynamic" style="width: 600px;">
+          <mat-select formControlName="interventoStatoProgettuale" multiple>
+            <mat-option *ngFor="let interventoStatoProgettuale of interventoStatoProgettualeList | sort:'intStatoProgDesc'" [value]="interventoStatoProgettuale.intStatoProgId">
+              {{interventoStatoProgettuale.intStatoProgDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </p>
+      <mat-accordion *ngIf="interventoStrutturaList.length; else nessunaStrutturaTemplate" multi formArrayName="items">
+        <mat-expansion-panel *ngFor="let interventoStruttura of interventoStrutturaList; let i = index" [formGroupName]="i">
+          <mat-expansion-panel-header class="pgmeas-primary-indicator">
+            <h3 class="pgmeas-primary-text">Struttura "{{getStrutturaLabel(interventoStruttura)}}"</h3>
+          </mat-expansion-panel-header>
+          <p>Codice: <b>{{getStruttura(interventoStruttura)?.strCod | orDash}}</b></p>
+          <p>
+            Data apertura cantiere prevista:
+            <mat-form-field subscriptSizing="dynamic">
+              <input matInput [matDatepicker]="picker1" formControlName="intstrAperturaCantiereDataPrevista">
+              <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+          </p>
+          <p>
+            Data apertura cantiere effettiva:
+            <mat-form-field subscriptSizing="dynamic">
+              <input matInput [matDatepicker]="picker2" formControlName="intstrAperturaCantiereDataEffettiva">
+              <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+          </p>
+          <p>
+            Data di collaudo prevista:
+            <mat-form-field subscriptSizing="dynamic">
+              <input matInput [matDatepicker]="picker3" formControlName="intstrCollaudoDataPrevista">
+              <mat-datepicker-toggle matIconSuffix [for]="picker3"></mat-datepicker-toggle>
+              <mat-datepicker #picker3></mat-datepicker>
+            </mat-form-field>
+          </p>
+          <p>
+            Data di collaudo effettiva:
+            <mat-form-field subscriptSizing="dynamic">
+              <input matInput [matDatepicker]="picker4" formControlName="intstrCollaudoDataEffettiva">
+              <mat-datepicker-toggle matIconSuffix [for]="picker4"></mat-datepicker-toggle>
+              <mat-datepicker #picker4></mat-datepicker>
+            </mat-form-field>
+          </p>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <ng-template #nessunaStrutturaTemplate>
+        Nessuna struttura
+      </ng-template>
+      <p>Importo complessivo: <b>{{entity.intImporto | currency | orDash}}</b></p>
+    </mat-card-content>
+  </mat-card>
+  <mat-card style="margin-bottom: 40px;">
+    <mat-card-content>
+      <mat-tab-group preserveContent>
+        <mat-tab label="Piano finanziario">
+          <ng-container *ngFor="let principale of [true, false]">
+            <h3 *ngIf="principale">Finanziamenti principali</h3>
+            <h3 *ngIf="!principale">Altri finanziamenti</h3>
+            <div style="overflow-x: auto;">
+              <table>
+                <tr>
+                  <th>FONTE DEL FINANZIAMENTO</th>
+                  <th>Tipologia finanziamento dettaglio</th>
+                  <th>Estremi Atto di Assegnazione</th>
+                  <th>Importo del finanziamento (€)</th>
+                </tr>
+                <tr *ngFor="let finanziamento of getFinanziamentoListByPrincipale(principale)">
+                  <td>{{getFinanziamentoTipo(finanziamento)?.finTipoDesc | orDash}}</td>
+                  <td>{{getFinanziamentoTipoDet(finanziamento)!.finTipoDetDesc}}</td>
+                  <td>{{getProvvedimento(finanziamento)?.provNumero | orDash}} {{getProvvedimento(finanziamento)?.provData | date | orDash}}</td>
+                  <td style="text-align: right;">{{getProvvedimento(finanziamento)?.provImporto | number:'1.2-2' | orDash}}</td>
+                </tr>
+                <tr>
+                  <td>TOTALE</td>
+                  <td></td>
+                  <td></td>
+                  <td style="text-align: right;">{{getTotaleProvvedimentoImportoByPrincipale(principale) | number:'1.2-2'}}</td>
+                </tr>
+              </table>
+            </div>
+          </ng-container>
+        </mat-tab>
+        <mat-tab label="Previsione avanzamento di spesa">
+          <p *ngIf="!readOnly">
+            Aggiungi "Esercizio finanziario" dell'anno:
+            <mat-form-field subscriptSizing="dynamic" style="margin-right: 10px;">
+              <input #anno matInput type="number">
+            </mat-form-field>
+            <button mat-flat-button color="primary" type="button" (click)="addPrevSpesaAnnoColumn(anno.valueAsNumber)">Aggiungi</button>
+          </p>
+          <div style="overflow-x: auto;">
+            <table>
+              <tr>
+                <th>FONTE DEL FINANZIAMENTO</th>
+                <th>Tipologia finanziamento dettaglio</th>
+                <th *ngFor="let anno of getPrevSpesaAnnoColumns()">
+                  <div style="display: flex; justify-content: center; align-items: center;">
+                    Esercizio finanziario {{anno}} (€)
+                    <button *ngIf="isPrevSpesaAnnoColumnRemovable(anno)" mat-icon-button color="warn" (click)="removePrevSpesaAnnoColumn(anno)">
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </div>
+                </th>
+                <th>Totale (€)</th>
+              </tr>
+              <tr *ngFor="let finanziamento of finanziamentoList">
+                <td>{{getFinanziamentoTipo(finanziamento)?.finTipoDesc | orDash}}</td>
+                <td>{{getFinanziamentoTipoDet(finanziamento)!.finTipoDetDesc}}</td>
+                <td *ngFor="let anno of getPrevSpesaAnnoColumns()">
+                  <mat-form-field subscriptSizing="dynamic" style="width: 100%;">
+                    <input matInput type="number" [value]="getInterventoFinanziamentoPrevSpesa(finanziamento, anno)?.intFinPrevSpesaImporto"
+                      [disabled]="!!getInterventoFinanziamentoPrevSpesa(finanziamento, anno) || readOnly" [attr.data-finId]="finanziamento.finId" [attr.data-anno]="anno" style="text-align: right;" appForceTwoDecimals>
+                  </mat-form-field>
+                </td>
+                <td style="text-align: right;">{{getInterventoFinanziamentoPrevSpesaTotaleRiga(finanziamento) | number:'1.2-2'}}</td>
+              </tr>
+              <tr>
+                <td>TOTALE</td>
+                <td></td>
+                <td *ngFor="let anno of getPrevSpesaAnnoColumns()" style="text-align: right;">{{getInterventoFinanziamentoPrevSpesaTotaleColonna(anno) | number:'1.2-2'}}</td>
+                <td style="text-align: right;">{{getInterventoFinanziamentoPrevSpesaTotaleFinale() | number:'1.2-2'}}</td>
+              </tr>
+            </table>
+          </div>
+        </mat-tab>
+        <mat-tab label="Elenco delle liquidazioni">
+          <ng-container *ngFor="let principale of getCurrentlyUsedPrincipaleValues()">
+            <h3 *ngIf="principale">Finanziamenti principali</h3>
+            <h3 *ngIf="!principale">Altri finanziamenti (non principali)</h3>
+            <ng-container *ngFor="let finanziamentoTipo of getCurrentlyUsedFinanziamentoTipoListByPrincipale(principale)" [ngSwitch]="finanziamentoTipo.finTipoId">
+              <h4 *ngSwitchCase="3">Finanziamenti a carico dello stato</h4>
+              <h4 *ngSwitchCase="2">Finanziamenti a carico della regione</h4>
+              <h4 *ngSwitchCase="1">Altri finanziamenti</h4>
+              <div style="overflow-x: auto;">
+                <table>
+                  <tr>
+                    <th>FONTE DEL FINANZIAMENTO</th>
+                    <th>Tipologia finanziamento dettaglio</th>
+                    <th>Numero richiesta liquidazione</th>
+                    <th>Data richiesta liquidazione</th>
+                    <th>Importo della Richiesta (€)</th>
+                    <th>Importo liquidato (€)</th>
+                    <th>Importo Da liquidare (€)</th>
+                    <th>Importo erogato (€)</th>
+                    <th>Importo Incassato (€)</th>
+                  </tr>
+                  <tr *ngFor="let finanziamentoLiquidazioneRichiesta of getFinanziamentoLiquidazioneRichiestaListByFinanziamentoPrincipaleAndTipo(principale, finanziamentoTipo)">
+                    <td>{{getFinanziamentoTipoByLiquidazionRichiesta(finanziamentoLiquidazioneRichiesta)?.finTipoDesc | orDash}}</td>
+                    <td>{{getFinanziamentoTipoDetByLiquidazionRichiesta(finanziamentoLiquidazioneRichiesta)!.finTipoDetDesc}}</td>
+                    <td>{{finanziamentoLiquidazioneRichiesta.liqRicNumero | orDash}}</td>
+                    <td>{{finanziamentoLiquidazioneRichiesta.liqRicProtocolloData | date | orDash}}</td>
+                    <td style="text-align: right;">{{finanziamentoLiquidazioneRichiesta.liqRicImporto | number:'1.2-2' | orDash}}</td>
+                    <td style="text-align: right;">{{getFinanziamentoLiquidazioneImporto(finanziamentoLiquidazioneRichiesta) | number:'1.2-2' | orDash}}</td>
+                    <td style="text-align: right;">{{getImportoDaLiquidare(finanziamentoLiquidazioneRichiesta) | number:'1.2-2' | orDash}}</td>
+                    <td style="text-align: right;">{{getLiquidazioneImportoErogato(finanziamentoLiquidazioneRichiesta) | number:'1.2-2' | orDash}}</td>
+                    <td>
+                      <mat-form-field subscriptSizing="dynamic" style="width: 100%;">
+                        <input matInput type="number" [value]="getLiquidazioneImportoIncassato(finanziamentoLiquidazioneRichiesta)" [disabled]="readOnly"
+                          [attr.data-principale]="principale" [attr.data-finTipoId]="finanziamentoTipo.finTipoId" [attr.data-liqRicId]="finanziamentoLiquidazioneRichiesta.liqRicId"
+                          style="text-align: right;" appForceTwoDecimals>
+                      </mat-form-field>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>TOTALE</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td style="text-align: right;">{{getFinanziamentoLiquidazioneRichiestaImportoTotale(principale, finanziamentoTipo) | number:'1.2-2'}}</td>
+                    <td style="text-align: right;">{{getFinanziamentoLiquidazioneImportoTotale(principale, finanziamentoTipo) | number:'1.2-2'}}</td>
+                    <td style="text-align: right;">{{getImportoDaLiquidareTotale(principale, finanziamentoTipo) | number:'1.2-2'}}</td>
+                    <td style="text-align: right;">{{getLiquidazioneImportoErogatoTotale(principale, finanziamentoTipo) | number:'1.2-2'}}</td>
+                    <td style="text-align: right;">{{getLiquidazioneImportoIncassatoTotale(principale, finanziamentoTipo) | number:'1.2-2'}}</td>
+                  </tr>
+                </table>
+              </div>
+            </ng-container>
+          </ng-container>
+        </mat-tab>
+        <mat-tab label="Importo totale liquidato">
+          <div style="overflow-x: auto;">
+            <table>
+              <tr>
+                <th>FONTE DEL FINANZIAMENTO</th>
+                <th>Tipologia finanziamento dettaglio</th>
+                <th>Importo Totale delle Richieste (€)</th>
+                <th>Importo Totale liquidato (€)</th>
+                <th>Importo Totale Da liquidare (€)</th>
+                <th>Importo Totale erogato (€)</th>
+                <th>Importo Totale Incassato (€)</th>
+              </tr>
+              <tr *ngFor="let finanziamento of finanziamentoList">
+                <td>{{getFinanziamentoTipo(finanziamento)?.finTipoDesc | orDash}}</td>
+                <td>{{getFinanziamentoTipoDet(finanziamento)!.finTipoDetDesc}}</td>
+                <td style="text-align: right;">{{getImportoTotaleDelleRichieste(finanziamento.finId) | number:'1.2-2'}}</td>
+                <td style="text-align: right;">{{getImportoTotaleLiquidato(finanziamento.finId) | number:'1.2-2'}}</td>
+                <td style="text-align: right;">{{getImportoTotaleDaLiquidare(finanziamento.finId) | number:'1.2-2'}}</td>
+                <td style="text-align: right;">{{getImportoTotaleErogato(finanziamento.finId) | number:'1.2-2'}}</td>
+                <td style="text-align: right;">{{getImportoTotaleIncassato(finanziamento.finId) | number:'1.2-2'}}</td>
+              </tr>
+              <tr>
+                <td>TOTALE</td>
+                <td></td>
+                <td style="text-align: right;">{{getImportoTotaleDelleRichieste() | number:'1.2-2'}}</td>
+                <td style="text-align: right;">{{getImportoTotaleLiquidato() | number:'1.2-2'}}</td>
+                <td style="text-align: right;">{{getImportoTotaleDaLiquidare() | number:'1.2-2'}}</td>
+                <td style="text-align: right;">{{getImportoTotaleErogato() | number:'1.2-2'}}</td>
+                <td style="text-align: right;">{{getImportoTotaleIncassato() | number:'1.2-2'}}</td>
+              </tr>
+            </table>
+          </div>
+        </mat-tab>
+        <mat-tab label="Importo della spesa - Non speso - Economie">
+          <div style="overflow-x: auto;">
+            <table>
+              <tr>
+                <th>Tipo finanziamento</th>
+                <th>Tipo finanziamento dettaglio</th>
+                <th>Importo Finanziato Totale (€)</th>
+                <th>Importo Totale Speso dall'Azienda (€)</th>
+                <th>% avanzamento spesa</th>
+                <th>% Economia</th>
+                <th>Importo Economia Finale (€)</th>
+              </tr>
+              <tr *ngFor="let finanziamentoTipoDet of getCurrentlyUsedFinanziamentoTipoDetList()">
+                <td>{{getFinanziamentoTipoByTipoDet(finanziamentoTipoDet)?.finTipoDesc | orDash}}</td>
+                <td>{{finanziamentoTipoDet.finTipoDetDesc}}</td>
+                <td style="text-align: right;">{{getImportoFinanziatoTotale(finanziamentoTipoDet) | number:'1.2-2'}}</td>
+                <td>
+                  <mat-form-field subscriptSizing="dynamic" style="width: 100%;">
+                    <input matInput type="number" [disabled]="readOnly" [attr.data-finTipoDetId]="finanziamentoTipoDet.finTipoDetId" style="text-align: right;" appForceTwoDecimals>
+                  </mat-form-field>
+                </td>
+                <td>{{getPercentualeAvanzamentoSpesa(finanziamentoTipoDet) | percent | orDash}}</td>
+                <td>{{getPercentualeEconomia(finanziamentoTipoDet) | percent | orDash}}</td>
+                <td style="text-align: right;">{{getImportoEconomiaFinale(finanziamentoTipoDet) | number:'1.2-2' | orDash}}</td>
+              </tr>
+              <tr>
+                <td>TOTALE</td>
+                <td></td>
+                <td style="text-align: right;">{{getImportoFinanziatoTotale() | number:'1.2-2'}}</td>
+                <td style="text-align: right;">{{getImportoTotaleSpesoDallAziendaTotale() | number:'1.2-2'}}</td>
+                <td>{{getPercentualeAvanzamentoSpesaTotale() | percent}}</td>
+                <td>{{getPercentualeEconomiaTotale() | percent | orDash}}</td>
+                <td style="text-align: right;">{{getImportoEconomiaFinaleTotale() | number:'1.2-2' | orDash}}</td>
+              </tr>
+            </table>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+  </mat-card>
+</form>
+<ng-template #loadingTemplate>
+  <mat-spinner style="margin: 20px auto;"></mat-spinner>
+</ng-template>
+<button mat-button color="primary" style="margin-right: 10px;" (click)="back()">INDIETRO</button>
+<button *ngIf="!loading && !readOnly" mat-flat-button color="primary" form="myForm" style="margin-right: 10px;">Conferma</button>
+<button *ngIf="!loading && readOnly" mat-stroked-button color="primary" (click)="richiestaAllegato(entity.intId)">Scarica PDF</button>

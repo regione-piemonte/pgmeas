@@ -1,0 +1,4 @@
+CSI_BASE=false
+IMAGE_NAME=pgmeas/pgmeasnotifier
+PRODUCT_MAIL=marialetizia.imbesi@csi.it
+TECHNOLOGY=java

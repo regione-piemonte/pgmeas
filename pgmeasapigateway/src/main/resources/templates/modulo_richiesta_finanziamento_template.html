@@ -1,0 +1,457 @@
+ <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Stampa Modulo A</title>
+
+<link href="classpath:/templates/style_int.css" rel="stylesheet"
+	type="text/css" media="all" />
+<link href="style_moduloA.css" rel="stylesheet" type="text/css" media="all" />
+</head>
+<body>
+
+	<div id="header">
+		<strong><p class="hp">Modulo A</p></strong>
+	</div>
+	<div>
+		<div id="footer">
+			Pagina <span id="pagenumber"></span>/<span id="pagecount"></span>
+		</div>
+		<div id="footerDate"><span
+				th:text="${data.dataOraGenerazione}"></span> </div>
+	</div>
+
+
+	<h1>Richiesta ammissione al finanziamento</h1>
+
+	<div class="container">
+		<div>
+			<strong><h1 th:text="${data.titolo}"></h1></strong>
+		</div>
+		
+		<div>
+			<label><strong>Codice PGMEAS intervento:</strong></label> <span
+				th:text="${data.codice}"></span>
+		</div>
+		<div>
+			<label><strong>CUP:</strong></label> <span 
+				th:text="${data.cup}"></span>
+		</div>
+		<div>
+			<label><strong>Ente attuatore:</strong></label> <span 
+				th:text="${data.ente}"></span>
+		</div>
+		<div>
+			<label><strong>Oggetto*:</strong></label> <span th:if="${data.moduloTipo == 'MOD_A'}"
+				>Richiesta di ammissione al finanziamento per edilizia sanitaria</span>
+				<span th:if="${data.moduloTipo == 'MOD_A_A'}"
+				>Richiesta di ammissione al finanziamento per attrezzature sanitarie</span>
+		</div>
+		
+		<div>
+			<h3><strong>Stato progettuale:</strong></h3> <span
+				th:each="statip, stat : ${data.statiProgettuali}"> <span
+				th:text="${statip}"></span> <span th:if="${!stat.last}">,
+			</span>
+			</span>
+		</div>
+		
+		<div class="struttura" th:if="${data.interventoStrutturaPdf != null}"
+			th:each="struttura : ${data.interventoStrutturaPdf}">
+			<h3>Struttura [[${struttura.strDescrizione}]]</h3>
+			<div class="container">
+                <div th:if="!${struttura.strPgmeas}" >
+					<label><strong>Indirizzo:</strong></label> <span
+						th:text="${struttura.strIndirizzo}"></span>
+				</div>
+				
+                <div th:if="${struttura.strPgmeas}" >
+                    <div>
+                        <label th:if="${struttura.strNonCensita}"><strong>Struttura non censita</strong></label>
+                    </div>
+                    <div>
+                        <label th:if="${struttura.strNuova}"><strong>Nuova struttura</strong></label>
+                    </div>
+                    <div>
+                        <label><strong>Comune Struttura:</strong></label> <span
+                            th:text="${struttura.strComune}"></span>
+                    </div>
+                    <div>
+                        <label><strong>Indirizzo Struttura:</strong></label> <span
+                            th:text="${struttura.strIndirizzo}"></span>
+                    </div>
+                    <div>
+                        <label><strong>Dati Catastali Struttura:</strong></label> <span
+                            th:text="${struttura.strDatiCatastali}"></span>
+                    </div>
+                    <div>
+                        <label><strong>Note:</strong></label> <span
+                            th:text="${struttura.strNote}"></span>
+                    </div>
+                </div>
+                
+                <div>
+					<label><strong>Responsabile Struttura Complessa o
+							facente funzione:</strong></label> <br/> <span
+						th:text="${struttura.responsabileStrutturaComplessa}"></span>
+				</div>
+
+				<div>
+					<label><strong>Responsabile Struttura Semplice o
+							facente funzione:</strong></label> <br/> <span
+						th:text="${struttura.responsabileStrutturaSemplice}"></span>
+				</div>
+			</div>
+		</div>
+		
+		<div>
+			<label><strong>Costo complessivo dell'intervento:</strong></label> <span
+				th:text="${data.importo} + ' ' + €"></span>
+		</div>
+		
+		<h2>Deliberazioni</h2>
+		<div th:if="${data.allegatoDgrApprovazione != null}"
+				th:each="allegato : ${data.allegatoDgrApprovazione}">
+			<h4><strong>DGR Approvazione</strong></h4>
+			<label>Numero: </label> <span
+				th:text="${allegato.intAllegatoNumero}"></span> 
+			<label>Data: </label> <span
+				th:text="${#dates.format(allegato.intAllegatoData, 'dd/MM/yyyy')}"></span> 
+			<label>Allegato: </label> <span
+				th:text="${allegato.fileNameUser}"></span> 
+		</div>
+		
+		<div th:if="${data.allegatoDgrPropostaCR != null}"
+				th:each="allegato : ${data.allegatoDgrPropostaCR}">
+			<h4><strong>DGR Proposta CR</strong></h4> 
+			<label>Numero: </label> <span
+				th:text="${allegato.intAllegatoNumero}"></span> 
+			<label>Data: </label> <span
+				th:text="${#dates.format(allegato.intAllegatoData, 'dd/MM/yyyy')}"></span> 
+			<label>Allegato: </label> <span
+				th:text="${allegato.fileNameUser}"></span> 
+		</div>
+		
+		<div th:if="${data.allegatoDcrApprovazione != null}"
+				th:each="allegato : ${data.allegatoDcrApprovazione}">
+			<h4><strong>DCR Approvazione</strong></h4>
+			<label>Numero: </label> <span
+				th:text="${allegato.intAllegatoNumero}"></span> 
+			<label>Data: </label> <span
+				th:text="${#dates.format(allegato.intAllegatoData, 'dd/MM/yyyy')}"></span> 
+			<label>Allegato: </label> <span
+				th:text="${allegato.fileNameUser}"></span> 
+		</div>
+		
+		<div th:if="${data.allegatiDeterminazioniDirigenziali != null}"
+				th:each="allegato : ${data.allegatiDeterminazioniDirigenziali}">
+			<h4><strong>Determinazioni Dirigenziali</strong></h4>
+			<label>Numero: </label> <span
+				th:text="${allegato.intAllegatoNumero}"></span> 
+			<label>Data: </label> <span
+				th:text="${#dates.format(allegato.intAllegatoData, 'dd/MM/yyyy')}"></span> 
+			<label>Allegato: </label> <span
+				th:text="${allegato.fileNameUser}"></span> 
+		</div>
+		
+		<!-- Tabella Piano Finanziario -->
+		<div class="pianofin"
+		th:if="(${data.flgVisualizzaCampiRegione}) and ((${data.pianoFinanziarioPrincipale != null and #lists.size(data.pianoFinanziarioPrincipale) > 0})
+			or (${data.pianoFinanziarioAltro != null and #lists.size(data.pianoFinanziarioAltro) > 0}))">
+			<h2>Piano Finanziario</h2>
+			<h3>Finanziamento Principale</h3>
+			<table class="grid-container">
+				<thead>
+					<tr>
+						<th class="col1">Tipologia</th>
+						<th class="col2">Dettaglio</th>
+						<th class="col3">Importo</th>
+						<th class="col4">Di cui quota Regione</th>
+						<th class="col5">Di cui quota Stato</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="piano : ${data.pianoFinanziarioPrincipale}">
+						<td class="col1" th:text="${piano.tipologia}"></td>
+						<td class="col2" th:text="${piano.dettaglio}"></td>
+	                    <td class="col3 colonnaImporto" th:text="${piano.importo} + ' ' + €"></td>
+	                    <td class="col4 colonnaImporto" th:text="${piano.importoRegione} ? ${piano.importoRegione} + ' ' + € : ''"></td>
+	                    <td class="col5 colonnaImporto" th:text="${piano.importoStato} ? ${piano.importoStato} + ' ' + € : ''"></td>
+					</tr>
+	                <tr class="totale">
+	                    <td class="col1">Totale</td>
+	                    <td class="col2"></td>
+	                    <td class="col3 colonnaImporto" th:text="${data.totalePianoFinanziarioPrincipale} + ' ' + €"></td>
+	                    <td class="col4 colonnaImporto" th:text="${data.totalePianoFinanziarioRegionePrincipale} + ' ' + €"></td>
+	                    <td class="col5 colonnaImporto" th:text="${data.totalePianoFinanziarioStatoPrincipale} + ' ' + €"></td>
+	                </tr>
+				</tbody>
+			</table>
+		
+			<h3>Altri Finanziamenti</h3>
+			<table>
+				<thead>
+					<tr>
+						<th class="col1">Tipologia</th>
+						<th class="col2">Dettaglio</th>
+						<th class="col3">Importo</th>
+						<th class="col4">Di cui quota Regione</th>
+						<th class="col5">Di cui quota Stato</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="piano : ${data.pianoFinanziarioAltro}">
+						<td class="col1" th:text="${piano.tipologia}"></td>
+						<td class="col2" th:text="${piano.dettaglio}"></td>
+	                    <td class="col3 colonnaImporto" th:text="${piano.importo} + ' ' + €"></td>
+	                    <td class="col4 colonnaImporto" th:text="${piano.importoRegione} ? ${piano.importoRegione} + ' ' + € : ''"></td>
+	                    <td class="col5 colonnaImporto" th:text="${piano.importoStato} ? ${piano.importoStato} + ' ' + € : ''"></td>
+					</tr>
+	                <tr class="totale">
+	                    <td class="col1">Totale</td>
+	                    <td class="col2"></td>
+	                    <td class="col3 colonnaImporto" th:text="${data.totalePianoFinanziarioAltro} + ' ' + €"></td>
+	                    <td class="col4 colonnaImporto" th:text="${data.totalePianoFinanziarioRegioneAltro} + ' ' + €"></td>
+	                    <td class="col5 colonnaImporto" th:text="${data.totalePianoFinanziarioStatoAltro} + ' ' + €"></td>
+	                </tr>
+				</tbody>
+			</table>
+		
+			<h3>Totale Finanziamenti</h3>
+	        <table class="grid-container">
+	            <thead>
+	                <tr>
+	                    <th class="col1 col2"></th>
+	                    <th class="col3">Importo</th>
+	                    <th class="col4">Di cui quota Regione</th>
+	                    <th class="col5">Di cui quota Stato</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	                <tr>
+	                    <td class="col1 col2">Totale finanziamenti principali</td>
+	                    <td class="col3 colonnaImporto" th:text="${data.totalePianoFinanziarioPrincipale} + ' ' + €"></td>
+	                    <td class="col4 colonnaImporto" th:text="${data.totalePianoFinanziarioRegionePrincipale} + ' ' + €"></td>
+	                    <td class="col5 colonnaImporto" th:text="${data.totalePianoFinanziarioStatoPrincipale} + ' ' + €"></td>
+	                </tr>
+	                <tr>
+	                    <td class="col1 col2">Totale altri finanziamenti</td>
+	                    <td class="col3 colonnaImporto" th:text="${data.totalePianoFinanziarioAltro} + ' ' + €"></td>
+	                    <td class="col4 colonnaImporto" th:text="${data.totalePianoFinanziarioRegioneAltro} + ' ' + €"></td>
+	                    <td class="col5 colonnaImporto" th:text="${data.totalePianoFinanziarioStatoAltro} + ' ' + €"></td>
+	                </tr>
+	                <tr class="totale">
+	                    <td class="col1 col2">Totale finanziamenti</td>
+	                    <td class="col3 colonnaImporto" th:text="${data.totalePianoFinanziario} + ' ' + €"></td>
+	                    <td class="col4 colonnaImporto" th:text="${data.totalePianoFinanziarioRegione} + ' ' + €"></td>
+	                    <td class="col5 colonnaImporto" th:text="${data.totalePianoFinanziarioStato} + ' ' + €"></td>
+	                </tr>
+	            </tbody>
+	        </table>
+		</div>
+	</div>
+	
+	<h2>Quadro Economico</h2>
+	<div class="struttura" th:if="${data.interventoStrutturaPdf != null}"
+			th:each="struttura : ${data.interventoStrutturaPdf}">
+		<h3>Struttura [[${struttura.strDescrizione}]]</h3>
+		<div class="container">
+			<table class="noborder">
+				<tr th:if="${struttura.quadroEconomico != null}"
+					th:each="entry : ${struttura.quadroEconomico}">
+					<!-- Colonne vuote in base al livello -->
+					<td th:if="${entry.value.livello == 2}"></td>
+					<td th:if="${entry.value.livello == 3}"></td>
+
+					<!-- Colonna Valore -->
+					<td th:text="${entry.value.descrizione}"
+						th:attr="colspan=${entry.value.conImporto ? (4 - entry.value.livello) : (5 - entry.value.livello)}">
+					</td>
+
+					<!-- Colonna Importo, mostrata solo se selezionabile -->
+					<td class="colonnaImporto" th:if="${entry.value.conImporto}"
+                           th:text="${entry.value.importo} + ' ' + ${entry.value.simbolo}"></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	
+	<h2>Piano cronologico di attivazione dell'intervento (in giorni naturali
+			consecutivi)</h2>
+	<span>La durata stimata dell'intervento deve essere comprensiva di tutte 
+			le procedure amministrative propedeutiche 
+			all'approvazione di ogni singola fase</span>
+	<table>
+		<thead>
+			<tr>
+				<th>Progettazione (giorni)</th>
+				<th>Affidamento Lavori (giorni)</th>
+				<th>Esecuzione Lavori (giorni)</th>
+				<th>Collaudo (giorni)</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><span th:text="${data.stimeDurataInt.strProgettazioneGg}"></span></td>
+				<td><span
+					th:text="${data.stimeDurataInt.strAffidamentoLavoriGg}"></span></td>
+				<td><span
+					th:text="${data.stimeDurataInt.strEsecuzioneLavoriGg}"></span></td>
+				<td><span th:text="${data.stimeDurataInt.strCollaudoGg}"></span></td>
+			</tr>
+		</tbody>
+	</table>
+	<div>
+		<label><strong>Appalto Integrato:</strong></label> <img
+			th:if="${data.appaltoIntegrato}" th:src="@{imgs/check.jpg}"
+			width="20" height="17" /> <img th:if="${!data.appaltoIntegrato}"
+			th:src="@{imgs/uncheck.jpg}" width="20" height="17" />
+	</div>
+	<div>
+		<label><strong>Totale durata stimata dell’intervento:</strong></label>
+		<span th:text="${data.stimeDurataInt.strTotaleDurata}"></span>
+	</div>
+	
+	<h2>Cronoprogramma della struttura (in giorni naturali consecutivi)</h2>
+	<div class="struttura" th:if="${data.interventoStrutturaPdf != null}"
+			th:each="struttura : ${data.interventoStrutturaPdf}">
+		<h3>Struttura [[${struttura.strDescrizione}]]</h3>
+		<div class="container">
+			<span>Cronoprogramma della struttura (in giorni naturali consecutivi)</span>
+			<table>
+				<thead>
+					<tr>
+						<th>Progettazione (giorni)</th>
+						<th>Affidamento Lavori (giorni)</th>
+						<th>Esecuzione Lavori (giorni)</th>
+						<th>Collaudo (giorni)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><span
+							th:text="${struttura.stimeDurataInt.strProgettazioneGg}"></span></td>
+						<td><span
+							th:text="${struttura.stimeDurataInt.strAffidamentoLavoriGg}"></span></td>
+						<td><span
+							th:text="${struttura.stimeDurataInt.strEsecuzioneLavoriGg}"></span></td>
+						<td><span
+							th:text="${struttura.stimeDurataInt.strCollaudoGg}"></span></td>
+					</tr>
+
+				</tbody>
+			</table>
+			<div>
+				<label><strong>Appalto Integrato:</strong></label> <img
+					th:if="${struttura.appaltoIntegrato}" th:src="@{imgs/check.jpg}"
+					width="20" height="17" /> <img th:if="${!struttura.appaltoIntegrato}"
+					th:src="@{imgs/uncheck.jpg}" width="20" height="17" />
+			</div>
+			<div>
+				<label><strong>Totale durata stimata della
+						struttura (in giorni naturali complessivi):</strong></label> <span
+					th:text="${struttura.stimeDurataInt.strTotaleDurata}"></span>
+			</div>
+		</div>
+	</div>
+	
+	<h2>Dichiarazione di appaltabilità</h2>
+	<div class="struttura" th:if="${data.interventoStrutturaPdf != null}"
+			th:each="struttura : ${data.interventoStrutturaPdf}">
+		<h3>Struttura [[${struttura.strDescrizione}]]</h3>
+		<div class="container">
+			<table class="noborder">
+				<tr th:if="${struttura.dichiarazioneAppaltabilita != null}"
+					th:each="entry : ${struttura.dichiarazioneAppaltabilita}">
+					<!-- Colonne vuote in base al livello -->
+					<td th:if="${entry.value.livello == 2}"></td>
+					<td th:if="${entry.value.livello == 3}"></td>
+
+
+					<!-- Colonna Selezionato, visibile solo se entry.value.selezionabile -->
+					<td th:if="${entry.value.editabile}"><img
+						th:if="${entry.value.selezionato}" th:src="@{imgs/check.jpg}"
+						width="20" height="17" /> <img
+						th:if="${!entry.value.selezionato}" th:src="@{imgs/uncheck.jpg}"
+						width="20" height="17" /></td>
+
+					<!-- 				   Cella vuota se non selezionabile -->
+					<td th:if="${!entry.value.editabile}">&nbsp;</td>
+
+					<!-- 	               Colonna Valore -->
+					<td th:utext="${entry.value.descrizione}"
+						th:attr="colspan=${entry.value.editabile ? (4 - entry.value.livello) : (5 - entry.value.livello)}">
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	
+	<h2>Allegati</h2>
+	<div th:if="${data.allegatoProvvedimentoAziendaleApprovazione != null}"
+			th:each="allegato : ${data.allegatoProvvedimentoAziendaleApprovazione}">
+		<h2><strong>Provvedimento di Approvazione del Progetto (DDG)</strong></h2>
+		<label>Numero: </label> <span
+			th:text="${allegato.intAllegatoNumero}"></span> 
+		<label>Data: </label> <span
+			th:text="${#dates.format(allegato.intAllegatoData, 'dd/MM/yyyy')}"></span> 
+		<label>Allegato: </label> <span
+			th:text="${allegato.fileNameUser}"></span> 
+	</div>
+	
+	<div th:if="${data.allegatoRelazioneTecnica != null}"
+			th:each="allegato : ${data.allegatoRelazioneTecnica}">
+		<h2><strong>Relazione Tecnica</strong></h2>
+		<label>Numero: </label> <span
+			th:text="${allegato.intAllegatoNumero}"></span> 
+		<label>Data: </label> <span
+			th:text="${#dates.format(allegato.intAllegatoData, 'dd/MM/yyyy')}"></span> 
+		<label>Allegato: </label> <span
+			th:text="${allegato.fileNameUser}"></span> 
+	</div>
+	
+	<div th:if="${data.flgVisualizzaCampiRegione}">
+		<div th:if="${data.allegatoNullaOsta != null}"
+			th:each="allegato : ${data.allegatoNullaOsta}">
+			<h2><strong>Nulla Osta</strong></h2>
+			<label>Numero: </label> <span
+				th:text="${allegato.intAllegatoNumero}"></span> 
+			<label>Data: </label> <span
+				th:text="${#dates.format(allegato.intAllegatoData, 'dd/MM/yyyy')}"></span> 
+			<label>Allegato: </label> <span
+				th:text="${allegato.fileNameUser}"></span> 
+		</div>
+		
+		<div th:if="${data.allegatoDecretoMinisteriale != null}"
+				th:each="allegato : ${data.allegatoDecretoMinisteriale}">
+			<h2><strong>Decreto Ministeriale di Ammissione al Finanziamento</strong></h2>
+			<label>Numero: </label> <span
+				th:text="${allegato.intAllegatoNumero}"></span> 
+			<label>Data: </label> <span
+				th:text="${#dates.format(allegato.intAllegatoData, 'dd/MM/yyyy')}"></span> 
+			<label>Allegato: </label> <span
+				th:text="${allegato.fileNameUser}"></span> 
+		</div>
+	</div>
+	
+	
+	<h2 th:if="${data.note} != null"><strong>Note</strong></h2>
+		<span th:text="${data.note}"></span>
+		
+	<h2>Responsabili</h2>
+	<div>
+		<label><strong>Direttore Generale:</strong></label> <br/> <span
+			th:text="${data.direttoreGenerale}"></span>
+	</div>
+	<div>
+		<label><strong>Commissario:</strong></label> <br/> <span
+			th:text="${data.commissario}"></span>
+	</div>
+	<div>
+		<label><strong>RUP:</strong></label> <br/> <span th:text="${data.rup}"></span>
+	</div>
+	<div>
+		<label><strong>Referente Pratica:</strong></label> <br/> <span
+			th:text="${data.referentePratica}"></span>
+	</div>
+</body>
+</html>

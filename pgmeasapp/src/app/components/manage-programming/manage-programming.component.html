@@ -1,0 +1,55 @@
+<ng-container *ngIf="!loading; else loadingTemplate">
+  <h1 class="pgmeas-primary-text">Gestisci programmazione</h1>
+  <mat-card style="max-width: 800px;">
+    <mat-card-header>
+      <h4>Periodo operativo della programmazione</h4>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <div class="small-text flex-div">
+        <p>Triennio: </p>
+        <b>{{ calcolaTriennio() }}</b>
+      </div>
+
+      <div class="date-div">
+
+        <mat-form-field class="durata-stimata-input">
+          <mat-label>Data inizio inserimento</mat-label>
+          <form>
+            <input matInput [matDatepicker]="DataInizioPicker" placeholder="gg/mm/aaaa" readonly  (click)="DataInizioPicker.open()" [(ngModel)]="dataInizio"
+              [name]="'DataInizio'" (keydown)="onInputDate($event)" [disabled]="isDateDisabled">
+          </form>
+          <mat-datepicker-toggle matSuffix [for]="DataInizioPicker"></mat-datepicker-toggle>
+          <mat-datepicker #DataInizioPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="durata-stimata-input">
+          <mat-label>Data fine inserimento</mat-label>
+          <form>
+            <input matInput [matDatepicker]="DataFinePicker" placeholder="gg/mm/aaaa"  readonly  (click)="DataFinePicker.open()" [(ngModel)]="dataFine"
+              [name]="'DataFine'" (keydown)="onInputDate($event)" [disabled]="isDateDisabled">
+          </form>
+          <mat-datepicker-toggle matSuffix [for]="DataFinePicker"></mat-datepicker-toggle>
+          <mat-datepicker #DataFinePicker></mat-datepicker>
+        </mat-form-field>
+
+      </div>
+      <mat-error class="small-text" *ngFor="let messaggio of messaggioErrore">{{ messaggio }}</mat-error>
+
+      <div class="buttons" mat-dialog-actions>
+        <button mat-button color="primary" (click)="back()">INDIETRO</button>
+        <button *ngIf="!isProroga" mat-flat-button color="primary" style="margin-right: 10px; margin-top: 10px; margin-left: 20px"
+          type="button" (click)="confermaDate()" class="conferma-button">Conferma</button>
+        <button mat-button color="primary" (click)="navigateToProrogaProgrammazione()">Proroga programmazione</button>
+      </div>
+
+
+    </mat-card-content>
+
+  </mat-card>
+</ng-container>
+
+<ng-template #loadingTemplate>
+  <mat-spinner style="margin: 20px auto"></mat-spinner>
+</ng-template>

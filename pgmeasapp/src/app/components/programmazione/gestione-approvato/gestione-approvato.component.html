@@ -1,0 +1,57 @@
+<h1 class="title-header pgmeas-primary-text">{{title}}</h1>
+<ng-container *ngIf="intervento; else searchLoadingTemplate">
+  <ng-container *ngIf="!salvataggioEffettuato; else salvataggioTemplate">
+    <div *ngIf="intervento" class="container">
+      <mat-card>
+        <mat-card-header>
+          <p class="card-header">{{ intervento.intTitolo }}</p>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="d-flex-between m-14" style="width: 60%; margin-bottom: 0;">
+            <p class="small-text" style="margin-bottom: 0;">Codice PGMEAS intervento: <b>{{ intervento.intCod }}</b></p>
+            <p class="small-text" style="margin-bottom: 0;">CUP: <b>{{ intervento.intCup }}</b></p>
+          </div>
+          <div class=" m-14" style="width: 100%; margin-top: 0;">
+            <!-- <p style="width: 50%" class="small-text">Fonte finanziamento: <b>{{ intervento.intDgRegionaleApprovazione }}</b></p> -->
+            <p style="width: 50%" class="small-text">Ente attuatore: <b>{{ ente[0].enteDesc }}</b></p>
+          </div>
+          </mat-card-content>
+      </mat-card>
+     
+      <app-allegati (formData)="receiveData('allegati', $event)"
+                    [enti]="enti"
+                    [user]="user"
+                    [canEdit]="false"
+                    [canEditRegione]="false"
+                    [note]="note"
+                    [noteAttive]="false"
+                    [dataFromBe]="allegatiBe"
+                    [intervento]="intervento"></app-allegati>
+      
+      
+    <app-allegati-regione (formData)="receiveData('allegatiRegione', $event)"
+          [canEdit]="false"
+          [canEditRegione]="false"
+          [intervento]="intervento"></app-allegati-regione >
+      
+      <div class="d-flex-between">
+        <div class="d-flex-between">
+          <button mat-button color="primary" style="margin-right: 10px;" (click)="back()">INDIETRO</button>
+          
+            <button (click)="onPrintPdf(intervento.rIntModuloId, intervento.intId)" class="stampa-pdf-btn" mat-raised-button>Scarica PDF</button>
+          </div>
+        
+      </div>
+    </div>
+  </ng-container>
+</ng-container>
+
+<ng-template #searchLoadingTemplate>
+  <mat-spinner style="margin: 20px auto;"></mat-spinner>
+</ng-template>
+
+
+<ng-template #salvataggioTemplate>
+  <app-success [selettore]="!moduloTipoId?'INS-MOD_A':'MOD-MOD_A'" [intId]="intervento.intId" [canEditRegione]="canEditRegione" [moduloCod]="intervento.moduloTipo"
+    [message]="!moduloTipoId?'Inserimento del modulo fatto con successo.':'Modifica del modulo fatto con successo'"></app-success>
+</ng-template>
