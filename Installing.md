@@ -3,7 +3,7 @@
 ## Compilazione
 
 ### Libreria pgmeascommons
-La componente **pgmeascommons** può essere compilata con il tool **Maven** version: 3.8.1 e **JDK Adoptium Temurin 17**.  
+La componente **pgmeascommons** può essere compilata con il tool **Maven ** version: 3.8.1 e **JDK Adoptium Temurin 17**.  
 
 Prima di procedere con l'installazione nel repository della libreria, è necessario impostare la versione con il seguente comando:  
 
@@ -99,9 +99,44 @@ Gli script del **pgmeasDB** devono essere eseguiti su un'utenza **PostgreSQL**.
 | `log.audit.uri` | `http://localhost:9050/pgmeasgdpr/api/audit/add` | URI per il log audit |
 | `logging.level.it.csi.pgmeas.service.gateway.proxy` | `DEBUG` | Livello di logging per il proxy gateway |
 | `management.endpoints.web.exposure.include` | `health,info,prometheus` | Endpoint esposti per la gestione |
-| `routes.mock.regExp` | `api/(mock.*)` | Regex per il routing delle richieste mock |
-| `routes.mock.targetHost` | `http://localhost:8080` | Host di destinazione per le richieste mock |
-| `routes.mock.targetUri` | `/` | URI di destinazione per le richieste mock |
+| Configurazione | Valore | Descrizione |
+|---------------|--------|-------------|
+| `routes.query1.regExp` | `api/(progetti.*)` | Regex per il routing delle richieste progetti |
+| `routes.query1.targetHost` | `http://localhost:9080` | Host di destinazione per le richieste progetti |
+| `routes.query1.targetUri` | `/pgmeasproject/api/` | URI di destinazione per le richieste progetti |
+| `routes.query2.regExp` | `api/(tipologiche.*)` | Regex per il routing delle richieste tipologiche |
+| `routes.query2.targetHost` | `http://localhost:9070` | Host di destinazione per le richieste tipologiche |
+| `routes.query2.targetUri` | `/pgmeasregistry/api/` | URI di destinazione per le richieste tipologiche |
+| `routes.query3.regExp` | `api/(intervento.*)` | Regex per il routing delle richieste intervento |
+| `routes.query3.targetHost` | `http://localhost:9080` | Host di destinazione per le richieste intervento |
+| `routes.query3.targetUri` | `/pgmeasproject/api/` | URI di destinazione per le richieste intervento |
+| `routes.query4.regExp` | `api/(audit.*)` | Regex per il routing delle richieste audit |
+| `routes.query4.targetHost` | `http://localhost:9050` | Host di destinazione per le richieste audit |
+| `routes.query4.targetUri` | `/pgmeasgdpr/api/` | URI di destinazione per le richieste audit |
+| `routes.query5.regExp` | `api/(provvedimenti.*)` | Regex per il routing delle richieste provvedimenti |
+| `routes.query5.targetHost` | `http://localhost:9080` | Host di destinazione per le richieste provvedimenti |
+| `routes.query5.targetUri` | `/pgmeasproject/api/` | URI di destinazione per le richieste provvedimenti |
+| `routes.query6.regExp` | `api/(allegato.*)` | Regex per il routing delle richieste allegato |
+| `routes.query6.targetHost` | `http://localhost:9080` | Host di destinazione per le richieste allegato |
+| `routes.query6.targetUri` | `/pgmeasproject/api/` | URI di destinazione per le richieste allegato |
+| `routes.query7.regExp` | `api/v2/(intervento.*)` | Regex per il routing delle richieste intervento v2 |
+| `routes.query7.targetHost` | `http://localhost:9080` | Host di destinazione per le richieste intervento v2 |
+| `routes.query7.targetUri` | `/pgmeasproject/api/v2/` | URI di destinazione per le richieste intervento v2 |
+| `routes.query8.regExp` | `api/(programmazione.*)` | Regex per il routing delle richieste programmazione |
+| `routes.query8.targetHost` | `http://localhost:9080` | Host di destinazione per le richieste programmazione |
+| `routes.query8.targetUri` | `/pgmeasproject/api/v2/` | URI di destinazione per le richieste programmazione |
+| `routes.query9.regExp` | `api/v1/(wf.*)` | Regex per il routing delle richieste workflow v1 |
+| `routes.query9.targetHost` | `http://localhost:9080` | Host di destinazione per le richieste workflow v1 |
+| `routes.query9.targetUri` | `/pgmeasproject/api/v1/` | URI di destinazione per le richieste workflow v1 |
+| `routes.query10.regExp` | `api/(modulo.*)` | Regex per il routing delle richieste modulo |
+| `routes.query10.targetHost` | `http://localhost:9080` | Host di destinazione per le richieste modulo |
+| `routes.query10.targetUri` | `/pgmeasproject/api/v2/` | URI di destinazione per le richieste modulo |
+| `routes.query11.regExp` | `api/(struttura.*)` | Regex per il routing delle richieste struttura |
+| `routes.query11.targetHost` | `http://localhost:9080` | Host di destinazione per le richieste struttura |
+| `routes.query11.targetUri` | `/pgmeasproject/api/` | URI di destinazione per le richieste struttura |
+| `routes.query12.regExp` | `api/(ricerca.*)` | Regex per il routing delle richieste ricerca |
+| `routes.query12.targetHost` | `http://localhost:9080` | Host di destinazione per le richieste ricerca |
+| `routes.query12.targetUri` | `/pgmeasproject/api/` | URI di destinazione per le richieste ricerca |
 | `server.tomcat.max-swallow-size` | `100MB` | Dimensione massima per il payload delle richieste |
 | `session.datasource.driverClassName` | `org.postgresql.Driver` | Driver del database |
 | `session.datasource.embedded` | `false` | Indica se il database è embedded |
