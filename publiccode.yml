@@ -1,6 +1,5 @@
 publiccodeYmlVersion: "0.4"
 name: PGMEAS
-applicationSuite: ""
 url: https://github.com/regione-piemonte/pgmeas.git
 landingURL: https://github.com/regione-piemonte/pgmeas
 softwareVersion: 1.0.0
@@ -16,8 +15,8 @@ developmentStatus: development
 softwareType: standalone/web
 description:
   it-IT:
-    shortDescription: Programmazione, gestione e monitoraggio degli investimenti
-      in       edilizia e attrezzature sanitarie
+    shortDescription: Programmazione, gestione e monitoraggio degli investimenti in
+      edilizia e attrezzature sanitarie.
     longDescription: >-
       La piattaforma informatica è uno strumento a disposizione di tutte le
       aziende sanitarie piemontesi per gestire in modo digitale gli investimenti
@@ -61,7 +60,6 @@ maintenance:
   contacts:
     - name: Marco Giraudo
       email: marco.giraudo@csi.it
-      phone: ""
       affiliation: CSI-Piemonte
 localisation:
   localisationReady: false
