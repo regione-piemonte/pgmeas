@@ -58,8 +58,7 @@ description:
       l’intervento.
     documentation: https://www.regione.piemonte.it/web/temi/sanita/strumenti-operativi/pgmeas-piattaforma-programmazione-gestione-monitoraggio-investimenti-edilizia-attrezzature-sanitarie
     features:
-      - Digitalizzazione dell'iter amministrativo delle fasi di
-        Programmazione,         Gestione, Monitoraggio
+      - Digitalizzazione dell'iter amministrativo delle fasi di Programmazione, Gestione, Monitoraggio
       - Monitoraggio in tempo reale degli investimenti
       - Reportistica integrata con l'ecosistema delle piattaforme regionali
       - Alerting per segnalazioni di anomalie sui dati
