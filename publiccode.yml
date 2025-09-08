@@ -74,3 +74,7 @@ localisation:
   localisationReady: false
   availableLanguages:
     - it-IT
+it:
+  countryExtensionVersion: '1.0'
+  riuso:
+    codiceIPA: r_piemon
