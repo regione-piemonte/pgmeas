@@ -11,7 +11,7 @@ categories:
   - enterprise-project-management
 usedBy:
   - Regione Piemonte
-developmentStatus: development
+developmentStatus: stable
 softwareType: standalone/web
 description:
   it-IT:
