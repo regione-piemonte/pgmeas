@@ -1,35 +1,22 @@
-# This repository adheres to the publiccode.yml standard by including this 
-# metadata file that makes public software easily discoverable.
-# More info at https://github.com/italia/publiccode.yml
-
 publiccodeYmlVersion: '0.4.0'
+name: PGMEAS
 applicationSuite: Regione Piemonte Sistema Informativo Sanità
+url: https://github.com/regione-piemonte/pgmeas
+softwareVersion: 1.0.0
+releaseDate: '2025-04-02'
+platforms:
+- web
 categories:
-  - procurement
-dependsOn:
-  open:
-    - name: Apache Web Server
-      optional: false
-      version: ''
-      versionMax: ''
-      versionMin: 2.0.0
-    - name: Postgresql
-      optional: false
-      version: ''
-      versionMax: ''
-      versionMin: '15.0'
+- procurement
+usedBy:
+- Regione Piemonte
+developmentStatus: stable
+softwareType: standalone/web
 description:
-  it:
-    documentation: |-
-      https://www.regione.piemonte.it/web/temi/sanita/strumenti-operativi/pgmeas-piattaforma-programmazione-gestione-monitoraggio-investimenti-edilizia-attrezzature-sanitarie
-    features:
-      - Digitalizzazione dell'iter amministrativo delle fasi di Programmazione, Gestione, Monitoraggio
-      - Monitoraggio in tempo reale degli investimenti
-      - Reportistica integrata con l'ecosistema delle piattaforme regionali
-      - Alerting per segnalazioni di anomalie sui dati
-      - Notifiche informative sugli eventi relativi agli investimenti
-    longDescription: |
-      La piattaforma informatica è uno strumento a disposizione di tutte le
+  it-IT:
+    localisedName: PGMEAS
+    shortDescription: Programmazione, gestione e monitoraggio degli investimenti in edilizia e attrezzature sanitarie.
+    longDescription: 'La piattaforma informatica è uno strumento a disposizione di tutte le
       aziende sanitarie piemontesi per gestire in modo digitale gli investimenti
       in edilizia e attrezzature sanitarie in tutte le loro fasi: la
       programmazione degli interventi, la gestione del finanziamento e il
@@ -44,61 +31,42 @@ description:
       inserimenti, modifiche e visualizzazioni dei dati saranno attive in base
       ad eventuali dati già compilati sull’intervento.
       
-      La fase 'Programmazione' permette di gestire i dati (tempi, costi e
+      La fase Programmazione permette di gestire i dati (tempi, costi e
       beneficiari) relativi alla programmazione, la sua eventuale proroga e una
       serie di funzionalità sugli interventi.
       
-      La fase 'Gestione' permette di gestire i dati relativi all’ammissione
+      La fase Gestione permette di gestire i dati relativi all’ammissione
       finanziamento, aggiudicazione, liquidazioni, varianti, opere
       supplementari, utilizzo economie e rendicontazione finale degli
       interventi.
       
-      La fase 'Monitoraggio' permette di gestire i dati riepilogativi degli
+      La fase Monitoraggio permette di gestire i dati riepilogativi degli
       interventi (stato di avanzamento).
       
-      La funzionalità trasversale 'Ricerca Interventi' consente di ricercare gli
+      La funzionalità trasversale Ricerca Interventi consente di ricercare gli
       interventi, e di visualizzarne i dati in sola lettura indipendentemente
       dallo stato dell’intervento e dalla fase nella quale si trova
-      l’intervento.
-      
-    shortDescription: Programmazione, gestione e monitoraggio degli investimenti in edilizia e attrezzature sanitarie.
-      
-developmentStatus: stable
-intendedAudience:
-  scope:
-    - government
-it:
-  conforme:
-    gdpr: false
-    lineeGuidaDesign: false
-    misureMinimeSicurezza: true
-    modelloInteroperabilita: false
-  countryExtensionVersion: '0.2'
-  piattaforme:
-    anpr: false
-    cie: false
-    pagopa: false
-    spid: false
-  riuso:
-    codiceIPA: r_piemon
+      l’intervento.'
+    features:
+    - Digitalizzazione dell'iter amministrativo delle fasi di Programmazione, Gestione, Monitoraggio
+    - Monitoraggio in tempo reale degli investimenti
+    - Reportistica integrata con l'ecosistema delle piattaforme regionali
+    - Alerting per segnalazioni di anomalie sui dati
+    - Notifiche informative sugli eventi relativi agli investimenti
 legal:
   license: EUPL-1.2
-  mainCopyrightOwner: Regione Piemonte
-localisation:
-  availableLanguages:
-    - it
-  localisationReady: true
-logo: PGMEAS.png
 maintenance:
-  contacts:
-    - affiliation: CSI Piemonte
-      email: elisa.fiorio@csi.it
-      name: marco.giraudo@csi.it
   type: internal
-name: PGMEAS
-platforms:
-  - web
-releaseDate: '2025-04-02'
-softwareType: standalone/web
-softwareVersion: 1.0.0
-url: 'https://github.com/regione-piemonte/pgmeas'
+  contacts:
+  - name: Marco Giraudo
+    email: marco.giraudo@csi.it
+    phone: ''
+    affiliation: ''
+localisation:
+  localisationReady: false
+  availableLanguages:
+  - it
+it:
+  countryExtensionVersion: '1.0'
+  riuso:
+    codiceIPA: r_piemon
