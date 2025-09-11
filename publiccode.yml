@@ -4,10 +4,12 @@ applicationSuite: Regione Piemonte Sistema Informativo Sanità
 url: https://github.com/regione-piemonte/pgmeas
 softwareVersion: 1.0.0
 releaseDate: '2025-04-02'
+logo: https://raw.githubusercontent.com/regione-piemonte/pgmeas/HEAD/PGMEAS.png
 platforms:
 - web
 categories:
 - procurement
+- enterprise-project-management
 usedBy:
 - Regione Piemonte
 developmentStatus: stable
